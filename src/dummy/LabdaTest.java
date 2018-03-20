@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
 
+import utils.Utils;
+
 public class LabdaTest {
 
 	@SuppressWarnings({ "rawtypes", "unchecked", "null" })

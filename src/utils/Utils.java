@@ -1,8 +1,5 @@
-package dummy;
+package utils;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -23,6 +20,7 @@ public class Utils {
 		return collection == null ? new ArrayList() : collection;
     }
 	
+	/* ************************************************************************************** */
 	/**
 	 * 
 	 * @param input
@@ -70,39 +68,25 @@ public class Utils {
 		return null;
 	}
 	
+	/* ************************************************************************************** */
+	
+	/**
+	 * Generate UUID type 3
+	 * @param str
+	 * @return
+	 */
 	public static String generateUUID3(String str) {
 		if(str != null)
 			return UUID.nameUUIDFromBytes(str.getBytes()).toString();
 		return null;
 	}
 	
-	public static InetAddress getInetAddress() throws Exception {
-		return InetAddress.getLocalHost();
+	/**
+	 * Generate UUID type 4
+	 * @return
+	 */
+	public static String generateUUID4() {
+		return UUID.randomUUID().toString();
 	}
-	
-	public static String getIp() throws Exception {
-		return getInetAddress().getHostAddress();
-	}
-	
-	public static String getHostname() throws Exception {
-		return getInetAddress().getHostName();
-	}
-	
-	public static NetworkInterface getNetworkInterface() throws Exception {
-		return NetworkInterface.getByInetAddress(getInetAddress());
-	}
-	
-	public static byte[] getHardwareAddress() throws Exception {
-		return getNetworkInterface().getHardwareAddress();
-	}
-	
-	public static String getMacAddress() {
-		try {
-			return new String(getHardwareAddress(), StandardCharsets.UTF_8);
-		} catch (Exception e) {
-			return null;
-		}
-	}
-	
 	
 }
