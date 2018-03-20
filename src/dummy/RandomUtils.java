@@ -1,5 +1,6 @@
 package dummy;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -9,10 +10,12 @@ import java.util.UUID;
 public class RandomUtils {
 
 	/* Object */
+	/* String */
 	public static String randomString() {
 		return UUID.randomUUID().toString();
 	}
 		
+	/* Integer */
 	public static Integer randomInteger() {
 		Random randomGenerator = new Random();
 		return new Integer(randomGenerator.nextInt());
@@ -31,6 +34,41 @@ public class RandomUtils {
 		return random;
 	}
 	
+	/**
+	 * Generate a random Integer lower than maxValue param 
+	 * @param maxValue
+	 * @return
+	 */
+	public static Integer randomIntegerLowerThan(Integer maxValue) {
+		Random randomGenerator = new Random();
+		return randomGenerator.nextInt(maxValue);
+	}
+	
+	/**
+	 * Generate a list of random Integer lower than maxValue param. 
+	 * The numbers of list element's are definited with qty param
+	 * @param qty
+	 * @param maxValue
+	 * @return
+	 */
+	public static List<Integer> randomListIntegerLowerThan(Integer qty, Integer maxValue){
+		List<Integer> res = new ArrayList<Integer>();
+		for(int i=0; i<qty; i++)
+			res.add(randomIntegerLowerThan(maxValue));
+		return res;
+	}
+	
+	/**
+	 * Generate a list of random Integer
+	 * The numbers of list element's are definited with qty param
+	 * @param qty
+	 * @return
+	 */
+	public static List<Integer> randomListInteger(Integer qty){
+		return randomListIntegerLowerThan(qty, Integer.MAX_VALUE);
+	}
+	
+	/* Long */
 	public static Long randomLong() {
 		Random randomGenerator = new Random();
 		return new Long(randomGenerator.nextLong());
@@ -49,6 +87,7 @@ public class RandomUtils {
 		return Math.abs(randomLong());
 	}
 	
+	/* Float */
 	public static Float randomFloat() {
 		Random randomGenerator = new Random();
 		return new Float(randomGenerator.nextFloat());
@@ -67,6 +106,7 @@ public class RandomUtils {
 		return Math.abs(randomFloat());
 	}
 	
+	/* Double */
 	public static Double randomDouble() {
 		Random randomGenerator = new Random();
 		return new Double(randomGenerator.nextDouble());
@@ -85,15 +125,18 @@ public class RandomUtils {
 		return Math.abs(randomDouble());
 	}
 	
+	/* Date */
 	public static Date randomDate() {
 		return new Date();
 	}
 	
+	/* Boolean */
 	public static Boolean randomBoolean() {
 		Random randomGenerator = new Random();
 		return new Boolean(randomGenerator.nextBoolean());
 	}
 	
+	/* Short */
 	public static Short randomShort() {
 		Random randomGenerator = new Random();		
 		return new Short((short) randomGenerator.nextInt(Short.MAX_VALUE + 1));
@@ -104,6 +147,7 @@ public class RandomUtils {
 		return new Short((short) ii.intValue());
 	}
 	
+	/* ***************************************************************************** */
 	/* primitive */
 	public static int randomint() {
 		Random randomGenerator = new Random();
@@ -171,6 +215,5 @@ public class RandomUtils {
 		Random randomGenerator = new Random();
 		return (short) randomGenerator.nextInt(Short.MAX_VALUE + 1);
 	}
-	
 	
 }
