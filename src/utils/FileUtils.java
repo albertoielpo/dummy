@@ -6,10 +6,22 @@ import java.nio.file.Paths;
 
 public class FileUtils {
 	
+	/**
+	 * Read a file using filePath.
+	 * @param filePath
+	 * @return byte[]
+	 * @throws IOException
+	 */
 	public static byte[] fileToByteArray(String filePath) throws IOException {
 		return Files.readAllBytes(Paths.get(filePath));
 	}
 	
+	/**
+	 * Read a file using filePath
+	 * @param filePath
+	 * @return String
+	 * @throws IOException
+	 */
 	public static String fileToString(String filePath) throws IOException {
 		return new String(fileToByteArray(filePath));
 	}

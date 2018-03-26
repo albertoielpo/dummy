@@ -5,6 +5,10 @@ public class MyObj {
 	private String myVar;
 	private Integer myInt;
 
+	public MyObj() {
+		
+	}
+	
 	public MyObj(String par) {
 		this.myVar = par;
 	}
