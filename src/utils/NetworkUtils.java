@@ -142,10 +142,10 @@ public class NetworkUtils {
 	 * 3C:52:82:8C:50:9B Realtek PCIe GBE Family Controller #2 <br/>
 	 * @return Map<mac, name>
 	 */
-	public static Map<String, String> getAllMacAndInterface(){
+	public static Map<String, String> getAllMacAndInterfaces(){
 		Map<String, String> res = new HashMap<String, String>();
 		List<NetworkInfo> ni = Utils.emptyIfNull(getNetworkInfo()).stream().filter(c -> c.getMac() != null).collect(Collectors.toList());
-		ni.stream().forEach(c -> res.put(c.getMac(), c.getDisplayName()));
+		ni.forEach(n -> res.put(n.getMac(), n.getDisplayName()));
 		return res;
 	}
 	
