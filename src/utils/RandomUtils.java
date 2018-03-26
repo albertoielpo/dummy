@@ -154,6 +154,7 @@ public class RandomUtils {
 		return randomGenerator.nextInt();
 	}
 	
+	@SuppressWarnings("unlikely-arg-type")
 	public static int randomint(final int[] exceptionValues) {
 		int random;
 		do {
@@ -168,6 +169,7 @@ public class RandomUtils {
 		return randomGenerator.nextLong();
 	}
 	
+	@SuppressWarnings("unlikely-arg-type")
 	public static long randomlong(final long[] exceptionValues) {
 		long random;
 		do {
@@ -182,6 +184,7 @@ public class RandomUtils {
 		return randomGenerator.nextFloat();
 	}
 	
+	@SuppressWarnings("unlikely-arg-type")
 	public static float randomfloat(final float[] exceptionValues) {
 		float random;
 		do {
@@ -196,6 +199,7 @@ public class RandomUtils {
 		return randomGenerator.nextDouble();
 	}
 	
+	@SuppressWarnings("unlikely-arg-type")
 	public static double randomdouble(final double[] exceptionValues) {
 		double random;
 		do {

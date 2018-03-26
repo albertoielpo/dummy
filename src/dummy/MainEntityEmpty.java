@@ -9,6 +9,7 @@ import java.util.Map;
 
 public class MainEntityEmpty {
 		
+	@SuppressWarnings("rawtypes")
 	public static boolean ObjectUtilsIsEmpty(Object obj) {
 		if (obj == null) {
 			return true;
@@ -31,6 +32,7 @@ public class MainEntityEmpty {
 		return false;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	private static boolean isEmptyEntityNoFallback(Object entity) {
 		boolean entityNull = true;
 		if(!ObjectUtilsIsEmpty(entity)) {
@@ -52,7 +54,7 @@ public class MainEntityEmpty {
 			Method[] methods = c.getDeclaredMethods();
 			for (int ii = 0; ii < methods.length; ii++) {
 				try {
-					if(!ObjectUtilsIsEmpty(methods[ii].invoke(entity, null))){
+					if(!ObjectUtilsIsEmpty(methods[ii].invoke(entity, new Object()))){
 						entityNull = false;
 						break;
 					}					
@@ -67,6 +69,7 @@ public class MainEntityEmpty {
 		
 	}
 	
+	@SuppressWarnings("rawtypes")
 	private static boolean isEmptyEntity(Object entity) {
 		boolean entityNull = true;
 		if(!ObjectUtilsIsEmpty(entity)) {
@@ -114,19 +117,19 @@ public class MainEntityEmpty {
 		 * isEmptyEntity = true
 		 * sbagliato, viene ispezionata solo la lista pubblica che in questo caso è vuota 
 		 */
-		System.out.println(isEmptyEntity(entity2));	
+		System.out.println(isEmptyEntity(entity2));		//true
 		
 		/*
 		 * isEmptyEntity = false
 		 * sbagliato, la lista privata è popolata e non viene ispezionata con il suo metodo pubblico
 		 */
-		System.out.println(isEmptyEntity(obj));
+		System.out.println(isEmptyEntity(obj));	//false
 		System.out.println("================");
 		
-		System.out.println(isEmptyEntityNoFallback(null));		//true
-		System.out.println(isEmptyEntityNoFallback(entity));	//false
-		System.out.println(isEmptyEntityNoFallback(entity2));	//false 
-		System.out.println(isEmptyEntityNoFallback(obj));		//true
+		System.out.println(isEmptyEntityNoFallback(null));		//true => giusto
+		System.out.println(isEmptyEntityNoFallback(entity));	//false => giusto
+		System.out.println(isEmptyEntityNoFallback(entity2));	//true => sbagliato
+		System.out.println(isEmptyEntityNoFallback(obj));		//true => giusto
 	}
 
 }
