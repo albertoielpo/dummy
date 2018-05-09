@@ -6,7 +6,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Utils {
     
@@ -56,15 +57,23 @@ public class Utils {
 	 * 
 	 * @param input
 	 * @param clazz
+	 * @param arrayIntoString
 	 * @return
-	 * @throws Exception
 	 */
-	public static Object deserialize(String input, Class<?> clazz) throws Exception {
+	public static Object deserialize(String input, Class<?> clazz, boolean arrayIntoString) {
 		if(input != null && clazz != null) {
-			ObjectMapper mapper = new ObjectMapper();
-			return mapper.readValue(input, clazz);
+			try{
+				ObjectMapper mapper = new ObjectMapper();
+				if(arrayIntoString)
+					mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			
+				return mapper.readValue(input, clazz);
+			
+			} catch(Exception e){
+				e.printStackTrace();
+				return null;
+			}
 		}
-
 		return null;
 	}
 	
