@@ -26,6 +26,10 @@ public class FileUtils {
 		return new String(fileToByteArray(filePath));
 	}
 	
+	public static void writeFile(String path, String content) throws IOException {
+		Files.write(Paths.get(path), content.getBytes());
+	}
+	
 
 	
 }
