@@ -1,6 +1,7 @@
 package dummy;
 
 import java.util.AbstractMap.SimpleEntry;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,17 +20,24 @@ import utils.HttpRequestUtils;
 
 /**
  * @author Alberto Ielpo
- * 
  */
 public class LabelDownloader {
 
 	public static void main(String[] args) {
+		/* connection properties */
 		final String labelUri = "http://itatlass-app02.faacspa.local:8090/pages/viewpage.action?spaceKey=HUBG&title=Table+JMS+labels+2";
 		final String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36";
 		final String accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
 		final SimpleEntry<String, String> cookie = 
 			new SimpleEntry<String, String>("Cookie","mywork.tab.tasks=false; JSESSIONID=6DB8F069A7DA00B4561662F3DB8BE771");
 
+		/* output file file properties */
+		final String outFileRoot = "c:\\logs";
+		final String outFilePrefixPg = "pg_";
+		final String outFilePrefixMsSql = "mssql_";
+		final String outFileExt = ".sql";
+		
+		/* print constants */
 		System.out.println("START " + new Date());
 		System.out.println("uri: " + labelUri);
 		System.out.println("userAgent: " + userAgent);
@@ -107,18 +115,19 @@ public class LabelDownloader {
 			try {
 				/* writing files for postgres */
 				for (String k : pgKeys) {
-					String path = "c:\\logs\\pg_" + k + ".sql";
-					FileUtils.writeFile(path, versionScriptPg.get(k).toString());
-					System.out.println("writed: " + path);
+					String fPath = outFileRoot + File.separator + outFilePrefixPg + k + outFileExt;
+					FileUtils.writeFile(fPath, versionScriptPg.get(k).toString());
+					System.out.println("writed: " + fPath);
 				}
 				/* writing files for mssql */
 				for (String k : msSqlKeys) {
-					String path = "c:\\logs\\mssql_" + k + ".sql";
-					FileUtils.writeFile(path, versionScriptPg.get(k).toString());
-					System.out.println("writed: " + path);
+					String fPath = outFileRoot + File.separator + outFilePrefixMsSql + k +  outFileExt;
+					FileUtils.writeFile(fPath, versionScriptPg.get(k).toString());
+					System.out.println("writed: " + fPath);
 				}
 
 			} catch (Exception e) {
+				/* something bad happened */
 				e.printStackTrace();
 			}
 		}
