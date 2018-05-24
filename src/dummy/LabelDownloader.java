@@ -59,8 +59,8 @@ public class LabelDownloader {
 		headers.put("Referer", "http://itatlass-app02.faacspa.local:8090/login.action?os_destination=%2Fpages%2Fviewpage.action%3FspaceKey%3DHUBG%26title%3DTable%2BJMS%2Blabels%2B2&permissionViolation=true");
 		
 		Map<String, String> data = new HashMap<String, String>();
-		data.put("os_username", "alberto.ielpo");
-		data.put("os_password", "Titolavoro0!");
+		data.put("os_username", "xxx");
+		data.put("os_password", "xxx");
 		data.put("login", "Log+in");
 		data.put("os_destination", "/pages/viewpage.action?spaceKey=HUBG");
 		data.put("title", "Table+JMS+labels+2");		
