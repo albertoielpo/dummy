@@ -30,7 +30,7 @@ public class LabelDownloader {
 		final String labelUri = "http://itatlass-app02.faacspa.local:8090/pages/viewpage.action?spaceKey=HUBG&title=Table+JMS+labels+2";
 		final String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36";
 		final String accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
-		final SimpleEntry<String, String> cookie = new SimpleEntry<String, String>("Cookie","mywork.tab.tasks=false; JSESSIONID=6DB8F069A7DA00B4561662F3DB8BE771");
+		final SimpleEntry<String, String> cookie = new SimpleEntry<String, String>("Cookie","mywork.tab.tasks=false; JSESSIONID=67F43BE851773E308CBC68860DE68B5C");
 		
 		/* print constants */
 		System.out.println("uri: " + labelUri);
@@ -45,22 +45,28 @@ public class LabelDownloader {
 	@SuppressWarnings("unused")
 	private static void usingPost(StringBuilder response) {
 		final String labelUri = "http://itatlass-app02.faacspa.local:8090/pages/viewpage.action?spaceKey=HUBG&title=Table+JMS+labels+2";
-		final String loginPost = "os_username=xxx&os_password=xxx&login=Log+in&os_destination=/pages/viewpage.action?spaceKey=HUBG&title=Table+JMS+labels+2";
 		
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put("Host", "itatlass-app02.faacspa.local:8090");
+		//headers.put("Host", "itatlass-app02.faacspa.local:8090");
 		headers.put("Connection", "keep-alive");
 		headers.put("Content-Length", "160");
-		headers.put("Cache-Control", "max-age=0");
-		headers.put("Origin", "http://itatlass-app02.faacspa.local:8090");
-		headers.put("Upgrade-Insecure-Requests", "1");
+		//headers.put("Cache-Control", "max-age=0");
+		//headers.put("Origin", "http://itatlass-app02.faacspa.local:8090");
+		//headers.put("Upgrade-Insecure-Requests", "1");
 		headers.put("Content-Type", "application/x-www-form-urlencoded");
 		headers.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36");
 		headers.put("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
 		headers.put("Referer", "http://itatlass-app02.faacspa.local:8090/login.action?os_destination=%2Fpages%2Fviewpage.action%3FspaceKey%3DHUBG%26title%3DTable%2BJMS%2Blabels%2B2&permissionViolation=true");
 		
+		Map<String, String> data = new HashMap<String, String>();
+		data.put("os_username", "alberto.ielpo");
+		data.put("os_password", "Titolavoro0!");
+		data.put("login", "Log+in");
+		data.put("os_destination", "/pages/viewpage.action?spaceKey=HUBG");
+		data.put("title", "Table+JMS+labels+2");		
+		
 		System.out.println("headers " + headers);
-		HttpRequestUtils.post(labelUri).headers(headers).send(loginPost).receive(response);
+		HttpRequestUtils.post(labelUri).headers(headers).form(data).receive(response);
 	}
 	
 	
@@ -83,6 +89,7 @@ public class LabelDownloader {
 		List<String> versions = new ArrayList<String>();
 
 		LabelDownloader.usingGet(response);
+		//LabelDownloader.usingPost(response);
 		
 		Document doc = Jsoup.parse(response.toString());
 		Elements mainContentTable = doc.select("#main-content table");
@@ -92,8 +99,8 @@ public class LabelDownloader {
 			for (Element row : rows) {
 				Elements cols = row.select("td");
 				if (cols != null && cols.size() > 8) {
-					if ("validata".equalsIgnoreCase(cols.get(8).text())
-							|| "validato".equalsIgnoreCase(cols.get(8).text()))
+					String status = cols.get(8).text() != null ? cols.get(8).text().trim() : "";
+					if ("validata".equalsIgnoreCase(status) || "validato".equalsIgnoreCase(status))
 						labelVersion.add(cols.get(0).text());
 				}
 			}
@@ -105,8 +112,8 @@ public class LabelDownloader {
 			for (Element row : rows) {
 				Elements cols = row.select("td");
 				if (cols != null && cols.size() > 8) {
-					if ("validata".equalsIgnoreCase(cols.get(8).text())
-							|| "validato".equalsIgnoreCase(cols.get(8).text())) {
+					String status = cols.get(8).text() != null ? cols.get(8).text().trim() : "";
+					if ("validata".equalsIgnoreCase(status) || "validato".equalsIgnoreCase(status)) {
 						// cols.get(0).text() => VERSION
 						// cols.get(1).text() => CODE
 						// cols.get(2).text() => VALUE(en)
