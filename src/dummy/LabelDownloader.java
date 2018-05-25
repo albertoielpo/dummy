@@ -23,6 +23,8 @@ import utils.HttpRequestUtils;
  */
 public class LabelDownloader {
 
+	private static String JSESSIONID = "39DA1A73622339317404D9454B7E24B2";
+	
 	/** 
 	 * requires JSESSIONID token
 	 */
@@ -30,7 +32,7 @@ public class LabelDownloader {
 		final String labelUri = "http://itatlass-app02.faacspa.local:8090/pages/viewpage.action?spaceKey=HUBG&title=Table+JMS+labels+2";
 		final String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36";
 		final String accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
-		final SimpleEntry<String, String> cookie = new SimpleEntry<String, String>("Cookie","mywork.tab.tasks=false; JSESSIONID=820BA80D88EFACD80D5D49246437E7C8");
+		final SimpleEntry<String, String> cookie = new SimpleEntry<String, String>("Cookie","mywork.tab.tasks=false; JSESSIONID="+JSESSIONID);
 		
 		/* print constants */
 		System.out.println("uri: " + labelUri);
