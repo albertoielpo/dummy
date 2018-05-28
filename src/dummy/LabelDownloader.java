@@ -3,6 +3,7 @@ package dummy;
 import java.util.AbstractMap.SimpleEntry;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,7 +24,14 @@ import utils.HttpRequestUtils;
  */
 public class LabelDownloader {
 
-	private static String JSESSIONID = "39DA1A73622339317404D9454B7E24B2";
+	private static String JSESSIONID = "310802D32F6F1E9B2B190002E3267BA2";
+	private static List<String> labelStatus = new ArrayList<String>(Arrays.asList("nuova", "validato"));
+	
+	/* filter by developer name
+	 * if null no filter will apply 
+	 */
+	private static List<String> devNames = null;
+	//private static List<String> devNames = new ArrayList<String>(Arrays.asList("alberto ielpo"));
 	
 	/** 
 	 * requires JSESSIONID token
@@ -101,8 +109,10 @@ public class LabelDownloader {
 			for (Element row : rows) {
 				Elements cols = row.select("td");
 				if (cols != null && cols.size() > 8) {
-					String status = cols.get(8).text() != null ? cols.get(8).text().trim() : "";
-					if ("validata".equalsIgnoreCase(status) || "validato".equalsIgnoreCase(status))
+					String status = cols.get(8).text() != null ? cols.get(8).text().trim().toLowerCase() : "";
+					String devName = cols.get(6).text() != null ? cols.get(6).text().trim().toLowerCase() : "";
+					
+					if(labelStatus.contains(status) && (devNames == null || devNames.contains(devName)))
 						labelVersion.add(cols.get(0).text());
 				}
 			}
@@ -114,8 +124,10 @@ public class LabelDownloader {
 			for (Element row : rows) {
 				Elements cols = row.select("td");
 				if (cols != null && cols.size() > 8) {
-					String status = cols.get(8).text() != null ? cols.get(8).text().trim() : "";
-					if ("validata".equalsIgnoreCase(status) || "validato".equalsIgnoreCase(status)) {
+					String status = cols.get(8).text() != null ? cols.get(8).text().trim().toLowerCase() : "";
+					String devName = cols.get(6).text() != null ? cols.get(6).text().trim().toLowerCase() : "";
+					
+					if(labelStatus.contains(status) && (devNames == null || devNames.contains(devName))) {
 						// cols.get(0).text() => VERSION
 						// cols.get(1).text() => CODE
 						// cols.get(2).text() => VALUE(en)
