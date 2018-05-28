@@ -1,6 +1,5 @@
 package dummy;
 
-import java.util.AbstractMap.SimpleEntry;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,61 +23,38 @@ import utils.HttpRequestUtils;
  */
 public class LabelDownloader {
 
-	private static String JSESSIONID = "310802D32F6F1E9B2B190002E3267BA2";
-	private static List<String> labelStatus = new ArrayList<String>(Arrays.asList("nuova", "validato"));
-	
-	/* filter by developer name
-	 * if null no filter will apply 
+	/**
+	 * filter by label status
 	 */
-	private static List<String> devNames = null;
-	//private static List<String> devNames = new ArrayList<String>(Arrays.asList("alberto ielpo"));
+	private static List<String> labelStatusFilter = new ArrayList<String>(Arrays.asList("nuova", "validato"));
 	
-	/** 
-	 * requires JSESSIONID token
+	/**
+	 * basic authentication
 	 */
-	private static void usingGet(StringBuilder response) {
+	private static String usr = "xxx";
+	private static String pwd = "yyy";
+	
+	
+	/* 
+	 * filter by developer name -> if null no filter will apply 
+	 */
+	private static List<String> devNamesFilter = null;
+	
+	/**
+	 * 
+	 */
+	private static void getData(StringBuilder response) {
 		final String labelUri = "http://itatlass-app02.faacspa.local:8090/pages/viewpage.action?spaceKey=HUBG&title=Table+JMS+labels+2";
 		final String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36";
-		final String accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
-		final SimpleEntry<String, String> cookie = new SimpleEntry<String, String>("Cookie","mywork.tab.tasks=false; JSESSIONID="+JSESSIONID);
+		final String accept = "text/html,application/xhtml+xml,application/json,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
 		
 		/* print constants */
 		System.out.println("uri: " + labelUri);
 		System.out.println("userAgent: " + userAgent);
-		System.out.println("accept: " + accept);
-		System.out.println("cookie: " + cookie);
+		System.out.println("accept: " + accept);		
 		
-		HttpRequestUtils.get(labelUri).userAgent(userAgent).accept(accept).header(cookie).receive(response);
+		HttpRequestUtils.get(labelUri).userAgent(userAgent).accept(accept).basic(usr, pwd).receive(response);
 	}
-	
-	/* not working */
-	@SuppressWarnings("unused")
-	private static void usingPost(StringBuilder response) {
-		final String labelUri = "http://itatlass-app02.faacspa.local:8090/pages/viewpage.action?spaceKey=HUBG&title=Table+JMS+labels+2";
-		
-		Map<String, String> headers = new HashMap<String, String>();
-		//headers.put("Host", "itatlass-app02.faacspa.local:8090");
-		headers.put("Connection", "keep-alive");
-		headers.put("Content-Length", "160");
-		//headers.put("Cache-Control", "max-age=0");
-		//headers.put("Origin", "http://itatlass-app02.faacspa.local:8090");
-		//headers.put("Upgrade-Insecure-Requests", "1");
-		headers.put("Content-Type", "application/x-www-form-urlencoded");
-		headers.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36");
-		headers.put("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
-		headers.put("Referer", "http://itatlass-app02.faacspa.local:8090/login.action?os_destination=%2Fpages%2Fviewpage.action%3FspaceKey%3DHUBG%26title%3DTable%2BJMS%2Blabels%2B2&permissionViolation=true");
-		
-		Map<String, String> data = new HashMap<String, String>();
-		data.put("os_username", "xxx");
-		data.put("os_password", "xxx");
-		data.put("login", "Log+in");
-		data.put("os_destination", "/pages/viewpage.action?spaceKey=HUBG");
-		data.put("title", "Table+JMS+labels+2");		
-		
-		System.out.println("headers " + headers);
-		HttpRequestUtils.post(labelUri).headers(headers).form(data).receive(response);
-	}
-	
 	
 	public static void main(String[] args) {
 		/* output file file properties */
@@ -98,8 +74,7 @@ public class LabelDownloader {
 		Set<String> labelVersion = new HashSet<String>();
 		List<String> versions = new ArrayList<String>();
 
-		LabelDownloader.usingGet(response);
-		//LabelDownloader.usingPost(response);
+		LabelDownloader.getData(response);
 		
 		Document doc = Jsoup.parse(response.toString());
 		Elements mainContentTable = doc.select("#main-content table");
@@ -112,7 +87,7 @@ public class LabelDownloader {
 					String status = cols.get(8).text() != null ? cols.get(8).text().trim().toLowerCase() : "";
 					String devName = cols.get(6).text() != null ? cols.get(6).text().trim().toLowerCase() : "";
 					
-					if(labelStatus.contains(status) && (devNames == null || devNames.contains(devName)))
+					if(labelStatusFilter.contains(status) && (devNamesFilter == null || devNamesFilter.contains(devName)))
 						labelVersion.add(cols.get(0).text());
 				}
 			}
@@ -127,7 +102,7 @@ public class LabelDownloader {
 					String status = cols.get(8).text() != null ? cols.get(8).text().trim().toLowerCase() : "";
 					String devName = cols.get(6).text() != null ? cols.get(6).text().trim().toLowerCase() : "";
 					
-					if(labelStatus.contains(status) && (devNames == null || devNames.contains(devName))) {
+					if(labelStatusFilter.contains(status) && (devNamesFilter == null || devNamesFilter.contains(devName))) {
 						// cols.get(0).text() => VERSION
 						// cols.get(1).text() => CODE
 						// cols.get(2).text() => VALUE(en)
