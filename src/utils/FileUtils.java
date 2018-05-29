@@ -6,6 +6,10 @@ import java.nio.file.Paths;
 
 public class FileUtils {
 	
+	public static char CR = 0x0D;	//13
+	public static char LF = 0x0A;	//10
+	public static String CRLF = "" + CR + LF;
+	
 	/**
 	 * Read a file using filePath.
 	 * @param filePath

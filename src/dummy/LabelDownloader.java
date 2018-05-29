@@ -26,13 +26,13 @@ public class LabelDownloader {
 	/**
 	 * filter by label status
 	 */
-	private static List<String> labelStatusFilter = new ArrayList<String>(Arrays.asList("nuova", "validato"));
+	private static List<String> labelStatusFilter = new ArrayList<String>(Arrays.asList("validata", "validato"));
 	
 	/**
 	 * basic authentication
 	 */
-	private static String usr = "xxx";
-	private static String pwd = "yyy";
+	private static String usr = "";
+	private static String pwd = "";
 	
 	
 	/* 
@@ -40,8 +40,18 @@ public class LabelDownloader {
 	 */
 	private static List<String> devNamesFilter = null;
 	
+	
+	/* 
+	 * output file file properties 
+	 */
+	private static String outFileRoot = "c:\\logs";
+	private static String outFilePrefixPg = "pg_";
+	private static String outFilePrefixMsSql = "mssql_";
+	private static String outFileExt = ".sql";
+	
+	
 	/**
-	 * 
+	 * @param response
 	 */
 	private static void getData(StringBuilder response) {
 		final String labelUri = "http://itatlass-app02.faacspa.local:8090/pages/viewpage.action?spaceKey=HUBG&title=Table+JMS+labels+2";
@@ -56,14 +66,22 @@ public class LabelDownloader {
 		HttpRequestUtils.get(labelUri).userAgent(userAgent).accept(accept).basic(usr, pwd).receive(response);
 	}
 	
+	/**
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
-		/* output file file properties */
-		final String outFileRoot = "c:\\logs";
-		final String outFilePrefixPg = "pg_";
-		final String outFilePrefixMsSql = "mssql_";
-		final String outFileExt = ".sql";
-		
 		System.out.println("START " + new Date());
+		
+		/**
+		 * args[0] => username
+		 * args[1] => password
+		 */
+		if(args != null && args[0] != null && args[1] != null) {
+			usr = args[0];
+			pwd = args[1];
+		}
+			
 
 		StringBuilder response = new StringBuilder("");
 		boolean error = false;
@@ -118,10 +136,11 @@ public class LabelDownloader {
 								if (msBuff == null)
 									msBuff = new StringBuilder("");
 
-								pgBuff.append("select janus_ui_web.lpInsertOrUpdateLocalizedResource('en-US','"
-										+ cols.get(1).text() + "','" + cols.get(2).text() + "');\r\n");
+								pgBuff.append(
+									"select janus_ui_web.lpInsertOrUpdateLocalizedResource('en-US','"
+										+ cols.get(1).text() + "','" + cols.get(2).text() + "');" + FileUtils.CRLF);
 								msBuff.append("execute janus_ui_web.lpInsertOrUpdateLocalizedResource 'en-US','"
-										+ cols.get(1).text() + "','" + cols.get(2).text() + "' ;\r\n");
+										+ cols.get(1).text() + "','" + cols.get(2).text() + "' ;" + FileUtils.CRLF);
 
 								versionScriptPg.put(curVer, pgBuff);
 								versionScriptMsSql.put(curVer, msBuff);
