@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import bean.NetworkInfo;
+import utils.bean.NetworkInfo;
 
 public class NetworkUtils {
     
