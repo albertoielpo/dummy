@@ -6,9 +6,10 @@ import java.nio.file.Paths;
 
 public class FileUtils {
 	
-	public static char CR = 0x0D;	//13
-	public static char LF = 0x0A;	//10
-	public static String CRLF = "" + CR + LF;
+	/* New line */
+	public static char CR = 0x0D;				//Mac
+	public static char LF = 0x0A;				//Unix
+	public static String CRLF = "" + CR + LF;	//Windows
 	
 	/**
 	 * Read a file using filePath.
@@ -30,10 +31,15 @@ public class FileUtils {
 		return new String(fileToByteArray(filePath));
 	}
 	
+	/**
+	 * Write any String content to File
+	 * @param path
+	 * @param content
+	 * @throws IOException
+	 */
 	public static void writeFile(String path, String content) throws IOException {
 		Files.write(Paths.get(path), content.getBytes());
 	}
-	
 
 	
 }
