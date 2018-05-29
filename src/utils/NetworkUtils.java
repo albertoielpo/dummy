@@ -16,6 +16,7 @@ public class NetworkUtils {
     
 	/**
 	 * Get InetAddress
+	 * example: LAPTOP-TPNGCO9O/192.168.55.152
 	 * @return
 	 * @throws Exception
 	 */

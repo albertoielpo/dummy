@@ -3,6 +3,11 @@ package utils.bean;
 import java.util.ArrayList;
 import java.util.List;
 
+import utils.Utils;
+
+/**
+ * @author Alberto Ielpo
+ */
 public class NetworkInfo {
 
 	private List<String> addresses;
@@ -51,6 +56,18 @@ public class NetworkInfo {
 
 	public void setMac(String mac) {
 		this.mac = mac;
+	}
+	
+	@Override
+	public String toString() {
+		String res = "";
+		try {
+			res = Utils.serializeObject(this);
+		} catch (Exception e) {
+			//continue
+		}
+		
+		return res;
 	}
 	
 	
