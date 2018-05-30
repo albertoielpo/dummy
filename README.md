@@ -6,4 +6,5 @@ java -jar jenkinsDownloader.jar [usr] [pwd] [outFileRoot]
 ```
 ## Label Downloader
 ```
-java -jar labelDownloader.jar [usr] [pwd] [outFileRoot] [labelStatusFilter] [devNamesFilter]```
+java -jar labelDownloader.jar [usr] [pwd] [outFileRoot] [labelStatusFilter] [devNamesFilter]
+```
