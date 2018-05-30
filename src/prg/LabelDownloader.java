@@ -77,11 +77,28 @@ public class LabelDownloader {
 		 * args[0] => username
 		 * args[1] => password
 		 */
-		if(args != null && args[0] != null && args[1] != null) {
+		if(args != null && args.length >= 2) {
 			usr = args[0];
 			pwd = args[1];
 		}
+		
+		/* args[2] => outFileRoot */
+		if(args.length >= 3 && !"".equals(args[2]))
+			outFileRoot = args[2];
+		
+		/* args[3] => labelStatusFilter */
+		if(args.length >= 4 && !"".equals(args[3]))
+			labelStatusFilter = new ArrayList<String>(Arrays.asList(args[3].split(";")));
+		
+		/* args[4] => devNamesFilter */
+		if(args.length >= 5 && !"".equals(args[4])) {
+			String[] dnf = args[4].split(";");		
+			//trimmed and lowercased
+			for(int ii=0; ii<dnf.length; ii++)
+				dnf[ii] = dnf[ii].trim().toLowerCase();
 			
+			devNamesFilter = new ArrayList<String>(Arrays.asList(dnf));
+		}
 
 		StringBuilder response = new StringBuilder("");
 		boolean error = false;

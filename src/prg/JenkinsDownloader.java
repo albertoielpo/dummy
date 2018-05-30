@@ -23,6 +23,7 @@ public class JenkinsDownloader {
 	private static String pwd = "janus";
 	private static String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36";
 	private static String accept = "text/html,application/xhtml+xml,application/json,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
+	private static String outFileRoot = "C:\\logs";
 	
 	private static boolean isGreaterThanZero(String str) {
 		try {
@@ -50,14 +51,27 @@ public class JenkinsDownloader {
 	public static void main(String[] args) {
 		System.out.println("START " + new Date());
 		System.out.println("userAgent: " + userAgent);
-		System.out.println("accept: " + accept);	
+		System.out.println("accept: " + accept);
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyymmdd_HHmm");
+		/**
+		 * args[0] => username
+		 * args[1] => password
+		 */
+		if(args != null && args.length >= 2) {
+			usr = args[0];
+			pwd = args[1];
+		}
+		
+		/* args[2] => outFileRoot */
+		if(args.length >= 3 && !"".equals(args[2]))
+			outFileRoot = args[2];	
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmm");
 		
 		StringBuilder summaryResponse = new StringBuilder("");
 		StringBuilder testFailed = new StringBuilder("");
 		
-		StringBuilder output = new StringBuilder("Jenkins tests failed" + FileUtils.CRLF);
+		StringBuilder output = new StringBuilder("Jenkins tests" + FileUtils.CRLF);
 		output.append("===========================" + FileUtils.CRLF);
 		
 		final String summaryUri = "http://172.29.1.36:8080/job/Janus%20Automatic%20Test/lastBuild/testReport/";
@@ -76,9 +90,6 @@ public class JenkinsDownloader {
 					}
 				}
 			}
-			String outputFilePath = "C:\\logs\\jenkins_summary_" + sdf.format(new Date()) + ".log";
-			FileUtils.writeFile(outputFilePath, output.toString() + testFailed.toString());
-			System.out.println("created: " + outputFilePath);
 			
 			if(!"".equalsIgnoreCase(testFailed.toString())){
 				/** download full stack if any error occurred */
@@ -86,14 +97,20 @@ public class JenkinsDownloader {
 				StringBuilder fullStack = new StringBuilder("");
 				JenkinsDownloader.getUriContent(fullStackUri, fullStack);
 				try {
-					outputFilePath = "C:\\logs\\jenkins_stack_" + sdf.format(new Date()) + ".log";
+					String outputFilePath = outFileRoot + "\\jenkins_stack_" + sdf.format(new Date()) + ".log";
 					FileUtils.writeFile(outputFilePath, fullStack.toString());
 					System.out.println("created: " + outputFilePath);
 				} catch(Exception e) {
 					//something bad happened
 					e.printStackTrace();
 				}
+			} else {
+				output.append("0 test failed");
 			}
+			
+			String outputFilePath = outFileRoot + "\\jenkins_summary_" + sdf.format(new Date()) + ".log";
+			FileUtils.writeFile(outputFilePath, output.toString() + testFailed.toString());
+			System.out.println("created: " + outputFilePath);
 			
 		} catch(Exception e) {
 			//something bad happened
