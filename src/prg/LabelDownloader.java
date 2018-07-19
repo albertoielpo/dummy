@@ -153,11 +153,20 @@ public class LabelDownloader {
 								if (msBuff == null)
 									msBuff = new StringBuilder("");
 
-								pgBuff.append(
-									"select janus_ui_web.lpInsertOrUpdateLocalizedResource('en-US','"
-										+ cols.get(1).text() + "','" + cols.get(2).text() + "');" + FileUtils.CRLF);
-								msBuff.append("execute janus_ui_web.lpInsertOrUpdateLocalizedResource 'en-US','"
-										+ cols.get(1).text() + "','" + cols.get(2).text() + "' ;" + FileUtils.CRLF);
+								String labelType = cols.get(4).text() != null ? cols.get(4).text().trim().toLowerCase() : "";
+								if(labelType.contains("admin")) {
+									pgBuff.append(
+											"select janus_ui_web.lpinsertorupdatelocalizedadminresource('en-US','"
+												+ cols.get(1).text() + "','" + cols.get(2).text() + "');" + FileUtils.CRLF);
+									msBuff.append("execute janus_ui_web.lpinsertorupdatelocalizedadminresource 'en-US','"
+												+ cols.get(1).text() + "','" + cols.get(2).text() + "' ;" + FileUtils.CRLF);
+								} else {
+									pgBuff.append(
+											"select janus_ui_web.lpInsertOrUpdateLocalizedResource('en-US','"
+												+ cols.get(1).text() + "','" + cols.get(2).text() + "');" + FileUtils.CRLF);
+									msBuff.append("execute janus_ui_web.lpInsertOrUpdateLocalizedResource 'en-US','"
+												+ cols.get(1).text() + "','" + cols.get(2).text() + "' ;" + FileUtils.CRLF);
+								}
 
 								versionScriptPg.put(curVer, pgBuff);
 								versionScriptMsSql.put(curVer, msBuff);

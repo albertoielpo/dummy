@@ -74,7 +74,7 @@ public class JenkinsDownloader {
 		StringBuilder output = new StringBuilder("Jenkins tests" + FileUtils.CRLF);
 		output.append("===========================" + FileUtils.CRLF);
 		
-		final String summaryUri = "http://172.29.1.36:8080/job/Janus%20Automatic%20Test/lastBuild/testReport/";
+		final String summaryUri = "http://172.29.1.190:8080/job/Janus%20Automatic%20Test/lastBuild/testReport/";
 		JenkinsDownloader.getUriContent(summaryUri, summaryResponse);
 		try {
 			Document doc = Jsoup.parse(summaryResponse.toString());
@@ -93,7 +93,7 @@ public class JenkinsDownloader {
 			
 			if(!"".equalsIgnoreCase(testFailed.toString())){
 				/** download full stack if any error occurred */
-				final String fullStackUri = "http://172.29.1.36:8080/job/Janus%20Automatic%20Test/lastBuild/consoleText";
+				final String fullStackUri = "http://172.29.1.190:8080/job/Janus%20Automatic%20Test/lastBuild/consoleText";
 				StringBuilder fullStack = new StringBuilder("");
 				JenkinsDownloader.getUriContent(fullStackUri, fullStack);
 				try {
