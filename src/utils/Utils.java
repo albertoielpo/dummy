@@ -8,7 +8,9 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+/**
+ * @author Alberto Ielpo
+ */
 public class Utils {
     
 	/**

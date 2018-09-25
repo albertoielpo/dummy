@@ -26,7 +26,7 @@ public class LabelDownloader {
 	/**
 	 * filter by label status
 	 */
-	private static List<String> labelStatusFilter = new ArrayList<String>(Arrays.asList("validata", "validato"));
+	private static List<String> labelStatusFilter = new ArrayList<String>(Arrays.asList("nuovo", "nuova"));
 	
 	/**
 	 * basic authentication
@@ -39,6 +39,7 @@ public class LabelDownloader {
 	 * filter by developer name -> if null no filter will apply 
 	 */
 	private static List<String> devNamesFilter = null;
+//	private static List<String> devNamesFilter = new ArrayList<String>(Arrays.asList("marco gasbarro"));	//lowercase
 	
 	
 	/* 
@@ -54,7 +55,7 @@ public class LabelDownloader {
 	 * @param response
 	 */
 	private static void getData(StringBuilder response) {
-		final String labelUri = "http://itatlass-app02.faacspa.local:8090/pages/viewpage.action?spaceKey=HUBG&title=Table+JMS+labels+2";
+		final String labelUri = "http://itatlass-app02.faacspa.local:8090/pages/viewpage.action?spaceKey=HUBG&title=Table+JMS+labels+3";
 		final String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36";
 		final String accept = "text/html,application/xhtml+xml,application/json,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
 		
@@ -156,16 +157,31 @@ public class LabelDownloader {
 								String labelType = cols.get(4).text() != null ? cols.get(4).text().trim().toLowerCase() : "";
 								if(labelType.contains("admin")) {
 									pgBuff.append(
-											"select janus_ui_web.lpinsertorupdatelocalizedadminresource('en-US','"
-												+ cols.get(1).text() + "','" + cols.get(2).text() + "');" + FileUtils.CRLF);
-									msBuff.append("execute janus_ui_web.lpinsertorupdatelocalizedadminresource 'en-US','"
-												+ cols.get(1).text() + "','" + cols.get(2).text() + "' ;" + FileUtils.CRLF);
+										"select janus_ui_web.lpinsertorupdatelocalizedadminresource("
+										+ "'en-US','"
+										+ cols.get(1).text() + "','" 
+										+ cols.get(2).text() + "');" 
+										+ FileUtils.CRLF);
+									
+									msBuff.append(
+										"execute janus_ui_web.lpinsertorupdatelocalizedadminresource "
+										+ "'en-US','"
+										+ cols.get(1).text() + "','" 
+										+ cols.get(2).text() + "' ;" 
+										+ FileUtils.CRLF);
 								} else {
 									pgBuff.append(
-											"select janus_ui_web.lpInsertOrUpdateLocalizedResource('en-US','"
-												+ cols.get(1).text() + "','" + cols.get(2).text() + "');" + FileUtils.CRLF);
-									msBuff.append("execute janus_ui_web.lpInsertOrUpdateLocalizedResource 'en-US','"
-												+ cols.get(1).text() + "','" + cols.get(2).text() + "' ;" + FileUtils.CRLF);
+										"select janus_ui_web.lpInsertOrUpdateLocalizedResource("
+										+ "'en-US','"
+										+ cols.get(1).text() + "','"
+										+ cols.get(2).text() + "');"
+										+ FileUtils.CRLF);
+									msBuff.append(
+										"execute janus_ui_web.lpInsertOrUpdateLocalizedResource "
+										+ "'en-US','"
+										+ cols.get(1).text() + "','" 
+										+ cols.get(2).text() + "' ;" 
+										+ FileUtils.CRLF);
 								}
 
 								versionScriptPg.put(curVer, pgBuff);

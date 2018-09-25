@@ -11,7 +11,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import utils.bean.NetworkInfo;
-
+/**
+ * @author Alberto Ielpo
+ */
 public class NetworkUtils {
     
 	/**

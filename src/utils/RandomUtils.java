@@ -6,7 +6,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-
+/**
+ * @author Alberto Ielpo
+ */
 public class RandomUtils {
 
 	/* Object */
