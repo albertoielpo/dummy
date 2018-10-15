@@ -33,29 +33,43 @@ public class LabelDownloader {
 	 */
 	private static String usr = "";
 	private static String pwd = "";
-	
-	
+		
 	/* 
 	 * filter by developer name -> if null no filter will apply 
 	 */
-	private static List<String> devNamesFilter = null;
-//	private static List<String> devNamesFilter = new ArrayList<String>(Arrays.asList("marco gasbarro"));	//lowercase
+//	private static List<String> devNamesFilter = null;
+	private static List<String> devNamesFilter = new ArrayList<String>(Arrays.asList("alberto ielpo"));	//lowercase
+		
+	private enum ScriptType { 
+		JMS_LABEL, 		//localized resource and admin localized resource
+		MOBILE_LABEL	//android and ios
+	}
 	
+	/* Set here the script type for the execution */
+	private static ScriptType scriptType = ScriptType.JMS_LABEL;
 	
 	/* 
 	 * output file file properties 
 	 */
 	private static String outFileRoot = "c:\\logs";
-	private static String outFilePrefixPg = "pg_";
-	private static String outFilePrefixMsSql = "mssql_";
+	private static String outFilePrefixPg = "pg_" + scriptType.toString() + "_";
+	private static String outFilePrefixMsSql = "mssql_" + scriptType.toString() + "_";
 	private static String outFileExt = ".sql";
-	
-	
+		
 	/**
 	 * @param response
 	 */
-	private static void getData(StringBuilder response) {
-		final String labelUri = "http://itatlass-app02.faacspa.local:8090/pages/viewpage.action?spaceKey=HUBG&title=Table+JMS+labels+3";
+	private static void getData(StringBuilder response) throws Exception {
+		String labelUri = "";
+		
+		if(scriptType == ScriptType.JMS_LABEL) {
+			labelUri = "http://itatlass-app02.faacspa.local:8090/pages/viewpage.action?spaceKey=HUBG&title=Table+JMS+labels+3";
+		} else if(scriptType == ScriptType.MOBILE_LABEL) {
+			labelUri = "http://itatlass-app02.faacspa.local:8090/display/HUBG/JMS+-+Mobile+labels";
+		} else {
+			throw new Exception("Script type not supported");
+		}
+		
 		final String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36";
 		final String accept = "text/html,application/xhtml+xml,application/json,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
 		
@@ -110,7 +124,13 @@ public class LabelDownloader {
 		Set<String> labelVersion = new HashSet<String>();
 		List<String> versions = new ArrayList<String>();
 
-		LabelDownloader.getData(response);
+		try {
+			LabelDownloader.getData(response);
+		} catch(Exception e) {
+			/* end of program */
+			e.printStackTrace();
+			return;
+		}
 		
 		Document doc = Jsoup.parse(response.toString());
 		Elements mainContentTable = doc.select("#main-content table");
@@ -155,33 +175,62 @@ public class LabelDownloader {
 									msBuff = new StringBuilder("");
 
 								String labelType = cols.get(4).text() != null ? cols.get(4).text().trim().toLowerCase() : "";
-								if(labelType.contains("admin")) {
-									pgBuff.append(
-										"select janus_ui_web.lpinsertorupdatelocalizedadminresource("
-										+ "'en-US','"
-										+ cols.get(1).text() + "','" 
-										+ cols.get(2).text() + "');" 
-										+ FileUtils.CRLF);
+								
+								if(scriptType == ScriptType.JMS_LABEL) {
 									
-									msBuff.append(
-										"execute janus_ui_web.lpinsertorupdatelocalizedadminresource "
-										+ "'en-US','"
-										+ cols.get(1).text() + "','" 
-										+ cols.get(2).text() + "' ;" 
-										+ FileUtils.CRLF);
-								} else {
+									if(labelType.contains("admin")) {
+										pgBuff.append(
+											"select janus_ui_web.lpinsertorupdatelocalizedadminresource("
+											+ "'en-US','"
+											+ cols.get(1).text() + "','" 
+											+ cols.get(2).text() + "');" 
+											+ FileUtils.CRLF);
+										
+										msBuff.append(
+											"execute janus_ui_web.lpinsertorupdatelocalizedadminresource "
+											+ "'en-US','"
+											+ cols.get(1).text() + "','" 
+											+ cols.get(2).text() + "' ;" 
+											+ FileUtils.CRLF);
+									} else {
+										pgBuff.append(
+											"select janus_ui_web.lpInsertOrUpdateLocalizedResource("
+											+ "'en-US','"
+											+ cols.get(1).text() + "','"
+											+ cols.get(2).text() + "');"
+											+ FileUtils.CRLF);
+										msBuff.append(
+											"execute janus_ui_web.lpInsertOrUpdateLocalizedResource "
+											+ "'en-US','"
+											+ cols.get(1).text() + "','" 
+											+ cols.get(2).text() + "' ;" 
+											+ FileUtils.CRLF);
+									}
+								}else if(scriptType == ScriptType.MOBILE_LABEL) {
 									pgBuff.append(
-										"select janus_ui_web.lpInsertOrUpdateLocalizedResource("
-										+ "'en-US','"
-										+ cols.get(1).text() + "','"
-										+ cols.get(2).text() + "');"
-										+ FileUtils.CRLF);
+											"select janus_mobile.lpinsertorupdateandroidlocalizationresource("
+											+ "'en-US','"
+											+ cols.get(1).text() + "','"
+											+ cols.get(2).text() + "');"
+											+ FileUtils.CRLF);
+									pgBuff.append(
+											"select janus_mobile.lpinsertorupdateioslocalizationresource("
+											+ "'en-US','"
+											+ cols.get(1).text() + "','"
+											+ cols.get(2).text() + "');"
+											+ FileUtils.CRLF);
 									msBuff.append(
-										"execute janus_ui_web.lpInsertOrUpdateLocalizedResource "
+										"execute janus_mobile.lpinsertorupdateandroidlocalizationresource "
 										+ "'en-US','"
 										+ cols.get(1).text() + "','" 
 										+ cols.get(2).text() + "' ;" 
 										+ FileUtils.CRLF);
+									msBuff.append(
+											"execute janus_mobile.lpinsertorupdateioslocalizationresource "
+											+ "'en-US','"
+											+ cols.get(1).text() + "','" 
+											+ cols.get(2).text() + "' ;" 
+											+ FileUtils.CRLF);
 								}
 
 								versionScriptPg.put(curVer, pgBuff);
