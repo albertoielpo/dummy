@@ -23,10 +23,20 @@ import utils.HttpRequestUtils;
  */
 public class LabelDownloader {
 
+	private enum LabelType {
+		UI,
+		UI_ADMIN,
+		DEVICE_TYPE,
+		ACTION,
+		XMS_MESSAGE,
+		XMS_MESSAGE_KEY,
+		PERMISSION
+	}
+	
 	/**
 	 * filter by label status
 	 */
-	private static List<String> labelStatusFilter = new ArrayList<String>(Arrays.asList("nuovo", "nuova"));
+	private static List<String> labelStatusFilter = new ArrayList<String>(Arrays.asList("validato", "validata", "valdiata"));
 	
 	/**
 	 * basic authentication
@@ -37,8 +47,8 @@ public class LabelDownloader {
 	/* 
 	 * filter by developer name -> if null no filter will apply 
 	 */
-//	private static List<String> devNamesFilter = null;
-	private static List<String> devNamesFilter = new ArrayList<String>(Arrays.asList("alberto ielpo"));	//lowercase
+	private static List<String> devNamesFilter = null;
+//	private static List<String> devNamesFilter = new ArrayList<String>(Arrays.asList("alberto ielpo"));	//lowercase
 		
 	private enum ScriptType { 
 		JMS_LABEL, 		//localized resource and admin localized resource
@@ -63,7 +73,7 @@ public class LabelDownloader {
 		String labelUri = "";
 		
 		if(scriptType == ScriptType.JMS_LABEL) {
-			labelUri = "http://itatlass-app02.faacspa.local:8090/pages/viewpage.action?spaceKey=HUBG&title=Table+JMS+labels+3";
+			labelUri = "http://itatlass-app02.faacspa.local:8090/display/HUBG/JMS+labels+-+table++4";
 		} else if(scriptType == ScriptType.MOBILE_LABEL) {
 			labelUri = "http://itatlass-app02.faacspa.local:8090/display/HUBG/JMS+-+Mobile+labels";
 		} else {
@@ -140,8 +150,8 @@ public class LabelDownloader {
 			for (Element row : rows) {
 				Elements cols = row.select("td");
 				if (cols != null && cols.size() > 8) {
-					String status = cols.get(8).text() != null ? cols.get(8).text().trim().toLowerCase() : "";
-					String devName = cols.get(6).text() != null ? cols.get(6).text().trim().toLowerCase() : "";
+					String status = cols.get(10).text() != null ? cols.get(10).text().trim().toLowerCase() : "";
+					String devName = cols.get(8).text() != null ? cols.get(8).text().trim().toLowerCase() : "";
 					
 					if(labelStatusFilter.contains(status) && (devNamesFilter == null || devNamesFilter.contains(devName)))
 						labelVersion.add(cols.get(0).text());
@@ -155,13 +165,11 @@ public class LabelDownloader {
 			for (Element row : rows) {
 				Elements cols = row.select("td");
 				if (cols != null && cols.size() > 8) {
-					String status = cols.get(8).text() != null ? cols.get(8).text().trim().toLowerCase() : "";
-					String devName = cols.get(6).text() != null ? cols.get(6).text().trim().toLowerCase() : "";
+					String status = cols.get(10).text() != null ? cols.get(10).text().trim().toLowerCase() : "";
+					String devName = cols.get(8).text() != null ? cols.get(8).text().trim().toLowerCase() : "";
 					
 					if(labelStatusFilter.contains(status) && (devNamesFilter == null || devNamesFilter.contains(devName))) {
-						// cols.get(0).text() => VERSION
-						// cols.get(1).text() => CODE
-						// cols.get(2).text() => VALUE(en)
+
 						for (int vIndex = 0; vIndex < versions.size(); vIndex++) {
 							String curVer = versions.get(vIndex);
 							if (curVer.equalsIgnoreCase(cols.get(0).text())) {
@@ -174,37 +182,38 @@ public class LabelDownloader {
 								if (msBuff == null)
 									msBuff = new StringBuilder("");
 
-								String labelType = cols.get(4).text() != null ? cols.get(4).text().trim().toLowerCase() : "";
-								
 								if(scriptType == ScriptType.JMS_LABEL) {
+									String labelType = cols.get(1).text() != null ? cols.get(1).text().trim().toLowerCase() : "";
 									
-									if(labelType.contains("admin")) {
+									if(LabelType.UI_ADMIN.toString().equals(labelType.toUpperCase())) {
 										pgBuff.append(
 											"select janus_ui_web.lpinsertorupdatelocalizedadminresource("
 											+ "'en-US','"
-											+ cols.get(1).text() + "','" 
-											+ cols.get(2).text() + "');" 
+											+ cols.get(2).text() + "','" 
+											+ cols.get(3).text() + "');" 
 											+ FileUtils.CRLF);
 										
 										msBuff.append(
 											"execute janus_ui_web.lpinsertorupdatelocalizedadminresource "
 											+ "'en-US','"
-											+ cols.get(1).text() + "','" 
-											+ cols.get(2).text() + "' ;" 
+											+ cols.get(2).text() + "','" 
+											+ cols.get(3).text() + "' ;" 
 											+ FileUtils.CRLF);
-									} else {
+									} else if(LabelType.UI.toString().equals(labelType.toUpperCase())) {
 										pgBuff.append(
 											"select janus_ui_web.lpInsertOrUpdateLocalizedResource("
 											+ "'en-US','"
-											+ cols.get(1).text() + "','"
-											+ cols.get(2).text() + "');"
+											+ cols.get(2).text() + "','"
+											+ cols.get(3).text() + "');"
 											+ FileUtils.CRLF);
 										msBuff.append(
 											"execute janus_ui_web.lpInsertOrUpdateLocalizedResource "
 											+ "'en-US','"
-											+ cols.get(1).text() + "','" 
-											+ cols.get(2).text() + "' ;" 
+											+ cols.get(2).text() + "','" 
+											+ cols.get(3).text() + "' ;" 
 											+ FileUtils.CRLF);
+									} else {
+										System.out.println("TODO: label type not implemented: " + labelType);
 									}
 								}else if(scriptType == ScriptType.MOBILE_LABEL) {
 									pgBuff.append(
