@@ -72,7 +72,8 @@ public class LabelDownloader {
 	/* 
 	 * set here the script type for the execution 
 	 */
-	private static ScriptType scriptType = ScriptType.JMS_LABEL;
+	private static ScriptType scriptType = ScriptType.MOBILE_LABEL;
+	//private static ScriptType scriptType = ScriptType.JMS_LABEL;
 	
 	/*
 	 * output file file properties
@@ -158,8 +159,10 @@ public class LabelDownloader {
 			for (Element row : rows) {
 				Elements cols = row.select("td");
 				if (cols != null && cols.size() > 8) {
-					String status = cols.get(10).text() != null ? cols.get(10).text().trim().toLowerCase() : "";
-					String devName = cols.get(8).text() != null ? cols.get(8).text().trim().toLowerCase() : "";
+					int sIndex = scriptType == ScriptType.JMS_LABEL ? 10 : 8;
+					int dIndex = scriptType == ScriptType.JMS_LABEL ? 8 : 6;
+					String status = cols.get(sIndex).text() != null ? cols.get(sIndex).text().trim().toLowerCase() : "";
+					String devName = cols.get(dIndex).text() != null ? cols.get(dIndex).text().trim().toLowerCase() : "";
 
 					if (labelStatusFilter.contains(status)
 							&& (devNamesFilter == null || devNamesFilter.contains(devName)))
@@ -174,8 +177,10 @@ public class LabelDownloader {
 			for (Element row : rows) {
 				Elements cols = row.select("td");
 				if (cols != null && cols.size() > 8) {
-					String status = cols.get(10).text() != null ? cols.get(10).text().trim().toLowerCase() : "";
-					String devName = cols.get(8).text() != null ? cols.get(8).text().trim().toLowerCase() : "";
+					int sIndex = scriptType == ScriptType.JMS_LABEL ? 10 : 8;
+					int dIndex = scriptType == ScriptType.JMS_LABEL ? 8 : 6;
+					String status =  cols.get(sIndex).text() != null ? cols.get(sIndex).text().trim().toLowerCase() : "";
+					String devName = cols.get(dIndex).text() != null ? cols.get(dIndex).text().trim().toLowerCase() : "";
 
 					if (labelStatusFilter.contains(status)
 							&& (devNamesFilter == null || devNamesFilter.contains(devName))) {
