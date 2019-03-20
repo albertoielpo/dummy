@@ -122,10 +122,13 @@ public class Utils {
 					unixDate = sdf.parse(date).getTime();
 					break;
 				} catch(Exception e) {
-					System.out.println("An error occured during date mapping: " + e.getMessage());
+					//continue
 				}
 			}
-		} 
+		}
+		if(unixDate == null)
+			System.out.println("An error occured during date mapping: " + date + " " + allowedFormats);
+		
 		return unixDate;
 	}
 	

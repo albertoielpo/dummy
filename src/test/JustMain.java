@@ -13,6 +13,6 @@ public class JustMain {
 	public static void main(String[] args) {
 		/* enjoy */
 		System.out.println("Basic " + Base64.encode("username:password"));
-		
+		System.out.println(Utils.mapAsUnixDate("10/12/2018", Arrays.asList("dd/MM/yyyy"), "GMT+1"));
 	}
 }
