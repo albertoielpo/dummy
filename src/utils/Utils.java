@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -104,30 +105,37 @@ public class Utils {
 	
 	
 	/**
-	 * Map any String date into unix date using format and timezone
-	 * Usage: Utils.mapAsUnixDate("10/12/2018", Arrays.asList("dd/MM/yyyy"), "GMT+1");	//1544396400000
-	 * @param date
-	 * @param allowedFormats
-	 * @param timezone
-	 * @return unix date
+	 * Map any date-string into unix date.
+	 * This function has the aim to manually set a timezone, using the one in the parameter
+	 * <br /><br />
+	 * <b>Examples</b>: 
+	 * <br/>
+	 * <i> map the String date 10/12/2018 </i>
+	 * <ol> Utils.mapAsUnixDate("10/12/2018", "dd/MM/yyyy", "GMT+1");	//1544396400000 </ol>
+	 * <br/><i> Map the standard Javascript new Date().toString() </i>
+	 * <ol> Utils.mapAsUnixDate("Fri Apr 05 2019 12:40:33 GMT+0200 (Central European Summer Time)".substring(0, 24), "EEE MMM d yyyy HH:mm:ss", "GMT+2");	//1554460833000 </ol>
+	 * <br/>
+	 * @param date (String)
+	 * @param format (List<String> of allowed input type format)
+	 * @param timezone (String in the format "GMT+/-offset"). If null is used GMT as default
+	 * @return unix date or null if something goes wrong
 	 */
-	public static Long mapAsUnixDate(final String date, final List<String> allowedFormats, final String timezone) {
-		String tz = timezone == null ? "GMT" : timezone;
+	public static Long mapAsUnixDate(final String date, final String format, final String timezone) {
+		String tz = Optional.ofNullable(timezone).orElse("GMT");
 		Long unixDate = null;
-		if(allowedFormats != null && allowedFormats.size() > 0) {
-			for(String f : allowedFormats) {
-				SimpleDateFormat sdf = new SimpleDateFormat(f);
+		
+		if(format != null && !"".equals(format)) {
+			try {
+				SimpleDateFormat sdf = new SimpleDateFormat(format);
 				sdf.setTimeZone(TimeZone.getTimeZone(tz));
-				try {
-					unixDate = sdf.parse(date).getTime();
-					break;
-				} catch(Exception e) {
-					//continue
-				}
+				unixDate = sdf.parse(date).getTime();
+			} catch(Exception e) {
+				//continue
 			}
 		}
+		
 		if(unixDate == null)
-			System.out.println("An error occured during date mapping: " + date + " " + allowedFormats);
+			System.out.println("An error occured during date mapping: " + date + " format: " + format);
 		
 		return unixDate;
 	}

@@ -1,10 +1,5 @@
 package test;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import utils.Utils;
 import utils.HttpRequestUtils.Base64;
 
@@ -13,6 +8,13 @@ public class JustMain {
 	public static void main(String[] args) {
 		/* enjoy */
 		System.out.println("Basic " + Base64.encode("username:password"));
-		System.out.println(Utils.mapAsUnixDate("10/12/2018", Arrays.asList("dd/MM/yyyy"), "GMT+1"));
+
+		System.out.println(
+			Utils.mapAsUnixDate(
+				"Fri Apr 05 2019 12:40:33 GMT+0200 (Central European Summer Time)".substring(0, 24),
+				"EEE MMM d yyyy HH:mm:ss", 
+					"GMT-1"
+		));  //1554468033000 1554460833000
+		
 	}
 }
