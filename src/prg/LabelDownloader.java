@@ -24,6 +24,11 @@ import utils.HttpRequestUtils;
 public class LabelDownloader {
 
 	/**
+	 * jms version
+	 */
+	private static int jmsVersion = 8;		//1.8
+	
+	/**
 	 * enum label type
 	 */
 	private enum LabelType {
@@ -201,7 +206,10 @@ public class LabelDownloader {
 									case JMS_LABEL:
 	
 										String labelType = cols.get(1).text() != null ? cols.get(1).text().trim().toLowerCase() : "";
-	
+										String maxCharIn = "";
+										if(jmsVersion >= 10)
+											maxCharIn = " ,null ";
+										
 										try {
 											LabelType lt = LabelType.valueOf(labelType.toUpperCase());
 											switch (lt) {
@@ -232,18 +240,18 @@ public class LabelDownloader {
 												case UI:
 													pgBuff.append("select janus_ui_web.lpInsertOrUpdateLocalizedResource("
 															+ "'en-US','" + cols.get(2).text() + "','" + cols.get(3).text()
-															+ "');" + FileUtils.CRLF);
+															+ "'"+maxCharIn+");" + FileUtils.CRLF);
 													msBuff.append("execute janus_ui_web.lpInsertOrUpdateLocalizedResource "
 															+ "'en-US','" + cols.get(2).text() + "','" + cols.get(3).text()
-															+ "' ;" + FileUtils.CRLF);
+															+ "' "+maxCharIn+";" + FileUtils.CRLF);
 													break;
 												case UI_ADMIN:
 													pgBuff.append("select janus_ui_web.lpinsertorupdatelocalizedadminresource("
 															+ "'en-US','" + cols.get(2).text() + "','" + cols.get(3).text()
-															+ "');" + FileUtils.CRLF);
+															+ "'"+maxCharIn+");" + FileUtils.CRLF);
 													msBuff.append("execute janus_ui_web.lpinsertorupdatelocalizedadminresource "
 															+ "'en-US','" + cols.get(2).text() + "','" + cols.get(3).text()
-															+ "' ;" + FileUtils.CRLF);
+															+ "' "+maxCharIn+";" + FileUtils.CRLF);
 													break;
 												case XMS_MESSAGE:
 													pgBuff.append("select janus.lpInsertOrUpdateMSLocalizedMessage("
