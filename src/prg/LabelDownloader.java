@@ -71,7 +71,7 @@ public class LabelDownloader {
 	private static Map<ScriptType, String> linkMap = new HashMap<ScriptType, String>(){
 		private static final long serialVersionUID = 4535529106839045577L;{
 		this.put(ScriptType.JMS_LABEL, "http://itatlass-app02.faacspa.local:8090/display/HUBG/JMS+labels+-+table++4");
-		this.put(ScriptType.MOBILE_LABEL, "http://itatlass-app02.faacspa.local:8090/display/HUBG/JMS+-+Mobile+labels");
+		this.put(ScriptType.MOBILE_LABEL, "http://itatlass-app02.faacspa.local:8090/display/HUBG/JMS+-+Mobile+labels+2");
 	}};
 	
 	/* 

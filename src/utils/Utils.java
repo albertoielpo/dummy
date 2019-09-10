@@ -1,8 +1,12 @@
 package utils;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -138,6 +142,39 @@ public class Utils {
 			System.out.println("An error occured during date mapping: " + date + " format: " + format);
 		
 		return unixDate;
+	}
+	
+
+	/**
+	 * Encrypt an input string using algorithm and charset as params
+	 * @param inputStr
+	 * @param algorithm
+	 * @param charset
+	 * @return
+	 */
+	public static String encrypt(final String inputStr, final String algorithm, final Charset charset) {
+		String res = null;
+		if(!(inputStr == null || inputStr.length() == 0)) {
+			try{
+				byte[] input = inputStr.getBytes(charset);
+				byte[] output = MessageDigest.getInstance(algorithm).digest(input);
+				res = Base64.getEncoder().encodeToString(output);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return res;
+
+	}
+	
+	/**
+	 * Return sha1 hash of an input string 
+	 * @param inputStr
+	 * @return
+	 */
+	public static String sha1(final String inputStr) {
+		return Utils.encrypt(inputStr, "SHA-1", StandardCharsets.UTF_8);
 	}
 	
 }
