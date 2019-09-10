@@ -1,5 +1,6 @@
 package utils;
 
+import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -150,21 +151,26 @@ public class Utils {
 	 * @param inputStr
 	 * @param algorithm
 	 * @param charset
+	 * @param isBaseEncoded
 	 * @return
 	 */
-	public static String encrypt(final String inputStr, final String algorithm, final Charset charset) {
-		String res = null;
+	public static String encrypt(final String inputStr, final String algorithm, final Charset charset, final boolean isBaseEncoded) {
+		String res = "";
 		if(!(inputStr == null || inputStr.length() == 0)) {
 			try{
 				byte[] input = inputStr.getBytes(charset);
 				byte[] output = MessageDigest.getInstance(algorithm).digest(input);
-				res = Base64.getEncoder().encodeToString(output);
+				if(isBaseEncoded) {
+					res = Base64.getEncoder().encodeToString(output);
+				} else {
+					res = String.format("%032X", new BigInteger(1, output));
+				}
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
 		}
 
-		return res;
+		return res.toLowerCase();
 
 	}
 	
@@ -174,7 +180,11 @@ public class Utils {
 	 * @return
 	 */
 	public static String sha1(final String inputStr) {
-		return Utils.encrypt(inputStr, "SHA-1", StandardCharsets.UTF_8);
+		return Utils.encrypt(inputStr, "SHA-1", StandardCharsets.UTF_8, false);
+	}
+	
+	public static String md5(final String inputStr) {
+		return Utils.encrypt(inputStr, "MD5", StandardCharsets.UTF_8, false);
 	}
 	
 }
