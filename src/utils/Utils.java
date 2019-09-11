@@ -151,7 +151,7 @@ public class Utils {
 	 * @param inputStr
 	 * @param algorithm
 	 * @param charset
-	 * @param isBaseEncoded
+	 * @param isBaseEncoded (true => result encoded Base64, false => standard)
 	 * @return
 	 */
 	public static String encrypt(final String inputStr, final String algorithm, final Charset charset, final boolean isBaseEncoded) {
@@ -161,8 +161,12 @@ public class Utils {
 				byte[] input = inputStr.getBytes(charset);
 				byte[] output = MessageDigest.getInstance(algorithm).digest(input);
 				if(isBaseEncoded) {
+					/* encodes all input bytes into a base64 encodedbyte 
+					 * array and then constructs a new String by using the encoded bytearray 
+					 * and the ISO-8859-1 charset. */
 					res = Base64.getEncoder().encodeToString(output);
 				} else {
+					/* standard behaviour */
 					res = String.format("%032X", new BigInteger(1, output));
 				}
 			} catch(Exception e) {
@@ -183,6 +187,11 @@ public class Utils {
 		return Utils.encrypt(inputStr, "SHA-1", StandardCharsets.UTF_8, false);
 	}
 	
+	/**
+	 * Return md5 hash of an input string
+	 * @param inputStr
+	 * @return
+	 */
 	public static String md5(final String inputStr) {
 		return Utils.encrypt(inputStr, "MD5", StandardCharsets.UTF_8, false);
 	}
