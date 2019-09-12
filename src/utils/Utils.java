@@ -1,6 +1,5 @@
 package utils;
 
-import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -167,7 +166,10 @@ public class Utils {
 					res = Base64.getEncoder().encodeToString(output);
 				} else {
 					/* standard behaviour */
-					res = String.format("%032X", new BigInteger(1, output));
+					StringBuilder sb = new StringBuilder();
+					for (int i = 0; i < output.length; i++)
+						sb.append(Integer.toString((output[i] & 0xff) + 0x100, 16).substring(1));
+					res = sb.toString();
 				}
 			} catch(Exception e) {
 				e.printStackTrace();

@@ -1,6 +1,6 @@
 package prg;
 
-import org.apache.commons.codec.digest.DigestUtils;
+import utils.Utils;
 
 /**
  * @author Alberto Ielpo
@@ -48,12 +48,12 @@ public class PwdGen {
 	}
 	
 	/**
-	 * Calculate sha1 algorithm using DigestUtils from apache.commons.codec
+	 * Calculate sha1 algorithm
 	 * @param inputStr
 	 * @return hashed inputStr as String
 	 */
 	private static String sha1(String inputStr) {
-		 return new String(DigestUtils.sha1Hex(inputStr));
+		return new String(Utils.sha1(inputStr));	//or DigestUtils.sha1Hex(inputStr);
 	}
 	
 	/**
@@ -61,7 +61,7 @@ public class PwdGen {
 	 * @param args
 	 */
 	public static void main(String args[]) {
-		System.out.println(PwdGen.generateComputedPwd("bellali"));
+		System.out.println(PwdGen.generateComputedPwd("bellali"));	//DL$>8OK
 	}
 	
 	
