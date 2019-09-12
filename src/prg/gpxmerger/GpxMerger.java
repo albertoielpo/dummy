@@ -1,4 +1,4 @@
-package prg;
+package prg.gpxmerger;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,15 +17,12 @@ import utils.Utils;
  */
 public class GpxMerger {
 
-	private static String GPX_FILES_PATH = ".";
-	private static String OUTPUT_FILE_NAME = "merge.gpx";
-	
 	/**
 	 * Get all the gpx files in one directory
 	 * @param path
 	 * @return
 	 */
-	private static List<File> getAllFiles(String path) {
+	private List<File> getAllFiles(String path) {
 		List<File> allGpx = new ArrayList<File>();
 		File f = new File(path);
 		if(f.isDirectory()) {
@@ -45,7 +42,7 @@ public class GpxMerger {
 	 * @return
 	 * @throws IOException
 	 */
-	private static List<File> orderFiles(List<File> files) throws IOException{
+	private List<File> orderFiles(List<File> files) throws IOException{
 		List<File> res = new ArrayList<File>();
 		Map<Long, File> mapFiles = new TreeMap<Long, File>();
 		for(File f: files) {
@@ -71,7 +68,7 @@ public class GpxMerger {
 	 * @return
 	 * @throws IOException
 	 */
-	private static Map<String, String> getHeadFoot(File f) throws IOException {
+	private Map<String, String> getHeadFoot(File f) throws IOException {
 		Map<String, String> res = new HashMap<String, String>();
 		String str = FileUtils.fileToString(f.getAbsolutePath());
 		String strLower = str.toLowerCase();
@@ -86,54 +83,43 @@ public class GpxMerger {
 	 * @return
 	 * @throws IOException
 	 */
-	private static String getTrkseg(File f) throws IOException {
+	private String getTrkseg(File f) throws IOException {
 		String str = FileUtils.fileToString(f.getAbsolutePath());
 		String strLower = str.toLowerCase();
 		return str.substring(strLower.indexOf("<trkseg>") + "<trkseg>".length(), strLower.indexOf("</trkseg>"));
 	}
 	
 	/**
-	 * 
-	 * @param args
+	 * Merge all gpx files contained into gpxFilesPath
+	 * @param gpxFilesPath
+	 * @return
+	 * @throws Exception
 	 */
-	public static void main(String[] args) {
-		try {
-			System.out.println("Start GpxMerger " + new Date());
-			StringBuffer content = new StringBuffer();
+	public String merge(String gpxFilesPath) throws Exception {
+		StringBuffer content = new StringBuffer("");
+		/* get all files */
+		List<File> allGpxFiles = this.getAllFiles(gpxFilesPath);
+		if(allGpxFiles.size() > 1) {
+			System.out.println("Found " + allGpxFiles.size() + " gpx files");
+			/* order files by date - using <time>2019-09-12T06:38:31Z</time> */
+			List<File> orderedGpxFiles = this.orderFiles(allGpxFiles);
+				
+			/* get head of first file and create the merged file called content */
+			Map<String,String> headFoot = this.getHeadFoot(orderedGpxFiles.get(0));
+			content.append(headFoot.get("head"));
 			
-			String gpxFilesPath = GPX_FILES_PATH;
-			if(args.length > 0 && args[0] != null)
-				gpxFilesPath = args[0];
+			/* put inside the content what is inside the trkseg segment of all the files */
+			for(int ii=1; ii<orderedGpxFiles.size(); ii++)
+				content.append(this.getTrkseg(orderedGpxFiles.get(ii)));
 			
-			/* get all files */
-			List<File> allGpxFiles = GpxMerger.getAllFiles(gpxFilesPath);
-			if(allGpxFiles.size() > 1) {
-				
-				/* order files by date - using <time>2019-09-12T06:38:31Z</time> */
-				List<File> orderedGpxFiles = GpxMerger.orderFiles(allGpxFiles);
-					
-				/* get head of first file and create the merged file called content */
-				Map<String,String> headFoot = GpxMerger.getHeadFoot(orderedGpxFiles.get(0));
-				content.append(headFoot.get("head"));
-				
-				/* put inside the content what is inside the trkseg segment of all the files */
-				for(int ii=1; ii<orderedGpxFiles.size(); ii++)
-					content.append(GpxMerger.getTrkseg(orderedGpxFiles.get(ii)));
-				
-				/* append the foot */
-				content.append(headFoot.get("foot"));
-				
-				FileUtils.writeFile(gpxFilesPath + "\\" + OUTPUT_FILE_NAME, content.toString());
-			} else {
-				System.out.println("Found " + allGpxFiles.size() + " gpx files. Nothing to do");
-			}
-
-		} catch (IOException e) {
-			System.out.println("Something bad happeend");
-			e.printStackTrace();
+			/* append the foot */
+			content.append(headFoot.get("foot"));
+			
+		} else {
+			System.out.println("Found " + allGpxFiles.size() + " gpx files. Nothing to do");
 		}
-		
-		System.out.println("End " + new Date());
-	}
+
 	
+		return content.toString();
+	}
 }
