@@ -1,7 +1,6 @@
 package utils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -9,6 +8,7 @@ import java.util.UUID;
 /**
  * @author Alberto Ielpo
  */
+
 public class RandomUtils {
 
 	/* Object */
@@ -17,10 +17,10 @@ public class RandomUtils {
 		return UUID.randomUUID().toString();
 	}
 		
-	/* Integer */
+	/* Integer */	
 	public static Integer randomInteger() {
 		Random randomGenerator = new Random();
-		return new Integer(randomGenerator.nextInt());
+		return randomGenerator.nextInt();
 	}
 	
 	public static Integer randomPositiveInteger() {
@@ -73,7 +73,7 @@ public class RandomUtils {
 	/* Long */
 	public static Long randomLong() {
 		Random randomGenerator = new Random();
-		return new Long(randomGenerator.nextLong());
+		return randomGenerator.nextLong();
 	}
 	
 	public static Long randomLong(final List<Long> exceptionValues) {
@@ -92,7 +92,7 @@ public class RandomUtils {
 	/* Float */
 	public static Float randomFloat() {
 		Random randomGenerator = new Random();
-		return new Float(randomGenerator.nextFloat());
+		return randomGenerator.nextFloat();
 	}
 	
 	public static Float randomFloat(final List<Float> exceptionValues) {
@@ -111,7 +111,7 @@ public class RandomUtils {
 	/* Double */
 	public static Double randomDouble() {
 		Random randomGenerator = new Random();
-		return new Double(randomGenerator.nextDouble());
+		return randomGenerator.nextDouble();
 	}
 	
 	public static Double randomDouble(final List<Double> exceptionValues) {
@@ -135,18 +135,18 @@ public class RandomUtils {
 	/* Boolean */
 	public static Boolean randomBoolean() {
 		Random randomGenerator = new Random();
-		return new Boolean(randomGenerator.nextBoolean());
+		return randomGenerator.nextBoolean();
 	}
 	
 	/* Short */
 	public static Short randomShort() {
 		Random randomGenerator = new Random();		
-		return new Short((short) randomGenerator.nextInt(Short.MAX_VALUE + 1));
+		return (short) randomGenerator.nextInt(Short.MAX_VALUE + 1);
 	} 
 	
 	public static Short randomPositiveShort() {		
-		Integer ii = Math.abs(new Integer(randomShort()));
-		return new Short((short) ii.intValue());
+		Integer ii = Math.abs(randomShort().intValue());
+		return (short) ii.intValue();
 	}
 	
 	/* ***************************************************************************** */
@@ -155,67 +155,28 @@ public class RandomUtils {
 		Random randomGenerator = new Random();
 		return randomGenerator.nextInt();
 	}
-	
-	@SuppressWarnings("unlikely-arg-type")
-	public static int randomint(final int[] exceptionValues) {
-		int random;
-		do {
-			random = randomint();
-	    } while (Arrays.asList(exceptionValues).contains(random));
-
-		return random;
-	}
-	
+		
 	public static long randomlong() {
 		Random randomGenerator = new Random();
 		return randomGenerator.nextLong();
 	}
-	
-	@SuppressWarnings("unlikely-arg-type")
-	public static long randomlong(final long[] exceptionValues) {
-		long random;
-		do {
-			random = randomlong();
-	    } while (Arrays.asList(exceptionValues).contains(random));
-
-		return random;
-	}
-	
+		
 	public static float randomfloat() {
 		Random randomGenerator = new Random();
 		return randomGenerator.nextFloat();
 	}
 	
-	@SuppressWarnings("unlikely-arg-type")
-	public static float randomfloat(final float[] exceptionValues) {
-		float random;
-		do {
-			random = randomfloat();
-	    } while (Arrays.asList(exceptionValues).contains(random));
-
-		return random;
-	}
-	
+		
 	public static double randomdouble() {
 		Random randomGenerator = new Random();
 		return randomGenerator.nextDouble();
 	}
 	
-	@SuppressWarnings("unlikely-arg-type")
-	public static double randomdouble(final double[] exceptionValues) {
-		double random;
-		do {
-			random = randomdouble();
-	    } while (Arrays.asList(exceptionValues).contains(random));
-
-		return random;
-	}
 	
 	public static boolean randomboolean() {
 		Random randomGenerator = new Random();
 		return randomGenerator.nextBoolean();
 	}
-	
 	
 	public static short randomshort() {
 		Random randomGenerator = new Random();

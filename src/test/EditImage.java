@@ -1,14 +1,14 @@
 package test;
 
-import java.awt.Color;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-
-import javax.imageio.ImageIO;
+//import java.awt.Color;
+//import java.awt.FontMetrics;
+//import java.awt.Graphics;
+//import java.awt.image.BufferedImage;
+//import java.io.ByteArrayInputStream;
+//import java.io.ByteArrayOutputStream;
+//import java.io.InputStream;
+//
+//import javax.imageio.ImageIO;
 
 public class EditImage {
   	/*
