@@ -1,7 +1,10 @@
 package test;
 
-public class MyObj {
+import java.io.Serializable;
 
+public class MyObj implements Serializable {
+
+	private static final long serialVersionUID = -7464253767424762344L;
 	private String myVar;
 	private Integer myInt;
 
