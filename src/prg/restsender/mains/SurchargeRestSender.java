@@ -1,6 +1,8 @@
-package prg.restsender;
+package prg.restsender.mains;
 
 import java.util.Date;
+
+import prg.restsender.RestSender;
 
 public class SurchargeRestSender {
 
@@ -8,7 +10,7 @@ public class SurchargeRestSender {
 		System.out.println("Start OperationsRestSender " + new Date());
 		var restSender = new RestSender();
 		restSender.getForJanusUi(
-			RestSender.SURCHARGE_URL,
+			RestSender.CASHIER_PAYMENT_GET_SURCHARGE_URL,
 			"ticketCardId", 1L, 
 			"deviceId", 1L, 
 			"cardType", "SEASONAL_PARKING"

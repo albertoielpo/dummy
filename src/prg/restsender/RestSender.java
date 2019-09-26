@@ -9,9 +9,13 @@ import utils.HttpRequestUtils;
  */
 public class RestSender {
 
+	public static String PROTOCOL = "http://";
+	public static String HOST_PORT = "127.0.0.1:8080";
+	
 	/* URL */
-	public static String OPERATION_PUSH_URL = "http://127.0.0.1:8080/janus/api/connector/operation/push";
-	public static String SURCHARGE_URL = "http://127.0.0.1:8080/janus/api/cashier/payment/get/surcharge";
+	public static String OPERATION_PUSH_URL = PROTOCOL + HOST_PORT + "/janus/api/connector/operation/push";
+	public static String CASHIER_PAYMENT_GET_SURCHARGE_URL = PROTOCOL + HOST_PORT + "/janus/api/cashier/payment/get/surcharge";
+	public static String TRACKING_HISTORY_SEASONAL_GET_ALL_EVENTS_URL = PROTOCOL + HOST_PORT + "/janus/api/card/tracking/history/seasonal/getAllEvents";
 	
 	/* Content type */
 	public static String CONTENT_TYPE = "Content-Type";
@@ -29,6 +33,18 @@ public class RestSender {
     public static String JANUS_THIRD_PARTY_AUTHENTICATION = "Janus-TP-Authorization";
 	
     /**
+     * Print http response
+     * @param httpStatusCode
+     */
+    private void printResponseResult(int httpStatusCode) {
+		if(httpStatusCode >= 200 && httpStatusCode < 300) {
+			System.out.println("Response Ok - HTTP Response Code: " + httpStatusCode);
+		} else {
+			System.out.println("Response Error - HTTP Response Code: " + httpStatusCode);
+		}
+    }
+    
+    /**
      * 
      * @param url
      * @param operations
@@ -44,18 +60,11 @@ public class RestSender {
 			return;
 		}
 			
-		Integer response = HttpRequestUtils
-				.post(url)
-				.header(CONTENT_TYPE, APPLICATION_JSON_UTF8)
-				.header(JANUS_MS_AUTHENTICATION, MS_AUTHENTICATION_TOKEN)
-				.send(json)
-				.code();
-			
-		if(response >= 200 && response < 300) {
-			System.out.println("Response Ok - HTTP Response Code: " + response);
-		} else {
-			System.out.println("Response Error - HTTP Response Code: " + response);
-		}
+		this.printResponseResult(HttpRequestUtils.post(url)
+			.header(CONTENT_TYPE, APPLICATION_JSON_UTF8)
+			.header(JANUS_MS_AUTHENTICATION, MS_AUTHENTICATION_TOKEN)
+			.send(json)
+			.code());
 	}
 	
 	/**
@@ -64,17 +73,9 @@ public class RestSender {
 	 * @param args
 	 */
 	public void getForJanusUi(String url, Object...args) {
-					
-		Integer response = HttpRequestUtils
-				.get(url, true, args)
-				.header(CONTENT_TYPE, APPLICATION_JSON_UTF8)
-				.header(JANUS_UI_AUTHENTICATION, UI_AUTHENTICATION_TOKEN)
-				.code();
-			
-		if(response >= 200 && response < 300) {
-			System.out.println("Response Ok - HTTP Response Code: " + response);
-		} else {
-			System.out.println("Response Error - HTTP Response Code: " + response);
-		}
+		this.printResponseResult(HttpRequestUtils.get(url, true, args)
+			.header(CONTENT_TYPE, APPLICATION_JSON_UTF8)
+			.header(JANUS_UI_AUTHENTICATION, UI_AUTHENTICATION_TOKEN)
+			.code());
 	}
 }

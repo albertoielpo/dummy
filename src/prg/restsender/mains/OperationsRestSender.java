@@ -1,4 +1,4 @@
-package prg.restsender;
+package prg.restsender.mains;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import prg.restsender.RestSender;
 
 public class OperationsRestSender {
 
