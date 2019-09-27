@@ -11,12 +11,13 @@ public class SeasonalCardEventRestSender {
 		var restSender = new RestSender();
 		restSender.getForJanusUi(
 			RestSender.TRACKING_HISTORY_SEASONAL_GET_ALL_EVENTS_URL,
-			"virtualCardId", 1L
+			"customerId", 1L
 		);
 		
-		//seasonalCardId, 1L
-		//accountId, 1L
-		//customerId, 1L
+		//"virtualCardId", 1L
+		//"seasonalCardId", 1L
+		//"accountId", 1L
+		//"customerId", 1L
 		
 		System.out.println("End SeasonalCardEventRestSender " + new Date());
 	}

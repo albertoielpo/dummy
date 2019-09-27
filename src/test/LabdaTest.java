@@ -16,7 +16,7 @@ import utils.Utils;
 
 public class LabdaTest {
 
-	@SuppressWarnings({ "rawtypes", "unchecked", "null" })
+	@SuppressWarnings({ "rawtypes", "unchecked", "null", "serial" })
 	public static void main(String[] args) {
 
 		/* ************************************************************************************* */
