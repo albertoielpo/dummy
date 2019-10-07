@@ -2,7 +2,7 @@ package test;
 
 import java.lang.reflect.Method;
 
-public class SabaudoDaoImpl implements SabaudoDao {
+public class SabaudoDaoImpl extends SabaudoDaoAbs implements SabaudoDao {
 
 	@Override
 	@SabaudoAnnotation(stato = "statoSabaudo")

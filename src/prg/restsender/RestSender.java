@@ -3,6 +3,7 @@ package prg.restsender;
 import java.util.Map;
 
 import utils.HttpRequestUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author Alberto Ielpo
@@ -16,6 +17,7 @@ public class RestSender {
 	public static String OPERATION_PUSH_URL = PROTOCOL + HOST_PORT + "/janus/api/connector/operation/push";
 	public static String CASHIER_PAYMENT_GET_SURCHARGE_URL = PROTOCOL + HOST_PORT + "/janus/api/cashier/payment/get/surcharge";
 	public static String TRACKING_HISTORY_SEASONAL_GET_ALL_EVENTS_URL = PROTOCOL + HOST_PORT + "/janus/api/card/tracking/history/seasonal/getAllEvents";
+	public static String SCHEDULING_ACTIONS_CREATE = PROTOCOL + HOST_PORT + "/janus/api/scheduling/actions/create";
 	
 	/* Content type */
 	public static String CONTENT_TYPE = "Content-Type";
@@ -23,11 +25,11 @@ public class RestSender {
 	
 	/* Header for Janus UI */
 	public static String JANUS_UI_AUTHENTICATION = "Janus-Authorization";
-	public static String UI_AUTHENTICATION_TOKEN = "fc0e3d26-94ef-4017-9941-dfeb0b07e3a8"; 
+	public static String UI_AUTHENTICATION_TOKEN = "06947649-afc9-4396-bfa3-876f22742b93"; 
 	
 	/* Header for Janus Connector */
 	public static String JANUS_MS_AUTHENTICATION = "Janus-MS-Authentication";
-	public static String MS_AUTHENTICATION_TOKEN = "e14c5924-e7dc-4df8-892f-c1bde3934403";
+	public static String MS_AUTHENTICATION_TOKEN = "f62b982a-99cf-4815-a376-1d7d305405e1";
 	
     /* Header for Third party */
     public static String JANUS_THIRD_PARTY_AUTHENTICATION = "Janus-TP-Authorization";
@@ -47,14 +49,14 @@ public class RestSender {
     /**
      * 
      * @param url
-     * @param operations
+     * @param mapPar
      */
-	public void postForJanusConnector(String url, Map<String,Object> operations) {
+	public void postForJanusConnector(String url, Map<String,Object> mapPar) {
 
-		com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+		ObjectMapper mapper = new ObjectMapper();
 		String json = null;
 		try{
-			json = mapper.writeValueAsString(operations);
+			json = mapper.writeValueAsString(mapPar);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
@@ -77,5 +79,27 @@ public class RestSender {
 			.header(CONTENT_TYPE, APPLICATION_JSON_UTF8)
 			.header(JANUS_UI_AUTHENTICATION, UI_AUTHENTICATION_TOKEN)
 			.code());
+	}
+	
+	/**
+	 * 
+	 * @param url
+	 * @param mapPar
+	 */
+	public void postForJanusUi(String url, Map<String,Object> mapPar) {
+		ObjectMapper mapper = new ObjectMapper();
+		String json = null;
+		try{
+			json = mapper.writeValueAsString(mapPar);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		
+		this.printResponseResult(HttpRequestUtils.post(url)
+				.header(CONTENT_TYPE, APPLICATION_JSON_UTF8)
+				.header(JANUS_UI_AUTHENTICATION, UI_AUTHENTICATION_TOKEN)
+				.send(json)
+				.code());
 	}
 }
