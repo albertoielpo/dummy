@@ -13,6 +13,31 @@ import prg.restsender.RestSender;
 @SuppressWarnings("unused")
 public class OperationsRestSender {
 	
+	/**
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		System.out.println("Start OperationsRestSender " + new Date());
+		var restSender = new RestSender();
+		Map<String, Object> operations = new HashMap<String, Object>();
+		long identifier = Calendar.getInstance().getTime().getTime();
+		operations.put("operations", Arrays.asList(
+				getJoinOperation(identifier)
+		));
+
+/* Here to use JSON */
+//		operations.put("operations", 
+//			Arrays.asList(
+//				getOperationFromJSON("{\"operationType\":\"EXIT\",\"identifier\":500000000000,\"timestamp\":1569857456000,\"managementSystemGmt\":120,\"additionalInformation\":null,\"sessionId\":null,\"isExternal\":false,\"eventTimestamp\":null,\"eventManagementSystemGmt\":null,\"result\":\"VALID\",\"card\":{\"type\":\"SEASONAL\",\"identifier\":\"05400014102404\",\"mediaType\":\"PAR_QUBE_PROXIMITY\"},\"joinType\":\"CARD_VALIDATION\",\"creditCardData\":null,\"facilityCode\":\"1\",\"entityId\":\"1.1.2.0.66053\",\"plate\":\"NOTREAD\",\"managementSystemRejectionCode\":null,\"presenceEntityId\":\"1.1.2\",\"userCategoryIdentifier\":7,\"dpCardData\":null,\"hotelCardData\":null,\"plateReadConfidence\":null,\"plateCountryCode\":null,\"joinAmount\":null,\"ticketGroupId\":null,\"plateLprClarification\":\"UNDEFINED\",\"plateLprStatusCode\":\"ERROR\",\"external\":false}"), 
+//				getOperationFromJSON("{\"operationType\":\"EXIT\",\"identifier\":500000000009,\"timestamp\":1569857456001,\"managementSystemGmt\":120,\"additionalInformation\":null,\"sessionId\":null,\"isExternal\":false,\"eventTimestamp\":null,\"eventManagementSystemGmt\":null,\"result\":\"MOVING_BACK\",\"card\":{\"type\":\"SEASONAL\",\"identifier\":\"05400014102404\",\"mediaType\":\"PAR_QUBE_PROXIMITY\"},\"joinType\":\"UNSUCCESSFUL_EXIT\",\"creditCardData\":null,\"facilityCode\":\"1\",\"entityId\":\"1.1.2.0.66053\",\"plate\":\"NOTREAD\",\"managementSystemRejectionCode\":null,\"presenceEntityId\":\"1.1.2\",\"userCategoryIdentifier\":7,\"dpCardData\":null,\"hotelCardData\":null,\"plateReadConfidence\":null,\"plateCountryCode\":null,\"joinAmount\":null,\"ticketGroupId\":null,\"plateLprClarification\":\"UNDEFINED\",\"plateLprStatusCode\":\"ERROR\",\"external\":false}")
+//		));
+		
+		restSender.postForJanusConnector(RestSender.OPERATION_PUSH_URL, operations);
+		System.out.println("End OperationsRestSender " + new Date());
+	}
+	
+	
 	private static Map<String, Object> getPaymentOperation(){
 		Map<String, Object> operation = new HashMap<String, Object>(); 
 		
@@ -47,19 +72,19 @@ public class OperationsRestSender {
 		//operation.put("offlineCleared", true); 
 		operation.put("productProfileType", "TRANSPORTATION");
 		Map<String, Object> card = new HashMap<String, Object>();
-		card.put("type","TRANSIENT");	//SEASONAL
+		card.put("type","SEASONAL");	//SEASONAL
 		card.put("mediaType", "LICENSE_PLATE");	//PAR_QUBE_PROXIMITY
-		card.put("identifier", "111-tra-111");
+		card.put("identifier", "3654_identifier");
 		
 		operation.put("card", card);
 		
 		return operation;
 	}
 
-	private static Map<String, Object> getJoinOperation(String e, long identifier){
+	private static Map<String, Object> getJoinOperation(long identifier){
 		Map<String, Object> operation = new HashMap<String, Object>(); 
 		
-		operation.put("operationType", e);		//ENTRANCE //EXIT
+		operation.put("operationType", "ENTRANCE");
 		operation.put("identifier", identifier);
 		operation.put("entityId", "3");	//3 //1.1.2.0.66053
 		operation.put("facilityCode", "123");
@@ -74,9 +99,9 @@ public class OperationsRestSender {
 		operation.put("joinAmount", new BigDecimal(3));
 		
 		Map<String, Object> card = new HashMap<String, Object>();
-		card.put("type","TRANSIENT");
+		card.put("type","SEASONAL");
 		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
-		card.put("identifier", "111-tra-111");
+		card.put("identifier", "3654_identifier");
 		
 		operation.put("card", card);
 		
@@ -93,27 +118,6 @@ public class OperationsRestSender {
 			e.printStackTrace();
 			return null;
 		}
-	}
-	
-	public static void main(String[] args) {
-		System.out.println("Start OperationsRestSender " + new Date());
-		var restSender = new RestSender();
-		Map<String, Object> operations = new HashMap<String, Object>();
-		//Map<String, Object> operation = getJoinOperation("ENTRANCE"); //getPaymentOperation();	//getJoinOperation
-		long identifier = Calendar.getInstance().getTime().getTime();
-		operations.put("operations", Arrays.asList(
-				getPaymentOperation()
-				//getJoinOperation("ENTRANCE", identifier)
-		));
-		
-		//		operations.put("operations", 
-//			Arrays.asList(
-//				getOperationFromJSON("{\"operationType\":\"EXIT\",\"identifier\":500000000000,\"timestamp\":1569857456000,\"managementSystemGmt\":120,\"additionalInformation\":null,\"sessionId\":null,\"isExternal\":false,\"eventTimestamp\":null,\"eventManagementSystemGmt\":null,\"result\":\"VALID\",\"card\":{\"type\":\"SEASONAL\",\"identifier\":\"05400014102404\",\"mediaType\":\"PAR_QUBE_PROXIMITY\"},\"joinType\":\"CARD_VALIDATION\",\"creditCardData\":null,\"facilityCode\":\"1\",\"entityId\":\"1.1.2.0.66053\",\"plate\":\"NOTREAD\",\"managementSystemRejectionCode\":null,\"presenceEntityId\":\"1.1.2\",\"userCategoryIdentifier\":7,\"dpCardData\":null,\"hotelCardData\":null,\"plateReadConfidence\":null,\"plateCountryCode\":null,\"joinAmount\":null,\"ticketGroupId\":null,\"plateLprClarification\":\"UNDEFINED\",\"plateLprStatusCode\":\"ERROR\",\"external\":false}"), 
-//				getOperationFromJSON("{\"operationType\":\"EXIT\",\"identifier\":500000000009,\"timestamp\":1569857456001,\"managementSystemGmt\":120,\"additionalInformation\":null,\"sessionId\":null,\"isExternal\":false,\"eventTimestamp\":null,\"eventManagementSystemGmt\":null,\"result\":\"MOVING_BACK\",\"card\":{\"type\":\"SEASONAL\",\"identifier\":\"05400014102404\",\"mediaType\":\"PAR_QUBE_PROXIMITY\"},\"joinType\":\"UNSUCCESSFUL_EXIT\",\"creditCardData\":null,\"facilityCode\":\"1\",\"entityId\":\"1.1.2.0.66053\",\"plate\":\"NOTREAD\",\"managementSystemRejectionCode\":null,\"presenceEntityId\":\"1.1.2\",\"userCategoryIdentifier\":7,\"dpCardData\":null,\"hotelCardData\":null,\"plateReadConfidence\":null,\"plateCountryCode\":null,\"joinAmount\":null,\"ticketGroupId\":null,\"plateLprClarification\":\"UNDEFINED\",\"plateLprStatusCode\":\"ERROR\",\"external\":false}")
-//		));
-		
-		restSender.postForJanusConnector(RestSender.OPERATION_PUSH_URL, operations);
-		System.out.println("End OperationsRestSender " + new Date());
 	}
 
 }
