@@ -21,9 +21,9 @@ public class OperationsRestSender {
 		System.out.println("Start OperationsRestSender " + new Date());
 		var restSender = new RestSender();
 		Map<String, Object> operations = new HashMap<String, Object>();
-		long identifier = Calendar.getInstance().getTime().getTime();
+		
 		operations.put("operations", Arrays.asList(
-				getJoinOperation(identifier)
+				getJoinOperation()
 		));
 
 /* Here to use JSON */
@@ -81,11 +81,11 @@ public class OperationsRestSender {
 		return operation;
 	}
 
-	private static Map<String, Object> getJoinOperation(long identifier){
+	private static Map<String, Object> getJoinOperation(){
 		Map<String, Object> operation = new HashMap<String, Object>(); 
 		
 		operation.put("operationType", "ENTRANCE");
-		operation.put("identifier", identifier);
+		operation.put("identifier", Calendar.getInstance().getTime().getTime());
 		operation.put("entityId", "3");	//3 //1.1.2.0.66053
 		operation.put("facilityCode", "123");
 		operation.put("managementSystemGmt", Short.valueOf("120"));
