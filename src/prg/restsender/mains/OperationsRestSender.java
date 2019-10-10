@@ -1,6 +1,7 @@
 package prg.restsender.mains;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,7 +11,10 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import prg.restsender.RestSender;
-@SuppressWarnings("unused")
+import utils.RandomUtils;
+import utils.textdb.TextDb;
+
+@SuppressWarnings({"rawtypes", "unused"})
 public class OperationsRestSender {
 	
 	/**
@@ -21,9 +25,16 @@ public class OperationsRestSender {
 		System.out.println("Start OperationsRestSender " + new Date());
 		var restSender = new RestSender();
 		Map<String, Object> operations = new HashMap<String, Object>();
-		
+		Long identifier = null;
+		try {
+			identifier = TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER);
+		} catch (Exception e) {
+			System.out.println("Err OperationsRestSender: exception during TextDb access");
+			e.printStackTrace();
+			return;
+		}
 		operations.put("operations", Arrays.asList(
-				getJoinOperation()
+				getValidationOperation(identifier)
 		));
 
 /* Here to use JSON */
@@ -37,12 +48,16 @@ public class OperationsRestSender {
 		System.out.println("End OperationsRestSender " + new Date());
 	}
 	
-	
-	private static Map<String, Object> getPaymentOperation(){
+	/**
+	 * 
+	 * @param identifier
+	 * @return
+	 */
+	private static Map<String, Object> getPaymentOperation(long identifier){
 		Map<String, Object> operation = new HashMap<String, Object>(); 
 		
 		operation.put("operationType", "PAYMENT");
-		operation.put("identifier", Calendar.getInstance().getTime().getTime());
+		operation.put("identifier", identifier);
 		operation.put("entityId", "3"); 
 		operation.put("facilityCode", "123");
 		operation.put("managementSystemGmt", Short.valueOf("120"));
@@ -81,11 +96,16 @@ public class OperationsRestSender {
 		return operation;
 	}
 
-	private static Map<String, Object> getJoinOperation(){
+	/**
+	 * 
+	 * @param identifier
+	 * @return
+	 */
+	private static Map<String, Object> getJoinOperation(long identifier){
 		Map<String, Object> operation = new HashMap<String, Object>(); 
 		
 		operation.put("operationType", "ENTRANCE");
-		operation.put("identifier", Calendar.getInstance().getTime().getTime());
+		operation.put("identifier", identifier);
 		operation.put("entityId", "3");	//3 //1.1.2.0.66053
 		operation.put("facilityCode", "123");
 		operation.put("managementSystemGmt", Short.valueOf("120"));
@@ -99,17 +119,71 @@ public class OperationsRestSender {
 		operation.put("joinAmount", new BigDecimal(3));
 		
 		Map<String, Object> card = new HashMap<String, Object>();
-		card.put("type","SEASONAL");
+		card.put("type","TRANSIENT");
 		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
-		card.put("identifier", "3654_identifier");
+		card.put("identifier", "tra-000-" + identifier);
 		
 		operation.put("card", card);
 		
 		return operation;
 	}
 	
+	/**
+	 * 
+	 * @param identifier
+	 * @return
+	 */
+	private static Map<String,Object> getValidationOperation(long identifier){
+		Instant instant = Instant.now();
+		//String identifier = String.valueOf(instant.getEpochSecond()) + String.valueOf(instant.getNano());
+		
+		/** common fields */
+		Map<String, Object> operation = new HashMap<String, Object>(); 
+		operation.put("operationType", "VALIDATION");
+		operation.put("identifier", identifier);
+		operation.put("timestamp", Calendar.getInstance().getTime().getTime());
+		operation.put("managementSystemGmt", Short.valueOf("120"));
+		operation.put("additionalInformation", "addinfo");
+		operation.put("sessionId", RandomUtils.randomlong());
+		operation.put("isExternal", false);
+		operation.put("eventTimestamp", Calendar.getInstance().getTime().getTime());
+		operation.put("eventManagementSystemGmt", Short.valueOf("120"));
+		operation.put("result","VALID");
+		
+		/* validation fields */
+		operation.put("validationOperationType", "VOUCHER_VALIDATION");
+		Map<String, Object> card = new HashMap<String, Object>();
+		
+		card.put("type","TRANSIENT");
+		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
+		card.put("identifier", "tra-000-" + identifier);
+		operation.put("card", card);
+		
+		operation.put("entityId", "d3");	//3 vp
+		operation.put("discountId",null);
+		operation.put("shopId", null);
+		operation.put("voucherRangeId", null);
+	    operation.put("amount", RandomUtils.randomPositiveDouble());
+	    operation.put("percentageCharge", RandomUtils.randomPositiveDouble());
+	    operation.put("cashierId", null);
+	    operation.put("voucherNumber", null);
+	    operation.put("generatorId", RandomUtils.randomPositiveLong());
+	    operation.put("webValidationId", null);
+	    operation.put("merchantAmount", new BigDecimal(RandomUtils.randomPositiveFloat().toString()));
+	    operation.put("appliedDiscount", new BigDecimal(RandomUtils.randomPositiveFloat().toString()));
+	    operation.put("vatAmount", RandomUtils.randomPositiveDouble());
+	    operation.put("transactionId", RandomUtils.randomPositiveInteger().toString());
+	    operation.put("paymentType", null);
+	    operation.put("externalValidationIdentifier", null);
+	    operation.put("hotelCardData", null);
+	    return operation;
+	}
 	
-	@SuppressWarnings("rawtypes")
+	/**
+	 * 
+	 * @param json
+	 * @return
+	 */
 	private static Map getOperationFromJSON(String json) {		
 		ObjectMapper mapper = new ObjectMapper();
 		try {
