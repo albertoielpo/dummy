@@ -13,6 +13,13 @@ public class RestSender {
 	public static String PROTOCOL = "http://";
 	public static String HOST_PORT = "127.0.0.1:8080";
 	
+	/**
+	 * URL to test code with JMS context
+	 * The following url does not exist in JMS
+	 * To use @see {test.TestJmsBackendCode}
+	 */
+	public static String TEST_URL = PROTOCOL + HOST_PORT + "/janus/api/tax/test/donotcommit";
+	
 	/* URL */
 	public static String OPERATION_PUSH_URL = PROTOCOL + HOST_PORT + "/janus/api/connector/operation/push";
 	public static String CASHIER_PAYMENT_GET_SURCHARGE_URL = PROTOCOL + HOST_PORT + "/janus/api/cashier/payment/get/surcharge";
@@ -26,7 +33,7 @@ public class RestSender {
 	
 	/* Header for Janus UI */
 	public static String JANUS_UI_AUTHENTICATION = "Janus-Authorization";
-	public static String UI_AUTHENTICATION_TOKEN = "2894eb76-d4bc-4289-b649-3aa449f81a08"; 
+	public static String UI_AUTHENTICATION_TOKEN = "e2f9a152-5a58-448d-b2b3-309bf6723617"; 
 	
 	/* Header for Janus Admin UI */
 	public static String JANUS_ADMIN_UI_AUTHENTICATION = "Janus-Admin-Authorization";
