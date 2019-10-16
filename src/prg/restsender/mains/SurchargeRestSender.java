@@ -11,7 +11,7 @@ public class SurchargeRestSender {
 		var restSender = new RestSender();
 		restSender.getForJanusUi(
 			RestSender.CASHIER_PAYMENT_GET_SURCHARGE_URL,
-			"ticketCardId", 1L, 
+			"ticketCardId", 33L, 
 			"deviceId", 1L, 
 			"cardType", "SEASONAL_PARKING"
 		);

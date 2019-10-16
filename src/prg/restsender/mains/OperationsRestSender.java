@@ -25,17 +25,46 @@ public class OperationsRestSender {
 		System.out.println("Start OperationsRestSender " + new Date());
 		var restSender = new RestSender();
 		Map<String, Object> operations = new HashMap<String, Object>();
-		Long identifier = null;
+
 		try {
-			identifier = TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER);
+			operations.put("operations", Arrays.asList(
+					getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					
+			));
 		} catch (Exception e) {
-			System.out.println("Err OperationsRestSender: exception during TextDb access");
 			e.printStackTrace();
 			return;
 		}
-		operations.put("operations", Arrays.asList(
-				getValidationOperation(identifier)
-		));
 
 /* Here to use JSON */
 //		operations.put("operations", 
@@ -119,9 +148,9 @@ public class OperationsRestSender {
 		operation.put("joinAmount", new BigDecimal(3));
 		
 		Map<String, Object> card = new HashMap<String, Object>();
-		card.put("type","TRANSIENT");
+		card.put("type","ANONYMOUS");
 		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
-		card.put("identifier", "tra-000-" + identifier);
+		card.put("identifier", "anony-000-" + identifier);
 		
 		operation.put("card", card);
 		
@@ -178,6 +207,8 @@ public class OperationsRestSender {
 	    operation.put("hotelCardData", null);
 	    return operation;
 	}
+	
+	
 	
 	/**
 	 * 
