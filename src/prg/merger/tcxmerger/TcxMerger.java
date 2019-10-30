@@ -25,17 +25,17 @@ public class TcxMerger implements Merger {
 	 * @return
 	 */
 	private List<File> getAllFiles(String path) {
-		List<File> allGpx = new ArrayList<File>();
+		List<File> allTcx = new ArrayList<File>();
 		File f = new File(path);
 		if(f.isDirectory()) {
 			File[] files = f.listFiles();
-			for(File gpx: files) {
-				if(gpx.isFile() && gpx.getAbsolutePath().toLowerCase().endsWith(".tcx")) {
-					allGpx.add(gpx);
+			for(File tcx: files) {
+				if(tcx.isFile() && tcx.getAbsolutePath().toLowerCase().endsWith(".tcx")) {
+					allTcx.add(tcx);
 				}
 			}
 		}
-		return allGpx;
+		return allTcx;
 	}
 	
 	/**
