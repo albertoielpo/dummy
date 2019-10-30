@@ -28,38 +28,7 @@ public class OperationsRestSender {
 
 		try {
 			operations.put("operations", Arrays.asList(
-					getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					,getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					
+				getPaymentOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
 			));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -114,11 +83,11 @@ public class OperationsRestSender {
 		operation.put("notes", "notes");
 		operation.put("surcharge", new BigDecimal("111.321"));
 		//operation.put("offlineCleared", true); 
-		operation.put("productProfileType", "TRANSPORTATION");
+		//operation.put("productProfileType", "BASE_CONTRACT");
 		Map<String, Object> card = new HashMap<String, Object>();
-		card.put("type","SEASONAL");	//SEASONAL
-		card.put("mediaType", "LICENSE_PLATE");	//PAR_QUBE_PROXIMITY
-		card.put("identifier", "3654_identifier");
+		card.put("type","SEASONAL");
+		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
+		card.put("identifier", "9389_identifier");
 		
 		operation.put("card", card);
 		

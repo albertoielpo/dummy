@@ -1,4 +1,4 @@
-package prg.gpxmerger;
+package prg.merger.tcxmerger;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,16 +9,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import prg.merger.Merger;
 import utils.FileUtils;
 import utils.Utils;
 
 /**
  * @author Alberto Ielpo
  */
-public class GpxMerger {
+public class TcxMerger implements Merger {
+
 
 	/**
-	 * Get all the gpx files in one directory
+	 * Get all the tcx files in one directory
 	 * @param path
 	 * @return
 	 */
@@ -28,7 +30,7 @@ public class GpxMerger {
 		if(f.isDirectory()) {
 			File[] files = f.listFiles();
 			for(File gpx: files) {
-				if(gpx.isFile() && gpx.getAbsolutePath().toLowerCase().endsWith(".gpx")) {
+				if(gpx.isFile() && gpx.getAbsolutePath().toLowerCase().endsWith(".tcx")) {
 					allGpx.add(gpx);
 				}
 			}
@@ -37,19 +39,20 @@ public class GpxMerger {
 	}
 	
 	/**
-	 * Order a list of file using <time> tag. If not found into the gpx use current unix timestamp
+	 * Order a list of file using <Lap StartTime> tag. If not found into the gpx use current unix timestamp
 	 * @param files
 	 * @return
 	 * @throws IOException
 	 */
 	private List<File> orderFiles(List<File> files) throws IOException{
+		String lap = "<lap starttime=\"";
 		List<File> res = new ArrayList<File>();
 		Map<Long, File> mapFiles = new TreeMap<Long, File>();
 		for(File f: files) {
 			String strLower = FileUtils.fileToString(f.getAbsolutePath()).toLowerCase();
 			long unixDate = new Date().getTime();
-			if(strLower.indexOf("<time>") > -1) {
-				String d = strLower.substring(strLower.indexOf("<time>") + "<time>".length(), strLower.indexOf("</time>"));
+			if(strLower.indexOf(lap) > -1) {
+				String d = strLower.substring(strLower.indexOf(lap) + lap.length(), strLower.indexOf(lap) + lap.length() + 19);
 				unixDate = Utils.mapAsUnixDate(d.replaceAll("t", " ").replaceAll("z",""), "yyyy-MM-dd hh:mm:ss", "GMT");
 			}
 			
@@ -63,63 +66,67 @@ public class GpxMerger {
 	}
 	
 	/**
-	 * Get the head (including trkseg track) and the foot of the gpx
+	 * Get the head (including activity track) and the foot of the tcx
 	 * @param f
 	 * @return
 	 * @throws IOException
 	 */
 	private Map<String, String> getHeadFoot(File f) throws IOException {
 		Map<String, String> res = new HashMap<String, String>();
+		String activity = "</activity>";
 		String str = FileUtils.fileToString(f.getAbsolutePath());
 		String strLower = str.toLowerCase();
-		res.put("head", str.substring(0, strLower.indexOf("</trkseg>")));
-		res.put("foot", str.substring(strLower.indexOf("</trkseg>"), str.length()));
+		res.put("head", str.substring(0, strLower.lastIndexOf(activity) + activity.length()));
+		res.put("foot", str.substring(strLower.lastIndexOf(activity) + activity.length(), str.length()));
 		return res;
 	}
 	
 	/**
-	 * Get the content between trkseg tag
+	 * Get the content between activity tag
 	 * @param f
 	 * @return
 	 * @throws IOException
 	 */
-	private String getTrkseg(File f) throws IOException {
+	private String getActivitySeg(File f) throws IOException {
 		String str = FileUtils.fileToString(f.getAbsolutePath());
+		String startActivity = "<activity";
+		String endActivity = "</activity>";
 		String strLower = str.toLowerCase();
-		return str.substring(strLower.indexOf("<trkseg>") + "<trkseg>".length(), strLower.indexOf("</trkseg>"));
+		return str.substring(strLower.indexOf(startActivity), strLower.indexOf(endActivity) + endActivity.length());
 	}
 	
 	/**
-	 * Merge all gpx files contained into gpxFilesPath
-	 * @param gpxFilesPath
+	 * Merge all tcx files contained into tcxFilesPath
+	 * @param tcxFilesPath
 	 * @return
 	 * @throws Exception
 	 */
-	public String merge(String gpxFilesPath) throws Exception {
+	public String merge(String tcxFilesPath) throws Exception {
 		StringBuffer content = new StringBuffer("");
 		/* get all files */
-		List<File> allGpxFiles = this.getAllFiles(gpxFilesPath);
-		if(allGpxFiles.size() > 1) {
-			System.out.println("Found " + allGpxFiles.size() + " gpx files");
+		List<File> allTcxFiles = this.getAllFiles(tcxFilesPath);
+		if(allTcxFiles.size() > 1) {
+			System.out.println("Found " + allTcxFiles.size() + " tcx files");
 			/* order files by date - using <time>2019-09-12T06:38:31Z</time> */
-			List<File> orderedGpxFiles = this.orderFiles(allGpxFiles);
+			List<File> orderedTcxFiles = this.orderFiles(allTcxFiles);
 				
 			/* get head of first file and create the merged file called content */
-			Map<String,String> headFoot = this.getHeadFoot(orderedGpxFiles.get(0));
+			Map<String,String> headFoot = this.getHeadFoot(orderedTcxFiles.get(0));
 			content.append(headFoot.get("head"));
 			
 			/* put inside the content what is inside the trkseg segment of all the files */
-			for(int ii=1; ii<orderedGpxFiles.size(); ii++)
-				content.append(this.getTrkseg(orderedGpxFiles.get(ii)));
+			for(int ii=1; ii<orderedTcxFiles.size(); ii++)
+				content.append(this.getActivitySeg(orderedTcxFiles.get(ii)));
 			
 			/* append the foot */
 			content.append(headFoot.get("foot"));
 			
 		} else {
-			System.out.println("Found " + allGpxFiles.size() + " gpx files. Nothing to do");
+			System.out.println("Found " + allTcxFiles.size() + " tcx files. Nothing to do");
 		}
 
 	
 		return content.toString();
 	}
+
 }

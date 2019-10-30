@@ -1,7 +1,9 @@
-package prg.gpxmerger;
+package prg.merger.main;
 
 import java.util.Date;
 
+import prg.merger.Merger;
+import prg.merger.gpxmerger.GpxMerger;
 import utils.FileUtils;
 
 /**
@@ -20,7 +22,7 @@ public class MainGpxMerger {
 			if(args.length > 0 && args[0] != null)
 				gpxFilesPath = args[0];
 			
-			GpxMerger gpxMerger = new GpxMerger();
+			Merger gpxMerger = new GpxMerger();
 			String mergedStr = gpxMerger.merge(gpxFilesPath);
 			if(!"".equals(mergedStr))
 				FileUtils.writeFile(gpxFilesPath + "\\" + OUTPUT_FILE_NAME, mergedStr);

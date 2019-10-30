@@ -37,11 +37,11 @@ public class RestSender {
 	
 	/* Header for Janus Admin UI */
 	public static String JANUS_ADMIN_UI_AUTHENTICATION = "Janus-Admin-Authorization";
-	public static String ADMIN_UI_AUTHENTICATION_TOKEN = "466fe746-354b-45cd-87a3-823098dbf9ce";
+	public static String ADMIN_UI_AUTHENTICATION_TOKEN = "e0b0f482-19b3-4801-840e-37b3025ffaa5";
 	
 	/* Header for Janus Connector */
 	public static String JANUS_MS_AUTHENTICATION = "Janus-MS-Authentication";
-	public static String MS_AUTHENTICATION_TOKEN = "c02fd670-4b1b-428a-a899-d3015029989a";
+	public static String MS_AUTHENTICATION_TOKEN = "dbd23150-f844-4f7e-90bd-3ae2b53118f5";
 	
     /* Header for Third party */
     public static String JANUS_THIRD_PARTY_AUTHENTICATION = "Janus-TP-Authorization";
