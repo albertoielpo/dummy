@@ -12,7 +12,7 @@ import utils.FileUtils;
  */
 public class MainMerger {
 
-	private static String OUTPUT_FILE_NAME = "merge.";
+	private static String OUTPUT_FILE_NAME = "merge" + new Date().getTime() + ".";
 
 	public static void main(String[] args) {
 
