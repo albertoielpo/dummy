@@ -18,7 +18,7 @@ import utils.Utils;
  */
 public class TcxMerger implements Merger {
 
-	private static String TCX_EXTENTION = ".tcx";
+	private static String TCX_EXTENSION = ".tcx";
 	private static String LAP_TAG = "<lap starttime=\"";
 	private static String TRACK_START_TAG = "<track>";
 	private static String TRACK_END_TAG = "</track>";
@@ -48,7 +48,7 @@ public class TcxMerger implements Merger {
 		if(f.isDirectory()) {
 			File[] files = f.listFiles();
 			for(File tcx: files) {
-				if(tcx.isFile() && tcx.getAbsolutePath().toLowerCase().endsWith(TCX_EXTENTION)) {
+				if(tcx.isFile() && tcx.getAbsolutePath().toLowerCase().endsWith(TCX_EXTENSION)) {
 					allTcx.add(tcx);
 				}
 			}

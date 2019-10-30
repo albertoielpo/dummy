@@ -21,25 +21,25 @@ public class MainMerger {
 		try {
 			if (args.length > 1 && args[1] != null) {
 				String filesPath = args[0];
-				String extention = args[1];
-				if (!(extention.equalsIgnoreCase("gpx") || extention.equalsIgnoreCase("tcx"))) {
-					System.out.println("Invalid extention: "+extention+ " - allowed only gpx and tcx");
+				String extension = args[1];
+				if (!(extension.equalsIgnoreCase("gpx") || extension.equalsIgnoreCase("tcx"))) {
+					System.out.println("Invalid extension: "+extension+ " - allowed only gpx and tcx");
 				} else {
 					String mergedStr = "";
-					if (extention.equalsIgnoreCase("gpx")) {
+					if (extension.equalsIgnoreCase("gpx")) {
 						Merger gpxMerger = new GpxMerger();
 						mergedStr = gpxMerger.merge(filesPath);
-					} else if (extention.equalsIgnoreCase("tcx")) {
+					} else if (extension.equalsIgnoreCase("tcx")) {
 						Merger tcxMerger = new TcxMerger();
 						mergedStr = tcxMerger.merge(filesPath);
 					}
 
 					if (!"".equals(mergedStr))
-						FileUtils.writeFile(filesPath + "\\" + OUTPUT_FILE_NAME + extention, mergedStr);
+						FileUtils.writeFile(filesPath + "\\" + OUTPUT_FILE_NAME + extension, mergedStr);
 				}
 
 			} else {
-				System.out.println("Invalid args - program should be launch with (folder) (extention) params");
+				System.out.println("Invalid args - program should be launch with (folder) (extension) params");
 				System.out.println("Example: x:\\> %JAVA_HOME%\\bin\\java -jar merger.jar . tcx");
 			}
 
