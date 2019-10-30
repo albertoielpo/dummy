@@ -23,7 +23,7 @@ public class MainMerger {
 				String filesPath = args[0];
 				String extention = args[1];
 				if (!(extention.equalsIgnoreCase("gpx") || extention.equalsIgnoreCase("tcx"))) {
-					System.out.println("invalid extention - allowed only gpx and tcx");
+					System.out.println("Invalid extention: "+extention+ " - allowed only gpx and tcx");
 				} else {
 					String mergedStr = "";
 					if (extention.equalsIgnoreCase("gpx")) {
@@ -40,6 +40,7 @@ public class MainMerger {
 
 			} else {
 				System.out.println("Invalid args - program should be launch with (folder) (extention) params");
+				System.out.println("Example: x:\\> %JAVA_HOME%\\bin\\java -jar merger.jar . tcx");
 			}
 
 		} catch (Exception e) {
