@@ -18,7 +18,25 @@ import utils.Utils;
  */
 public class TcxMerger implements Merger {
 
-
+	private static String TCX_EXTENTION = ".tcx";
+	private static String LAP_TAG = "<lap starttime=\"";
+	private static String TRACK_START_TAG = "<track>";
+	private static String TRACK_END_TAG = "</track>";
+	
+	private static String TOTAL_TIME_SECONDS_TAG = "<totaltimeseconds>";
+	private static String TOTAL_TIME_SECONDS_END_TAG = "</totaltimeseconds>";
+	private static String DISTANCE_METERS_TAG = "<distancemeters>";
+	private static String DISTANCE_METERS_END_TAG = "</distancemeters>";
+	private static String CALORIES_TAG = "<calories>";
+	private static String CALORIES_END_TAG = "</calories>";
+	
+	private static String CAMEL_TOTAL_TIME_SECONDS_TAG = "<TotalTimeSeconds>";
+	private static String CAMEL_TOTAL_TIME_SECONDS_END_TAG = "</TotalTimeSeconds>";
+	private static String CAMEL_DISTANCE_METERS_TAG = "<DistanceMeters>";
+	private static String CAMEL_DISTANCE_METERS_END_TAG = "</DistanceMeters>";
+	private static String CAMEL_CALORIES_TAG = "<Calories>";
+	private static String CAMEL_CALORIES_END_TAG = "</Calories>";
+	
 	/**
 	 * Get all the tcx files in one directory
 	 * @param path
@@ -30,7 +48,7 @@ public class TcxMerger implements Merger {
 		if(f.isDirectory()) {
 			File[] files = f.listFiles();
 			for(File tcx: files) {
-				if(tcx.isFile() && tcx.getAbsolutePath().toLowerCase().endsWith(".tcx")) {
+				if(tcx.isFile() && tcx.getAbsolutePath().toLowerCase().endsWith(TCX_EXTENTION)) {
 					allTcx.add(tcx);
 				}
 			}
@@ -39,13 +57,13 @@ public class TcxMerger implements Merger {
 	}
 	
 	/**
-	 * Order a list of file using <Lap StartTime> tag. If not found into the gpx use current unix timestamp
+	 * Order a list of file using <Lap StartTime> tag. If not found into the tcx use current unix timestamp
 	 * @param files
 	 * @return
 	 * @throws IOException
 	 */
 	private List<File> orderFiles(List<File> files) throws IOException{
-		String lap = "<lap starttime=\"";
+		String lap = LAP_TAG;
 		List<File> res = new ArrayList<File>();
 		Map<Long, File> mapFiles = new TreeMap<Long, File>();
 		for(File f: files) {
@@ -73,11 +91,10 @@ public class TcxMerger implements Merger {
 	 */
 	private Map<String, String> getHeadFoot(File f) throws IOException {
 		Map<String, String> res = new HashMap<String, String>();
-		String activity = "</activity>";
 		String str = FileUtils.fileToString(f.getAbsolutePath());
 		String strLower = str.toLowerCase();
-		res.put("head", str.substring(0, strLower.lastIndexOf(activity) + activity.length()));
-		res.put("foot", str.substring(strLower.lastIndexOf(activity) + activity.length(), str.length()));
+		res.put("head", str.substring(0, strLower.lastIndexOf(TRACK_END_TAG) + TRACK_END_TAG.length()));
+		res.put("foot", str.substring(strLower.lastIndexOf(TRACK_END_TAG) + TRACK_END_TAG.length(), str.length()));
 		return res;
 	}
 	
@@ -89,10 +106,75 @@ public class TcxMerger implements Merger {
 	 */
 	private String getActivitySeg(File f) throws IOException {
 		String str = FileUtils.fileToString(f.getAbsolutePath());
-		String startActivity = "<activity";
-		String endActivity = "</activity>";
 		String strLower = str.toLowerCase();
-		return str.substring(strLower.indexOf(startActivity), strLower.indexOf(endActivity) + endActivity.length());
+		return str.substring(strLower.indexOf(TRACK_START_TAG), strLower.lastIndexOf(TRACK_END_TAG) + TRACK_END_TAG.length());
+	}
+	
+	/**
+	 * Not working with Strava
+	 * @param fs
+	 * @return
+	 * @throws IOException
+	 */
+	@SuppressWarnings("unused")
+	private Map<String, String> sumFilesHeaderStats(List<File> fs) throws IOException {
+		
+		float totalTimeSeconds = 0;
+		float distanceMeters = 0;
+		int calories = 0;
+		
+		Map<String, String> res = new HashMap<String, String>();
+		for(File f : fs) {
+			String str = FileUtils.fileToString(f.getAbsolutePath());
+			String strLower = str.toLowerCase();
+			String head = str.substring(0, strLower.indexOf(TRACK_START_TAG));;
+			String headLower = head.toLowerCase();
+			
+			String tts = head.substring(headLower.indexOf(TOTAL_TIME_SECONDS_TAG) + TOTAL_TIME_SECONDS_TAG.length() , headLower.indexOf(TOTAL_TIME_SECONDS_END_TAG));
+			String dm = head.substring(headLower.indexOf(DISTANCE_METERS_TAG) + DISTANCE_METERS_TAG.length() , headLower.indexOf(DISTANCE_METERS_END_TAG));
+			String cal = head.substring(headLower.indexOf(CALORIES_TAG) + CALORIES_TAG.length() , headLower.indexOf(CALORIES_END_TAG));
+			
+			try {
+				float ttsF = Float.valueOf(tts);
+				totalTimeSeconds = totalTimeSeconds + ttsF;
+			} catch (Exception e) {
+				System.out.println("Invalid Total Time Second");
+			}
+			
+			try {
+				float dmF = Float.valueOf(dm);
+				distanceMeters = distanceMeters + dmF;
+			} catch (Exception e) {
+				System.out.println("Invalid Distance meters");
+			}
+			
+			try {
+				int calF = Integer.valueOf(cal);
+				calories = calories + calF;
+			} catch (Exception e) {
+				System.out.println("Invalid Calories");
+			}
+		}
+		
+		res.put("totalTimeSeconds", CAMEL_TOTAL_TIME_SECONDS_TAG + totalTimeSeconds + CAMEL_TOTAL_TIME_SECONDS_END_TAG);
+		res.put("distanceMeters", CAMEL_DISTANCE_METERS_TAG + distanceMeters + CAMEL_DISTANCE_METERS_END_TAG);
+		res.put("calories", CAMEL_CALORIES_TAG + calories + CAMEL_CALORIES_END_TAG);
+		
+		return res;
+	}
+	
+	/**
+	 * Not working with Strava
+	 * @param head
+	 * @param stats
+	 * @return
+	 */
+	@SuppressWarnings("unused")
+	private String updateHeadWithStats(String head, Map<String, String> stats) {
+		head = head.replaceAll("(?i)"+TOTAL_TIME_SECONDS_TAG + ".+" + "(?i)"+TOTAL_TIME_SECONDS_END_TAG, stats.get("totalTimeSeconds"));
+		head = head.replaceAll("(?i)"+DISTANCE_METERS_TAG + ".+" +"(?i)"+ DISTANCE_METERS_END_TAG, stats.get("distanceMeters"));
+		head = head.replaceAll("(?i)"+CALORIES_TAG + ".+" + "(?i)"+CALORIES_END_TAG, stats.get("calories"));
+		return head;
 	}
 	
 	/**
