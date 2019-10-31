@@ -9,33 +9,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import prg.merger.AbstractMerger;
 import prg.merger.Merger;
 import utils.FileUtils;
 import utils.Utils;
 
 /**
+ * GpxMerger merge multiple gpx files into one without data loss
  * @author Alberto Ielpo
  */
-public class GpxMerger implements Merger {
+public class GpxMerger extends AbstractMerger implements Merger {
 
-	/**
-	 * Get all the gpx files in one directory
-	 * @param path
-	 * @return
-	 */
-	private List<File> getAllFiles(String path) {
-		List<File> allGpx = new ArrayList<File>();
-		File f = new File(path);
-		if(f.isDirectory()) {
-			File[] files = f.listFiles();
-			for(File gpx: files) {
-				if(gpx.isFile() && gpx.getAbsolutePath().toLowerCase().endsWith(".gpx")) {
-					allGpx.add(gpx);
-				}
-			}
-		}
-		return allGpx;
-	}
+	private static String GPX_EXTENSION = ".gpx";
+	private static String TIME_TAG = "<time>";
+	private static String TIME_END_TAG = "</time>";
+	private static String TRACK_TAG = "<trkseg>";
+	private static String TRACK_END_TAG = "</trkseg>";
 	
 	/**
 	 * Order a list of file using <time> tag. If not found into the gpx use current unix timestamp
@@ -49,8 +38,8 @@ public class GpxMerger implements Merger {
 		for(File f: files) {
 			String strLower = FileUtils.fileToString(f.getAbsolutePath()).toLowerCase();
 			long unixDate = new Date().getTime();
-			if(strLower.indexOf("<time>") > -1) {
-				String d = strLower.substring(strLower.indexOf("<time>") + "<time>".length(), strLower.indexOf("</time>"));
+			if(strLower.indexOf(TIME_TAG) > -1) {
+				String d = strLower.substring(strLower.indexOf(TIME_TAG) + TIME_TAG.length(), strLower.indexOf(TIME_END_TAG));
 				unixDate = Utils.mapAsUnixDate(d.replaceAll("t", " ").replaceAll("z",""), "yyyy-MM-dd hh:mm:ss", "GMT");
 			}
 			
@@ -73,8 +62,8 @@ public class GpxMerger implements Merger {
 		Map<String, String> res = new HashMap<String, String>();
 		String str = FileUtils.fileToString(f.getAbsolutePath());
 		String strLower = str.toLowerCase();
-		res.put("head", str.substring(0, strLower.indexOf("</trkseg>")));
-		res.put("foot", str.substring(strLower.indexOf("</trkseg>"), str.length()));
+		res.put("head", str.substring(0, strLower.indexOf(TRACK_END_TAG)));
+		res.put("foot", str.substring(strLower.indexOf(TRACK_END_TAG), str.length()));
 		return res;
 	}
 	
@@ -87,7 +76,7 @@ public class GpxMerger implements Merger {
 	private String getTrkseg(File f) throws IOException {
 		String str = FileUtils.fileToString(f.getAbsolutePath());
 		String strLower = str.toLowerCase();
-		return str.substring(strLower.indexOf("<trkseg>") + "<trkseg>".length(), strLower.indexOf("</trkseg>"));
+		return str.substring(strLower.indexOf(TRACK_TAG) + TRACK_TAG.length(), strLower.indexOf(TRACK_END_TAG));
 	}
 	
 	/**
@@ -99,7 +88,7 @@ public class GpxMerger implements Merger {
 	public String merge(String gpxFilesPath) throws Exception {
 		StringBuffer content = new StringBuffer("");
 		/* get all files */
-		List<File> allGpxFiles = this.getAllFiles(gpxFilesPath);
+		List<File> allGpxFiles = this.getAllFiles(gpxFilesPath, GPX_EXTENSION);
 		if(allGpxFiles.size() > 1) {
 			System.out.println("Found " + allGpxFiles.size() + " gpx files");
 			/* order files by date - using <time>2019-09-12T06:38:31Z</time> */

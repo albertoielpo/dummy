@@ -9,52 +9,39 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import prg.merger.AbstractMerger;
 import prg.merger.Merger;
 import utils.FileUtils;
 import utils.Utils;
 
 /**
+ * TcxMerger merge multiple tcx files into one without data loss
  * @author Alberto Ielpo
  */
-public class TcxMerger implements Merger {
+public class TcxMerger extends AbstractMerger implements Merger {
 
 	private static String TCX_EXTENSION = ".tcx";
 	private static String LAP_TAG = "<lap starttime=\"";
 	private static String TRACK_START_TAG = "<track>";
 	private static String TRACK_END_TAG = "</track>";
 	
+	/**
+	 * Sum stats 
+	 * @see {prg.merger.tcxmerger.TcxMerger#sumFilesHeaderStats} 
+	 * @see {prg.merger.tcxmerger.TcxMerger#updateHeadWithStats}
+	 */
 	private static String TOTAL_TIME_SECONDS_TAG = "<totaltimeseconds>";
 	private static String TOTAL_TIME_SECONDS_END_TAG = "</totaltimeseconds>";
 	private static String DISTANCE_METERS_TAG = "<distancemeters>";
 	private static String DISTANCE_METERS_END_TAG = "</distancemeters>";
 	private static String CALORIES_TAG = "<calories>";
 	private static String CALORIES_END_TAG = "</calories>";
-	
 	private static String CAMEL_TOTAL_TIME_SECONDS_TAG = "<TotalTimeSeconds>";
 	private static String CAMEL_TOTAL_TIME_SECONDS_END_TAG = "</TotalTimeSeconds>";
 	private static String CAMEL_DISTANCE_METERS_TAG = "<DistanceMeters>";
 	private static String CAMEL_DISTANCE_METERS_END_TAG = "</DistanceMeters>";
 	private static String CAMEL_CALORIES_TAG = "<Calories>";
 	private static String CAMEL_CALORIES_END_TAG = "</Calories>";
-	
-	/**
-	 * Get all the tcx files in one directory
-	 * @param path
-	 * @return
-	 */
-	private List<File> getAllFiles(String path) {
-		List<File> allTcx = new ArrayList<File>();
-		File f = new File(path);
-		if(f.isDirectory()) {
-			File[] files = f.listFiles();
-			for(File tcx: files) {
-				if(tcx.isFile() && tcx.getAbsolutePath().toLowerCase().endsWith(TCX_EXTENSION)) {
-					allTcx.add(tcx);
-				}
-			}
-		}
-		return allTcx;
-	}
 	
 	/**
 	 * Order a list of file using <Lap StartTime> tag. If not found into the tcx use current unix timestamp
@@ -186,7 +173,7 @@ public class TcxMerger implements Merger {
 	public String merge(String tcxFilesPath) throws Exception {
 		StringBuffer content = new StringBuffer("");
 		/* get all files */
-		List<File> allTcxFiles = this.getAllFiles(tcxFilesPath);
+		List<File> allTcxFiles = this.getAllFiles(tcxFilesPath, TCX_EXTENSION);
 		if(allTcxFiles.size() > 1) {
 			System.out.println("Found " + allTcxFiles.size() + " tcx files");
 			/* order files by date - using <time>2019-09-12T06:38:31Z</time> */
