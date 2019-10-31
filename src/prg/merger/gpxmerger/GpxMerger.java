@@ -85,10 +85,11 @@ public class GpxMerger extends AbstractMerger implements Merger {
 	 * @return
 	 * @throws Exception
 	 */
+	@Override
 	public String merge(String gpxFilesPath) throws Exception {
 		StringBuffer content = new StringBuffer("");
 		/* get all files */
-		List<File> allGpxFiles = this.getAllFiles(gpxFilesPath, GPX_EXTENSION);
+		List<File> allGpxFiles = FileUtils.getAllFiles(gpxFilesPath, GPX_EXTENSION);
 		if(allGpxFiles.size() > 1) {
 			System.out.println("Found " + allGpxFiles.size() + " gpx files");
 			/* order files by date - using <time>2019-09-12T06:38:31Z</time> */

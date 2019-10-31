@@ -170,10 +170,11 @@ public class TcxMerger extends AbstractMerger implements Merger {
 	 * @return
 	 * @throws Exception
 	 */
+	@Override
 	public String merge(String tcxFilesPath) throws Exception {
 		StringBuffer content = new StringBuffer("");
 		/* get all files */
-		List<File> allTcxFiles = this.getAllFiles(tcxFilesPath, TCX_EXTENSION);
+		List<File> allTcxFiles = FileUtils.getAllFiles(tcxFilesPath, TCX_EXTENSION);
 		if(allTcxFiles.size() > 1) {
 			System.out.println("Found " + allTcxFiles.size() + " tcx files");
 			/* order files by date - using <time>2019-09-12T06:38:31Z</time> */

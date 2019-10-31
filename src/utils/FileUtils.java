@@ -1,8 +1,11 @@
 package utils;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 /**
  * @author Alberto Ielpo
  */
@@ -43,5 +46,26 @@ public class FileUtils {
 		Files.write(Paths.get(path), content.getBytes());
 	}
 
+	
+	/**
+	 * Get all files using extension as filter
+	 * @param path
+	 * @param extension
+	 * @return
+	 * @throws Exception
+	 */
+	public static List<File> getAllFiles(String path, String extension) throws Exception {
+		List<File> allFiles = new ArrayList<File>();
+		File f = new File(path);
+		if(f.isDirectory()) {
+			File[] files = f.listFiles();
+			for(File file: files) {
+				if(file.isFile() && file.getAbsolutePath().toLowerCase().endsWith(extension)) {
+					allFiles.add(file);
+				}
+			}
+		}
+		return allFiles;
+	}
 	
 }
