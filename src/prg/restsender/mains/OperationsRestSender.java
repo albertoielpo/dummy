@@ -28,7 +28,8 @@ public class OperationsRestSender {
 
 		try {
 			operations.put("operations", Arrays.asList(
-				getPaymentOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+				getBillingOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					//getValidationOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
 			));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -72,22 +73,52 @@ public class OperationsRestSender {
 		operation.put("amount", 8.0);
 		operation.put("userCategoryIdentifier", 10L);
 		operation.put("transactionId", "aaa123tran");
-		operation.put("periodFrom", Calendar.getInstance().getTime().getTime());
-		operation.put("periodFromGmt", 120);
-		operation.put("periodTo", Calendar.getInstance().getTime().getTime());
-		operation.put("periodToGmt" , 120);
-		operation.put("payerName", "ciaociao");
-		operation.put("batchNumber", 12345);
-		operation.put("invoiceNumber", 123L);
-		operation.put("paymentId", 555L);
-		operation.put("notes", "notes");
-		operation.put("surcharge", new BigDecimal("111.321"));
+//		operation.put("periodFrom", Calendar.getInstance().getTime().getTime());
+//		operation.put("periodFromGmt", 120);
+//		operation.put("periodTo", Calendar.getInstance().getTime().getTime());
+//		operation.put("periodToGmt" , 120);
+//		operation.put("payerName", "ciaociao");
+//		operation.put("batchNumber", 12345);
+//		operation.put("invoiceNumber", 123L);
+//		operation.put("paymentId", 555L);
+//		operation.put("notes", "notes");
+//		operation.put("surcharge", new BigDecimal("111.321"));
 		//operation.put("offlineCleared", true); 
 		//operation.put("productProfileType", "BASE_CONTRACT");
 		Map<String, Object> card = new HashMap<String, Object>();
+		card.put("type","HOTEL");
+		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
+		card.put("identifier", "hotel-000-" + identifier);
+		
+		operation.put("card", card);
+		
+		return operation;
+	}
+	
+	private static Map<String, Object> getBillingOperation(long identifier){
+		Map<String, Object> operation = new HashMap<String, Object>(); 
+		
+		operation.put("operationType", "BILLING");
+		operation.put("identifier", identifier);
+		operation.put("entityId", "3"); 
+		operation.put("facilityCode", "123");
+		operation.put("managementSystemGmt", Short.valueOf("120"));
+		operation.put("result", "VALID");// = ValidationResult.VALID;
+		operation.put("timestamp", Calendar.getInstance().getTime().getTime());
+		operation.put("additionalInformation", "additional information");
+		operation.put("billOriginatorType", "MDCC");
+		operation.put("billingOperationType", "ACCOUNT_BILL");
+		operation.put("accountIdentifier", "5967");
+		operation.put("sessionId",3L);
+		operation.put("amount", 10L);
+		operation.put("vatAmount",40L);
+		operation.put("amountDue", 30L);
+		operation.put("productProfileType","BASE_CONTRACT");
+
+		Map<String, Object> card = new HashMap<String, Object>();
 		card.put("type","SEASONAL");
 		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
-		card.put("identifier", "9389_identifier");
+		card.put("identifier", "3654_identifier");
 		
 		operation.put("card", card);
 		
@@ -117,9 +148,9 @@ public class OperationsRestSender {
 		operation.put("joinAmount", new BigDecimal(3));
 		
 		Map<String, Object> card = new HashMap<String, Object>();
-		card.put("type","ANONYMOUS");
+		card.put("type","HOTEL");
 		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
-		card.put("identifier", "anony-000-" + identifier);
+		card.put("identifier", "hotel-000-" + identifier);
 		
 		operation.put("card", card);
 		
@@ -152,9 +183,9 @@ public class OperationsRestSender {
 		operation.put("validationOperationType", "VOUCHER_VALIDATION");
 		Map<String, Object> card = new HashMap<String, Object>();
 		
-		card.put("type","TRANSIENT");
+		card.put("type","HOTEL");
 		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
-		card.put("identifier", "tra-000-" + identifier);
+		card.put("identifier", "hotel-000-" + identifier);
 		operation.put("card", card);
 		
 		operation.put("entityId", "d3");	//3 vp
