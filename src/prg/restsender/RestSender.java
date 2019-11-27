@@ -26,6 +26,8 @@ public class RestSender {
 	public static String TRACKING_HISTORY_SEASONAL_GET_ALL_EVENTS_URL = PROTOCOL + HOST_PORT + "/janus/api/card/tracking/history/seasonal/getAllEvents";
 	public static String SCHEDULING_ACTIONS_CREATE = PROTOCOL + HOST_PORT + "/janus/api/scheduling/actions/create";
 	public static String CACHE_EVICT_ALL = PROTOCOL + HOST_PORT + "/janus/api/cache/evict/all";
+	public static String PUSH_SEASONALCARD_MANAGEMENTSYSTEM_STATUS = PROTOCOL + HOST_PORT + "/janus/api/connector/card/seasonal/managementsystems/status/push";
+	public static String PUSH_SEASONALCARD_MANAGEMENTSYSTEM_STATUS_MULTI = PROTOCOL + HOST_PORT + "/janus/api/connector/card/seasonal/managementsystems/status/multi/push";
 	
 	/* Content type */
 	public static String CONTENT_TYPE = "Content-Type";
@@ -33,15 +35,17 @@ public class RestSender {
 	
 	/* Header for Janus UI */
 	public static String JANUS_UI_AUTHENTICATION = "Janus-Authorization";
-	public static String UI_AUTHENTICATION_TOKEN = "e2f9a152-5a58-448d-b2b3-309bf6723617"; 
-	
 	/* Header for Janus Admin UI */
 	public static String JANUS_ADMIN_UI_AUTHENTICATION = "Janus-Admin-Authorization";
 	public static String ADMIN_UI_AUTHENTICATION_TOKEN = "e0b0f482-19b3-4801-840e-37b3025ffaa5";
+	public static String UI_AUTHENTICATION_TOKEN = "6abbbd67-496b-3109-aad0-1bd7d4566879"; 
 	
 	/* Header for Janus Connector */
 	public static String JANUS_MS_AUTHENTICATION = "Janus-MS-Authentication";
-	public static String MS_AUTHENTICATION_TOKEN = "dbd23150-f844-4f7e-90bd-3ae2b53118f5";
+	//MS_AUTHENTICATION_TOKEN = select * from janus.management_system where active = true
+
+
+	public static String MS_AUTHENTICATION_TOKEN = "b5477943-e581-473e-98a6-a493f37c77f1";
 	
     /* Header for Third party */
     public static String JANUS_THIRD_PARTY_AUTHENTICATION = "Janus-TP-Authorization";
