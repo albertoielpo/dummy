@@ -41,7 +41,7 @@ public class CongressCardRest {
 			map.put("centralOperationType", null);
 			map.put("congressRawData", RandomUtils.randomString());
 			mapPar.put("congressCards", Arrays.asList(map));
-			restSender.postForJanusConnector("http://localhost:8080/janus/api/connector/card/congress/push", mapPar);
+			restSender.postForJanusConnector(RestSender.CONGRESS_PUSH, mapPar);
 		}
 
 		System.out.println("End CongressCardRest " + new Date());

@@ -28,6 +28,8 @@ public class RestSender {
 	public static String CACHE_EVICT_ALL = PROTOCOL + HOST_PORT + "/janus/api/cache/evict/all";
 	public static String PUSH_SEASONALCARD_MANAGEMENTSYSTEM_STATUS = PROTOCOL + HOST_PORT + "/janus/api/connector/card/seasonal/managementsystems/status/push";
 	public static String PUSH_SEASONALCARD_MANAGEMENTSYSTEM_STATUS_MULTI = PROTOCOL + HOST_PORT + "/janus/api/connector/card/seasonal/managementsystems/status/multi/push";
+	public static String CONGRESS_PUSH = PROTOCOL + HOST_PORT + "/janus/api/connector/card/congress/push";
+	public static String VERIFICATION_PUSH = PROTOCOL + HOST_PORT + "/janus/api/connector/externalticketing/verification";
 	
 	/* Content type */
 	public static String CONTENT_TYPE = "Content-Type";
@@ -43,9 +45,7 @@ public class RestSender {
 	/* Header for Janus Connector */
 	public static String JANUS_MS_AUTHENTICATION = "Janus-MS-Authentication";
 	//MS_AUTHENTICATION_TOKEN = select * from janus.management_system where active = true
-
-
-	public static String MS_AUTHENTICATION_TOKEN = "b5477943-e581-473e-98a6-a493f37c77f1";
+	public static String MS_AUTHENTICATION_TOKEN = "6231fbf4-fe8d-46b4-92f2-63669cf61ceb";
 	
     /* Header for Third party */
     public static String JANUS_THIRD_PARTY_AUTHENTICATION = "Janus-TP-Authorization";
@@ -60,6 +60,14 @@ public class RestSender {
 		} else {
 			System.out.println("Response Error - HTTP Response Code: " + httpStatusCode);
 		}
+    }
+    
+    /**
+     * Print response body
+     * @param body
+     */
+    private void printResponseResult(String body) {
+		System.out.println("Response body: " + body);
     }
     
     /**
@@ -83,6 +91,24 @@ public class RestSender {
 			.header(JANUS_MS_AUTHENTICATION, MS_AUTHENTICATION_TOKEN)
 			.send(json)
 			.code());
+	}
+	
+	public void postForJanusConnectorWithResponse(String url, Map<String,Object> mapPar) {
+
+		ObjectMapper mapper = new ObjectMapper();
+		String json = null;
+		try{
+			json = mapper.writeValueAsString(mapPar);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+			
+		this.printResponseResult(HttpRequestUtils.post(url)
+			.header(CONTENT_TYPE, APPLICATION_JSON_UTF8)
+			.header(JANUS_MS_AUTHENTICATION, MS_AUTHENTICATION_TOKEN)
+			.send(json)
+			.body());
 	}
 	
 	/**

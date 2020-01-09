@@ -28,7 +28,7 @@ public class OperationsRestSender {
 
 		try {
 			operations.put("operations", Arrays.asList(
-				getBillingOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+				getPaymentOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
 					//getValidationOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
 			));
 		} catch (Exception e) {
@@ -64,7 +64,7 @@ public class OperationsRestSender {
 		operation.put("timestamp", Calendar.getInstance().getTime().getTime());
 		operation.put("managementSystemRejectionCode", "rejcode");
 		operation.put("additionalInformation", "additional information");
-		operation.put("paymentOperationType", "COIN_INSERTED");
+		operation.put("paymentOperationType", "NONE_PARKING_PRODUCT_SOLD");
 		operation.put("paymentType", "CASH");
 		operation.put("rechargedValue", 13d);
 		operation.put("sessionId",3L);
@@ -72,23 +72,26 @@ public class OperationsRestSender {
 		operation.put("payed", 9.0);
 		operation.put("amount", 8.0);
 		operation.put("userCategoryIdentifier", 10L);
-		operation.put("transactionId", "aaa123tran");
-//		operation.put("periodFrom", Calendar.getInstance().getTime().getTime());
-//		operation.put("periodFromGmt", 120);
-//		operation.put("periodTo", Calendar.getInstance().getTime().getTime());
-//		operation.put("periodToGmt" , 120);
-//		operation.put("payerName", "ciaociao");
-//		operation.put("batchNumber", 12345);
-//		operation.put("invoiceNumber", 123L);
-//		operation.put("paymentId", 555L);
-//		operation.put("notes", "notes");
-//		operation.put("surcharge", new BigDecimal("111.321"));
-		//operation.put("offlineCleared", true); 
-		//operation.put("productProfileType", "BASE_CONTRACT");
+		operation.put("transactionId", "transaction id");
+		operation.put("noneParkingProductCount", 23);
+		operation.put("noneParkingProductName", "noneParkingProductName");
+		
+		operation.put("periodFrom", Calendar.getInstance().getTime().getTime());
+		operation.put("periodFromGmt", 120);
+		operation.put("periodTo", Calendar.getInstance().getTime().getTime());
+		operation.put("periodToGmt" , 120);
+		operation.put("payerName", "payer name");
+		operation.put("batchNumber", 12345);
+		operation.put("invoiceNumber", 123L);
+		operation.put("paymentId", 555L);
+		operation.put("notes", "notes");
+		operation.put("surcharge", new BigDecimal("111.321"));
+		operation.put("offlineCleared", true); 
+		operation.put("productProfileType", "BASE_CONTRACT");
 		Map<String, Object> card = new HashMap<String, Object>();
-		card.put("type","HOTEL");
+		card.put("type","ANONYMOUS");
 		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
-		card.put("identifier", "hotel-000-" + identifier);
+		card.put("identifier", "anony-000-" + identifier);
 		
 		operation.put("card", card);
 		
