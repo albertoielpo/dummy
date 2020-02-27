@@ -215,7 +215,7 @@ public class Utils {
 		if(precision == -1) {
 			return res;
 		} else {
-			return res.setScale(precision, RoundingMode.CEILING);
+			return res.setScale(precision, RoundingMode.HALF_EVEN);
 		}
 		
 	}
