@@ -31,6 +31,9 @@ public class RestSender {
 	public static String CONGRESS_PUSH = PROTOCOL + HOST_PORT + "/janus/api/connector/card/congress/push";
 	public static String VERIFICATION_PUSH = PROTOCOL + HOST_PORT + "/janus/api/connector/externalticketing/verification";
 	
+	/* THIRD PARTY */
+	public static String TP_LOGIN = PROTOCOL + HOST_PORT + "/janus-integration/api/ext/login";
+	
 	/* Content type */
 	public static String CONTENT_TYPE = "Content-Type";
 	public static String APPLICATION_JSON_UTF8 = "application/json; charset=utf8";
@@ -45,7 +48,7 @@ public class RestSender {
 	/* Header for Janus Connector */
 	public static String JANUS_MS_AUTHENTICATION = "Janus-MS-Authentication";
 	//MS_AUTHENTICATION_TOKEN = select * from janus.management_system where active = true
-	public static String MS_AUTHENTICATION_TOKEN = "6231fbf4-fe8d-46b4-92f2-63669cf61ceb";
+	public static String MS_AUTHENTICATION_TOKEN = "d10153b4-f31b-4b20-a3cd-5bec12e241fc";
 	
     /* Header for Third party */
     public static String JANUS_THIRD_PARTY_AUTHENTICATION = "Janus-TP-Authorization";

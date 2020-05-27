@@ -2,10 +2,12 @@ package prg.restsender.mains;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,13 +30,25 @@ public class OperationsRestSender {
 
 		try {
 			operations.put("operations", Arrays.asList(
-				getPaymentOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					//getValidationOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					//getPaymentOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+				//getValidationOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
 			));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
+//		
+//		try {
+//			List opes = new ArrayList();
+//			for(int ii=0; ii<300; ii++)
+//				opes.add(getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER)));
+//			operations.put("operations", opes);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return;
+//		}
+
 
 /* Here to use JSON */
 //		operations.put("operations", 
@@ -46,6 +60,8 @@ public class OperationsRestSender {
 		restSender.postForJanusConnector(RestSender.OPERATION_PUSH_URL, operations);
 		System.out.println("End OperationsRestSender " + new Date());
 	}
+	
+	
 	
 	/**
 	 * 
@@ -64,7 +80,7 @@ public class OperationsRestSender {
 		operation.put("timestamp", Calendar.getInstance().getTime().getTime());
 		operation.put("managementSystemRejectionCode", "rejcode");
 		operation.put("additionalInformation", "additional information");
-		operation.put("paymentOperationType", "NONE_PARKING_PRODUCT_SOLD");
+		operation.put("paymentOperationType", "CARD_VALIDATION");
 		operation.put("paymentType", "CASH");
 		operation.put("rechargedValue", 13d);
 		operation.put("sessionId",3L);
@@ -146,14 +162,37 @@ public class OperationsRestSender {
 		operation.put("managementSystemRejectionCode", "rejcode");
 		operation.put("additionalInformation", "additional information");
 		operation.put("joinType", "SUCCESSFUL_ENTRY");	// SUCCESSFUL_ENTRY;	//SUCCESSFUL_EXIT
-		operation.put("presenceEntityId", "20");
-		operation.put("plate", "qq123bb");
+		operation.put("presenceEntityId", "1");
+		operation.put("plate", "PP123OO");
 		operation.put("joinAmount", new BigDecimal(3));
+
 		
 		Map<String, Object> card = new HashMap<String, Object>();
-		card.put("type","HOTEL");
-		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
-		card.put("identifier", "hotel-000-" + identifier);
+		
+//		card.put("type", "PREBOOKING");
+//		card.put("mediaType", "BARCODE");
+//		card.put("identifier", "1234-BOOKING");
+		
+		card.put("type","SEASONAL");
+		card.put("mediaType", "LICENSE_PLATE");
+		card.put("identifier", "9041_identifier");
+		
+//		card.put("type","EXTERNAL");
+//		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
+//		card.put("identifier", "external-ticket-2");
+//		
+//		card.put("type","TRANSIENT");
+//		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
+//		card.put("identifier", "PP123OO");
+//		
+//		card.put("type","ANONYMOUS");
+//		card.put("mediaType", "BARCODE");
+//		card.put("identifier", "ano-0002");
+		
+//		card.put("type","THIRD_PARTY");
+//		card.put("mediaType", "BARCODE");	// MediaTypeIdentifier.LICENSE_PLATE;
+//		card.put("identifier", "third-party-ticket-1");
+//		card.put("thirdPartyId", 1L);
 		
 		operation.put("card", card);
 		

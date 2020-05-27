@@ -36,9 +36,9 @@ public class MyObj implements Serializable {
 		this.myInt = myInt;
 	}
 	
-//	@Override
-//	public String toString(){
-//		return myVar + " " + myInt;
-//	}
+	@Override
+	public String toString(){
+		return myVar + " " + myInt;
+	}
 	
 }

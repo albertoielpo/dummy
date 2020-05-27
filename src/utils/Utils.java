@@ -1,5 +1,6 @@
 package utils;
 
+import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -9,6 +10,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.TimeZone;
 import java.util.UUID;
@@ -197,5 +199,30 @@ public class Utils {
 	public static String md5(final String inputStr) {
 		return Utils.encrypt(inputStr, "MD5", StandardCharsets.UTF_8, false);
 	}
+	
+	
+	
+	public static boolean isEmpty(Object obj) {
+		if (obj == null) {
+			return true;
+		}
+
+		if (obj.getClass().isArray()) {
+			return Array.getLength(obj) == 0;
+		}
+		if (obj instanceof CharSequence) {
+			return ((CharSequence) obj).length() == 0;
+		}
+		if (obj instanceof Collection) {
+			return ((Collection) obj).isEmpty();
+		}
+		if (obj instanceof Map) {
+			return ((Map) obj).isEmpty();
+		}
+
+		// else
+		return false;
+	}
+	
 	
 }
