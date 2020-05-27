@@ -1,6 +1,8 @@
 package utils;
 
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -201,7 +203,7 @@ public class Utils {
 	}
 	
 	
-	
+
 	public static boolean isEmpty(Object obj) {
 		if (obj == null) {
 			return true;
@@ -222,6 +224,45 @@ public class Utils {
 
 		// else
 		return false;
+	}
+	
+
+	/**
+	 * 
+	 * @param n
+	 * @param precision
+	 * @return
+	 */
+	private static BigDecimal doConvertToBigDecimal(final Number n, final int precision) {
+		if(n == null)
+			return null;
+		
+		var res = new BigDecimal(n.toString());
+		if(precision == -1) {
+			return res;
+		} else {
+			return res.setScale(precision, RoundingMode.HALF_EVEN);
+		}
+		
+	}
+	
+	/**
+	 * Convert a number to big decimal
+	 * @param n
+	 * @return
+	 */
+	public static BigDecimal convertToBigDecimal(final Number n) {
+		return Utils.doConvertToBigDecimal(n, -1);
+	}
+	
+	/**
+	 * Convert a number to big decimal using precision
+	 * @param n
+	 * @param precision
+	 * @return
+	 */
+	public static BigDecimal convertToBigDecimal(final Number n, final int precision) {
+		return Utils.doConvertToBigDecimal(n, precision);
 	}
 	
 	
