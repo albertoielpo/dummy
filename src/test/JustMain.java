@@ -1,17 +1,25 @@
 package test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JustMain {
 
-	
-	public static void main(String... args) {
+	public void pippo(long a, long b) {
 		
-		List<String> a = new ArrayList<String>();
-		var b = a.stream().map(c -> c.toUpperCase()).collect(Collectors.toList());
-		System.out.println(b);
+	}	
+	
+	
+	public static void main(String... args) throws Exception {
+		
+		Map<String, B> q = new HashMap<String, B>();
+		Map<String, A> w  =new HashMap<String, A>();
+		
+		A a = new A();
+		B b = new B();
+		
+		q.put("b", b);
+		
 		
 	}
 

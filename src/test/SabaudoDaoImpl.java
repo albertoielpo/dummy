@@ -4,6 +4,8 @@ import java.lang.reflect.Method;
 
 public class SabaudoDaoImpl extends SabaudoDaoAbs implements SabaudoDao {
 
+	public long a;
+	
 	@Override
 	@SabaudoAnnotation(stato = "statoSabaudo")
 	public boolean isSabaudo() {

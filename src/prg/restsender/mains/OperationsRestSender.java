@@ -30,8 +30,8 @@ public class OperationsRestSender {
 
 		try {
 			operations.put("operations", Arrays.asList(
-					//getPaymentOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					getPaymentOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
+					//getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
 				//getValidationOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
 			));
 		} catch (Exception e) {
@@ -80,7 +80,7 @@ public class OperationsRestSender {
 		operation.put("timestamp", Calendar.getInstance().getTime().getTime());
 		operation.put("managementSystemRejectionCode", "rejcode");
 		operation.put("additionalInformation", "additional information");
-		operation.put("paymentOperationType", "CARD_VALIDATION");
+		operation.put("paymentOperationType", "ISF_SETTLEMENT");
 		operation.put("paymentType", "CASH");
 		operation.put("rechargedValue", 13d);
 		operation.put("sessionId",3L);
@@ -108,8 +108,21 @@ public class OperationsRestSender {
 		card.put("type","ANONYMOUS");
 		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
 		card.put("identifier", "anony-000-" + identifier);
-		
+			
 		operation.put("card", card);
+		
+		Map<String,Object> isfInvoice = new HashMap<String,Object>();
+		isfInvoice.put("isfNumber", "isfNumber");
+		isfInvoice.put("licensePlate", "yy123qq");
+		isfInvoice.put("issueDate", 123456789L);
+		isfInvoice.put("issueDateGmt", Short.valueOf("120"));
+		isfInvoice.put("isfAmount", new BigDecimal("25.35"));
+		
+		Map<String,String> formData = new HashMap<String,String>();
+		formData.put("FIELD_4", "val3");
+		isfInvoice.put("formData", formData);
+		
+		operation.put("isfInvoice", isfInvoice);
 		
 		return operation;
 	}

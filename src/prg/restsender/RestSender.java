@@ -48,7 +48,7 @@ public class RestSender {
 	/* Header for Janus Connector */
 	public static String JANUS_MS_AUTHENTICATION = "Janus-MS-Authentication";
 	//MS_AUTHENTICATION_TOKEN = select * from janus.management_system where active = true
-	public static String MS_AUTHENTICATION_TOKEN = "d10153b4-f31b-4b20-a3cd-5bec12e241fc";
+	public static String MS_AUTHENTICATION_TOKEN = "397f562b-052a-4f4e-9261-a72390044fac";
 	
     /* Header for Third party */
     public static String JANUS_THIRD_PARTY_AUTHENTICATION = "Janus-TP-Authorization";
