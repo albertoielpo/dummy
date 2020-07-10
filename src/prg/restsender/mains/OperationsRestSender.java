@@ -22,43 +22,60 @@ public class OperationsRestSender {
 	/**
 	 * 
 	 * @param args
+	 * @throws Exception
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		System.out.println("Start OperationsRestSender " + new Date());
 		var restSender = new RestSender();
 		Map<String, Object> operations = new HashMap<String, Object>();
-
-		try {
-			operations.put("operations", Arrays.asList(
-					getPaymentOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-					//getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-				//getValidationOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER))
-			));
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
-//		
-//		try {
-//			List opes = new ArrayList();
-//			for(int ii=0; ii<300; ii++)
-//				opes.add(getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER)));
-//			operations.put("operations", opes);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return;
-//		}
-
-
-/* Here to use JSON */
-//		operations.put("operations", 
-//			Arrays.asList(
-//				getOperationFromJSON("{\"operationType\":\"EXIT\",\"identifier\":500000000000,\"timestamp\":1569857456000,\"managementSystemGmt\":120,\"additionalInformation\":null,\"sessionId\":null,\"isExternal\":false,\"eventTimestamp\":null,\"eventManagementSystemGmt\":null,\"result\":\"VALID\",\"card\":{\"type\":\"SEASONAL\",\"identifier\":\"05400014102404\",\"mediaType\":\"PAR_QUBE_PROXIMITY\"},\"joinType\":\"CARD_VALIDATION\",\"creditCardData\":null,\"facilityCode\":\"1\",\"entityId\":\"1.1.2.0.66053\",\"plate\":\"NOTREAD\",\"managementSystemRejectionCode\":null,\"presenceEntityId\":\"1.1.2\",\"userCategoryIdentifier\":7,\"dpCardData\":null,\"hotelCardData\":null,\"plateReadConfidence\":null,\"plateCountryCode\":null,\"joinAmount\":null,\"ticketGroupId\":null,\"plateLprClarification\":\"UNDEFINED\",\"plateLprStatusCode\":\"ERROR\",\"external\":false}"), 
-//				getOperationFromJSON("{\"operationType\":\"EXIT\",\"identifier\":500000000009,\"timestamp\":1569857456001,\"managementSystemGmt\":120,\"additionalInformation\":null,\"sessionId\":null,\"isExternal\":false,\"eventTimestamp\":null,\"eventManagementSystemGmt\":null,\"result\":\"MOVING_BACK\",\"card\":{\"type\":\"SEASONAL\",\"identifier\":\"05400014102404\",\"mediaType\":\"PAR_QUBE_PROXIMITY\"},\"joinType\":\"UNSUCCESSFUL_EXIT\",\"creditCardData\":null,\"facilityCode\":\"1\",\"entityId\":\"1.1.2.0.66053\",\"plate\":\"NOTREAD\",\"managementSystemRejectionCode\":null,\"presenceEntityId\":\"1.1.2\",\"userCategoryIdentifier\":7,\"dpCardData\":null,\"hotelCardData\":null,\"plateReadConfidence\":null,\"plateCountryCode\":null,\"joinAmount\":null,\"ticketGroupId\":null,\"plateLprClarification\":\"UNDEFINED\",\"plateLprStatusCode\":\"ERROR\",\"external\":false}")
-//		));
-		
+		var op = getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER));
+		operations.put("operations", Arrays.asList(op));
 		restSender.postForJanusConnector(RestSender.OPERATION_PUSH_URL, operations);
 		System.out.println("End OperationsRestSender " + new Date());
+	}
+	
+	/* Here to use JSON */
+	//	operations.put("operations", 
+	//		Arrays.asList(
+	//			getOperationFromJSON("{\"operationType\":\"EXIT\",\"identifier\":500000000000,\"timestamp\":1569857456000,\"managementSystemGmt\":120,\"additionalInformation\":null,\"sessionId\":null,\"isExternal\":false,\"eventTimestamp\":null,\"eventManagementSystemGmt\":null,\"result\":\"VALID\",\"card\":{\"type\":\"SEASONAL\",\"identifier\":\"05400014102404\",\"mediaType\":\"PAR_QUBE_PROXIMITY\"},\"joinType\":\"CARD_VALIDATION\",\"creditCardData\":null,\"facilityCode\":\"1\",\"entityId\":\"1.1.2.0.66053\",\"plate\":\"NOTREAD\",\"managementSystemRejectionCode\":null,\"presenceEntityId\":\"1.1.2\",\"userCategoryIdentifier\":7,\"dpCardData\":null,\"hotelCardData\":null,\"plateReadConfidence\":null,\"plateCountryCode\":null,\"joinAmount\":null,\"ticketGroupId\":null,\"plateLprClarification\":\"UNDEFINED\",\"plateLprStatusCode\":\"ERROR\",\"external\":false}"), 
+	//			getOperationFromJSON("{\"operationType\":\"EXIT\",\"identifier\":500000000009,\"timestamp\":1569857456001,\"managementSystemGmt\":120,\"additionalInformation\":null,\"sessionId\":null,\"isExternal\":false,\"eventTimestamp\":null,\"eventManagementSystemGmt\":null,\"result\":\"MOVING_BACK\",\"card\":{\"type\":\"SEASONAL\",\"identifier\":\"05400014102404\",\"mediaType\":\"PAR_QUBE_PROXIMITY\"},\"joinType\":\"UNSUCCESSFUL_EXIT\",\"creditCardData\":null,\"facilityCode\":\"1\",\"entityId\":\"1.1.2.0.66053\",\"plate\":\"NOTREAD\",\"managementSystemRejectionCode\":null,\"presenceEntityId\":\"1.1.2\",\"userCategoryIdentifier\":7,\"dpCardData\":null,\"hotelCardData\":null,\"plateReadConfidence\":null,\"plateCountryCode\":null,\"joinAmount\":null,\"ticketGroupId\":null,\"plateLprClarification\":\"UNDEFINED\",\"plateLprStatusCode\":\"ERROR\",\"external\":false}")
+	//	));
+	
+	/**
+	 * bulk
+	 * @param args
+	 * @throws Exception 
+	 */
+	public static void main2(String[] args) throws Exception {
+		
+		final int N_OPERATIONS = 10;
+		final int PAUSE_BETWEEN_OPE = 500;	//ms
+		
+		for(int ii=0; ii<N_OPERATIONS; ii++) {
+			System.out.println("Start OperationsRestSender " + new Date());
+			var restSender = new RestSender();
+			Map<String, Object> operations = new HashMap<String, Object>();
+
+			try {
+				Map<String, Object> op = null;
+				if(ii%2==0) {
+					op = getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER),"3","ENTRANCE","SUCCESSFUL_ENTRY","3",null,"EXTERNAL","BARCODE","merlin-6");
+				} else {
+					op = getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER),"3","EXIT","SUCCESSFUL_EXIT","3",null,"EXTERNAL","BARCODE","merlin-6");
+				}
+
+				operations.put("operations", Arrays.asList(op));
+			} catch (Exception e) {
+				e.printStackTrace();
+				return;
+			}
+			
+			Thread.sleep(PAUSE_BETWEEN_OPE);
+			
+			restSender.postForJanusConnector(RestSender.OPERATION_PUSH_URL, operations);
+			System.out.println("End OperationsRestSender " + new Date());
+		}
+		
 	}
 	
 	
@@ -80,7 +97,9 @@ public class OperationsRestSender {
 		operation.put("timestamp", Calendar.getInstance().getTime().getTime());
 		operation.put("managementSystemRejectionCode", "rejcode");
 		operation.put("additionalInformation", "additional information");
-		operation.put("paymentOperationType", "ISF_SETTLEMENT");
+		
+		operation.put("paymentOperationType", "CARD_VALIDATION");
+		//operation.put("paymentOperationType", "ISF_SETTLEMENT");
 		operation.put("paymentType", "CASH");
 		operation.put("rechargedValue", 13d);
 		operation.put("sessionId",3L);
@@ -119,7 +138,8 @@ public class OperationsRestSender {
 		isfInvoice.put("isfAmount", new BigDecimal("25.35"));
 		
 		Map<String,String> formData = new HashMap<String,String>();
-		formData.put("FIELD_4", "val3");
+		formData.put("FIELD_1", "val1");
+		formData.put("FIELD_2", "val2");
 		isfInvoice.put("formData", formData);
 		
 		operation.put("isfInvoice", isfInvoice);
@@ -165,7 +185,8 @@ public class OperationsRestSender {
 	private static Map<String, Object> getJoinOperation(long identifier){
 		Map<String, Object> operation = new HashMap<String, Object>(); 
 		
-		operation.put("operationType", "ENTRANCE");
+//		operation.put("operationType", "ENTRANCE");
+		operation.put("operationType", "EXIT");
 		operation.put("identifier", identifier);
 		operation.put("entityId", "3");	//3 //1.1.2.0.66053
 		operation.put("facilityCode", "123");
@@ -174,9 +195,10 @@ public class OperationsRestSender {
 		operation.put("timestamp", Calendar.getInstance().getTime().getTime());
 		operation.put("managementSystemRejectionCode", "rejcode");
 		operation.put("additionalInformation", "additional information");
-		operation.put("joinType", "SUCCESSFUL_ENTRY");	// SUCCESSFUL_ENTRY;	//SUCCESSFUL_EXIT
+		//operation.put("joinType", "SUCCESSFUL_ENTRY");	// SUCCESSFUL_ENTRY;	//SUCCESSFUL_EXIT
+		operation.put("joinType", "SUCCESSFUL_EXIT");
 		operation.put("presenceEntityId", "1");
-		operation.put("plate", "PP123OO");
+		operation.put("plate", "AA123BB");
 		operation.put("joinAmount", new BigDecimal(3));
 
 		
@@ -186,9 +208,9 @@ public class OperationsRestSender {
 //		card.put("mediaType", "BARCODE");
 //		card.put("identifier", "1234-BOOKING");
 		
-		card.put("type","SEASONAL");
-		card.put("mediaType", "LICENSE_PLATE");
-		card.put("identifier", "9041_identifier");
+		card.put("type","EXTERNAL");
+		card.put("mediaType", "BARCODE");
+		card.put("identifier", "merlin-7");
 		
 //		card.put("type","EXTERNAL");
 //		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
@@ -206,6 +228,36 @@ public class OperationsRestSender {
 //		card.put("mediaType", "BARCODE");	// MediaTypeIdentifier.LICENSE_PLATE;
 //		card.put("identifier", "third-party-ticket-1");
 //		card.put("thirdPartyId", 1L);
+		
+		operation.put("card", card);
+		
+		return operation;
+	}
+		
+	private static Map<String, Object> getJoinOperation(long identifier, String entityId, String operationType, String joinType, 
+			String presenceEntityId, String plate, String cardType, String cardMediaType, String cardIdentifier){
+		Map<String, Object> operation = new HashMap<String, Object>(); 
+		
+		operation.put("operationType", operationType);
+		operation.put("identifier", identifier);
+		operation.put("entityId", entityId);	//3 //1.1.2.0.66053
+		operation.put("facilityCode", "123");
+		operation.put("managementSystemGmt", Short.valueOf("120"));
+		operation.put("result", "VALID");// = ValidationResult.VALID;
+		operation.put("timestamp", Calendar.getInstance().getTime().getTime());
+		operation.put("managementSystemRejectionCode", "rejcode");
+		operation.put("additionalInformation", "additional information");
+		operation.put("joinType", joinType);
+		operation.put("presenceEntityId", presenceEntityId);
+		operation.put("plate", plate);
+		operation.put("joinAmount", new BigDecimal(3));
+
+		
+		Map<String, Object> card = new HashMap<String, Object>();
+		
+		card.put("type", cardType);
+		card.put("mediaType", cardMediaType);
+		card.put("identifier", cardIdentifier);
 		
 		operation.put("card", card);
 		

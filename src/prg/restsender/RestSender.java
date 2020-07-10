@@ -30,6 +30,7 @@ public class RestSender {
 	public static String PUSH_SEASONALCARD_MANAGEMENTSYSTEM_STATUS_MULTI = PROTOCOL + HOST_PORT + "/janus/api/connector/card/seasonal/managementsystems/status/multi/push";
 	public static String CONGRESS_PUSH = PROTOCOL + HOST_PORT + "/janus/api/connector/card/congress/push";
 	public static String VERIFICATION_PUSH = PROTOCOL + HOST_PORT + "/janus/api/connector/externalticketing/verification";
+	public static String PAYWITHJP_PUSH = PROTOCOL + HOST_PORT + "/janus/api/connector/card/paywithjp";
 	
 	/* THIRD PARTY */
 	public static String TP_LOGIN = PROTOCOL + HOST_PORT + "/janus-integration/api/ext/login";
@@ -48,7 +49,7 @@ public class RestSender {
 	/* Header for Janus Connector */
 	public static String JANUS_MS_AUTHENTICATION = "Janus-MS-Authentication";
 	//MS_AUTHENTICATION_TOKEN = select * from janus.management_system where active = true
-	public static String MS_AUTHENTICATION_TOKEN = "397f562b-052a-4f4e-9261-a72390044fac";
+	public static String MS_AUTHENTICATION_TOKEN = "badd9f51-77f9-4b69-8876-4ce37cd8212c";
 	
     /* Header for Third party */
     public static String JANUS_THIRD_PARTY_AUTHENTICATION = "Janus-TP-Authorization";
