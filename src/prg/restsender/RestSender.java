@@ -22,6 +22,8 @@ public class RestSender {
 	
 	/* URL */
 	public static String OPERATION_PUSH_URL = PROTOCOL + HOST_PORT + "/janus/api/connector/operation/push";
+	public static String OPERATION_PUSH_PASSTHROUGHT_ETL_URL = PROTOCOL + HOST_PORT + "/janus/api/connector/operation/pushpassthroughetl";
+	
 	public static String CASHIER_PAYMENT_GET_SURCHARGE_URL = PROTOCOL + HOST_PORT + "/janus/api/cashier/payment/get/surcharge";
 	public static String TRACKING_HISTORY_SEASONAL_GET_ALL_EVENTS_URL = PROTOCOL + HOST_PORT + "/janus/api/card/tracking/history/seasonal/getAllEvents";
 	public static String SCHEDULING_ACTIONS_CREATE = PROTOCOL + HOST_PORT + "/janus/api/scheduling/actions/create";
@@ -49,7 +51,7 @@ public class RestSender {
 	/* Header for Janus Connector */
 	public static String JANUS_MS_AUTHENTICATION = "Janus-MS-Authentication";
 	//MS_AUTHENTICATION_TOKEN = select * from janus.management_system where active = true
-	public static String MS_AUTHENTICATION_TOKEN = "badd9f51-77f9-4b69-8876-4ce37cd8212c";
+	public static String MS_AUTHENTICATION_TOKEN = "83402248-1f90-4bde-87fe-1428175c35ee";
 	
     /* Header for Third party */
     public static String JANUS_THIRD_PARTY_AUTHENTICATION = "Janus-TP-Authorization";

@@ -28,9 +28,12 @@ public class OperationsRestSender {
 		System.out.println("Start OperationsRestSender " + new Date());
 		var restSender = new RestSender();
 		Map<String, Object> operations = new HashMap<String, Object>();
-		var op = getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER));
+		//var op = getPaymentOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER));
+		//var op = getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER));
+		var op = getValidationOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER));
 		operations.put("operations", Arrays.asList(op));
 		restSender.postForJanusConnector(RestSender.OPERATION_PUSH_URL, operations);
+		//restSender.postForJanusConnector(RestSender.OPERATION_PUSH_PASSTHROUGHT_ETL_URL, operations);
 		System.out.println("End OperationsRestSender " + new Date());
 	}
 	
@@ -124,9 +127,15 @@ public class OperationsRestSender {
 		operation.put("offlineCleared", true); 
 		operation.put("productProfileType", "BASE_CONTRACT");
 		Map<String, Object> card = new HashMap<String, Object>();
-		card.put("type","ANONYMOUS");
-		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
-		card.put("identifier", "anony-000-" + identifier);
+		
+//		card.put("type","ANONYMOUS");
+//		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
+//		card.put("identifier", "anony-000-" + identifier);
+		
+		card.put("type","EXTERNAL_SYSTEM");
+		card.put("mediaType", "BARCODE");
+		card.put("identifier", "barcode-00003");
+		card.put("externalSystemName", "external system name");
 			
 		operation.put("card", card);
 		
@@ -185,8 +194,8 @@ public class OperationsRestSender {
 	private static Map<String, Object> getJoinOperation(long identifier){
 		Map<String, Object> operation = new HashMap<String, Object>(); 
 		
-//		operation.put("operationType", "ENTRANCE");
-		operation.put("operationType", "EXIT");
+		operation.put("operationType", "ENTRANCE");
+		//operation.put("operationType", "EXIT");
 		operation.put("identifier", identifier);
 		operation.put("entityId", "3");	//3 //1.1.2.0.66053
 		operation.put("facilityCode", "123");
@@ -195,10 +204,10 @@ public class OperationsRestSender {
 		operation.put("timestamp", Calendar.getInstance().getTime().getTime());
 		operation.put("managementSystemRejectionCode", "rejcode");
 		operation.put("additionalInformation", "additional information");
-		//operation.put("joinType", "SUCCESSFUL_ENTRY");	// SUCCESSFUL_ENTRY;	//SUCCESSFUL_EXIT
-		operation.put("joinType", "SUCCESSFUL_EXIT");
+		operation.put("joinType", "SUCCESSFUL_ENTRY");	// SUCCESSFUL_ENTRY;	//SUCCESSFUL_EXIT
+		//operation.put("joinType", "SUCCESSFUL_EXIT");
 		operation.put("presenceEntityId", "1");
-		operation.put("plate", "AA123BB");
+		operation.put("plate", "AA123BC");
 		operation.put("joinAmount", new BigDecimal(3));
 
 		
@@ -208,9 +217,10 @@ public class OperationsRestSender {
 //		card.put("mediaType", "BARCODE");
 //		card.put("identifier", "1234-BOOKING");
 		
-		card.put("type","EXTERNAL");
+		card.put("type","EXTERNAL_SYSTEM");
 		card.put("mediaType", "BARCODE");
-		card.put("identifier", "merlin-7");
+		card.put("identifier", "barcode-00001");
+		card.put("externalSystemName", "external system name");
 		
 //		card.put("type","EXTERNAL");
 //		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
@@ -289,10 +299,16 @@ public class OperationsRestSender {
 		/* validation fields */
 		operation.put("validationOperationType", "VOUCHER_VALIDATION");
 		Map<String, Object> card = new HashMap<String, Object>();
+//		
+//		card.put("type","TRANSIENT");
+//		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
+//		card.put("identifier", "transient-000-" + identifier);
 		
-		card.put("type","HOTEL");
-		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
-		card.put("identifier", "hotel-000-" + identifier);
+		card.put("type","EXTERNAL_SYSTEM");
+		card.put("mediaType", "BARCODE");
+		card.put("identifier", "barcode-00002");
+		card.put("externalSystemName", "external system name");
+		
 		operation.put("card", card);
 		
 		operation.put("entityId", "d3");	//3 vp

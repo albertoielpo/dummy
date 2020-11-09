@@ -1,11 +1,18 @@
 package test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class JustMain {
 
 	public static void main(String... args) throws Exception {
-		String a = String.format("Account balance flag is not found in database for Seasonal Card Management System Id %s", 1L);
-		System.out.println(a);
+		
+		List<String> a = new ArrayList<String>();
+		a.add("pippo");
+		String[] b = a.toArray(new String[a.size()]);
+		System.out.println(Arrays.toString(b));
+		
 	}
 
 }
