@@ -1,17 +1,17 @@
 package test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+
+import utils.Utils;
 
 public class JustMain {
 
+
 	public static void main(String... args) throws Exception {
-		
-		List<String> a = new ArrayList<String>();
-		a.add("pippo");
-		String[] b = a.toArray(new String[a.size()]);
-		System.out.println(Arrays.toString(b));
+		Map<Long, Boolean> m = new HashMap<Long, Boolean>();
+		m.put(1L, true);
+		System.out.println(Utils.serializeObject(m));
 		
 	}
 

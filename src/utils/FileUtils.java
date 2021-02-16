@@ -1,11 +1,17 @@
 package utils;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 /**
  * @author Alberto Ielpo
  */
@@ -66,6 +72,48 @@ public class FileUtils {
 			}
 		}
 		return allFiles;
+	}
+	
+	/**
+	 * 
+	 * @param path
+	 * @return
+	 */
+	public static BufferedImage readImage(String path) {
+		BufferedImage img = null;
+		try {
+		    img = ImageIO.read(new File(path));
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return img;
+	}
+	
+	/**
+	 * 
+	 * @param path
+	 * @return
+	 */
+	public static byte[] getBytesFromImage(String path, boolean base64) {
+		try {
+			BufferedImage img = FileUtils.readImage(path);
+			if(img == null) {
+				return null;
+			} else {
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				OutputStream b64 = new org.apache.commons.codec.binary.Base64OutputStream(baos);
+
+				ImageIO.write( img, path.substring(path.lastIndexOf(".")+1, path.length()),  base64 ? b64 : baos);
+				baos.flush();
+				byte[] imageInByte = baos.toByteArray();
+				baos.close();
+				b64.close();
+				return imageInByte;
+			}
+		} catch(Exception e) {
+			System.out.println(e);
+			return null;
+		}
 	}
 	
 }

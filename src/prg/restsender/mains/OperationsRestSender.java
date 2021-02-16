@@ -29,8 +29,8 @@ public class OperationsRestSender {
 		var restSender = new RestSender();
 		Map<String, Object> operations = new HashMap<String, Object>();
 		//var op = getPaymentOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER));
-		//var op = getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER));
-		var op = getValidationOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER));
+		var op = getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER));
+		//var op = getValidationOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER));
 		operations.put("operations", Arrays.asList(op));
 		restSender.postForJanusConnector(RestSender.OPERATION_PUSH_URL, operations);
 		//restSender.postForJanusConnector(RestSender.OPERATION_PUSH_PASSTHROUGHT_ETL_URL, operations);
@@ -134,7 +134,7 @@ public class OperationsRestSender {
 		
 		card.put("type","EXTERNAL_SYSTEM");
 		card.put("mediaType", "BARCODE");
-		card.put("identifier", "barcode-00003");
+		card.put("identifier", "barcode-00017");
 		card.put("externalSystemName", "external system name");
 			
 		operation.put("card", card);
@@ -194,33 +194,31 @@ public class OperationsRestSender {
 	private static Map<String, Object> getJoinOperation(long identifier){
 		Map<String, Object> operation = new HashMap<String, Object>(); 
 		
-		operation.put("operationType", "ENTRANCE");
-		//operation.put("operationType", "EXIT");
+		operation.put("operationType", "ENTRANCE");	//ENTRANCE EXIT
 		operation.put("identifier", identifier);
 		operation.put("entityId", "3");	//3 //1.1.2.0.66053
 		operation.put("facilityCode", "123");
-		operation.put("managementSystemGmt", Short.valueOf("120"));
+		operation.put("managementSystemGmt", Short.valueOf("60"));
 		operation.put("result", "VALID");// = ValidationResult.VALID;
 		operation.put("timestamp", Calendar.getInstance().getTime().getTime());
 		operation.put("managementSystemRejectionCode", "rejcode");
 		operation.put("additionalInformation", "additional information");
 		operation.put("joinType", "SUCCESSFUL_ENTRY");	// SUCCESSFUL_ENTRY;	//SUCCESSFUL_EXIT
-		//operation.put("joinType", "SUCCESSFUL_EXIT");
-		operation.put("presenceEntityId", "1");
-		operation.put("plate", "AA123BC");
-		operation.put("joinAmount", new BigDecimal(3));
+		operation.put("presenceEntityId", "3");
+		//operation.put("plate", "AA123BC");
+		//operation.put("joinAmount", new BigDecimal(3));
 
 		
 		Map<String, Object> card = new HashMap<String, Object>();
 		
-//		card.put("type", "PREBOOKING");
-//		card.put("mediaType", "BARCODE");
-//		card.put("identifier", "1234-BOOKING");
-		
-		card.put("type","EXTERNAL_SYSTEM");
+		card.put("type", "PREBOOKING");
 		card.put("mediaType", "BARCODE");
-		card.put("identifier", "barcode-00001");
-		card.put("externalSystemName", "external system name");
+		card.put("identifier", "881234560000000000125");
+		
+//		card.put("type","EXTERNAL_SYSTEM");
+//		card.put("mediaType", "BARCODE");
+//		card.put("identifier", "barcode-00017");
+//		card.put("externalSystemName", "external system name");
 		
 //		card.put("type","EXTERNAL");
 //		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
@@ -228,7 +226,7 @@ public class OperationsRestSender {
 //		
 //		card.put("type","TRANSIENT");
 //		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
-//		card.put("identifier", "PP123OO");
+//		card.put("identifier", "AA44455");
 //		
 //		card.put("type","ANONYMOUS");
 //		card.put("mediaType", "BARCODE");
@@ -238,6 +236,10 @@ public class OperationsRestSender {
 //		card.put("mediaType", "BARCODE");	// MediaTypeIdentifier.LICENSE_PLATE;
 //		card.put("identifier", "third-party-ticket-1");
 //		card.put("thirdPartyId", 1L);
+		
+//		card.put("type","SEASONAL");
+//		card.put("mediaType", "LICENSE_PLATE");
+//		card.put("identifier", "7912_identifier");
 		
 		operation.put("card", card);
 		

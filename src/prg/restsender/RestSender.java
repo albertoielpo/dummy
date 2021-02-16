@@ -33,6 +33,7 @@ public class RestSender {
 	public static String CONGRESS_PUSH = PROTOCOL + HOST_PORT + "/janus/api/connector/card/congress/push";
 	public static String VERIFICATION_PUSH = PROTOCOL + HOST_PORT + "/janus/api/connector/externalticketing/verification";
 	public static String PAYWITHJP_PUSH = PROTOCOL + HOST_PORT + "/janus/api/connector/card/paywithjp";
+	public static String OPERATION_PLATEIMAGE_PUSH = PROTOCOL + HOST_PORT + "/janus/api/connector/operation/plateImage/push";
 	
 	/* THIRD PARTY */
 	public static String TP_LOGIN = PROTOCOL + HOST_PORT + "/janus-integration/api/ext/login";
@@ -51,10 +52,12 @@ public class RestSender {
 	/* Header for Janus Connector */
 	public static String JANUS_MS_AUTHENTICATION = "Janus-MS-Authentication";
 	//MS_AUTHENTICATION_TOKEN = select * from janus.management_system where active = true
-	public static String MS_AUTHENTICATION_TOKEN = "83402248-1f90-4bde-87fe-1428175c35ee";
+	public static String MS_AUTHENTICATION_TOKEN = "7503c818-e780-4cef-ad1e-96c23eb5e0bd";
 	
     /* Header for Third party */
     public static String JANUS_THIRD_PARTY_AUTHENTICATION = "Janus-TP-Authorization";
+    
+    public static String RESOURCES_CONTENT_PATH = System.getProperty("user.dir") + "\\resources\\contents";
 	
     /**
      * Print http response
@@ -91,6 +94,8 @@ public class RestSender {
 			e.printStackTrace();
 			return;
 		}
+		System.out.println("Request url: " + url);
+		System.out.println("Request body: " + json);
 			
 		this.printResponseResult(HttpRequestUtils.post(url)
 			.header(CONTENT_TYPE, APPLICATION_JSON_UTF8)
