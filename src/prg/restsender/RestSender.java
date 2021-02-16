@@ -34,6 +34,10 @@ public class RestSender {
 	public static String VERIFICATION_PUSH = PROTOCOL + HOST_PORT + "/janus/api/connector/externalticketing/verification";
 	public static String PAYWITHJP_PUSH = PROTOCOL + HOST_PORT + "/janus/api/connector/card/paywithjp";
 	public static String OPERATION_PLATEIMAGE_PUSH = PROTOCOL + HOST_PORT + "/janus/api/connector/operation/plateImage/push";
+	public static String GRACE_TIME_UPDATER = PROTOCOL + HOST_PORT + "/janus/api/connector/parking/wrapped/updateStatus";
+    public static String ALARM_SENDER = PROTOCOL + HOST_PORT + "/janus/api/connector/message/push";
+    public static String APB_OVERRIDE_INSERTER = PROTOCOL + HOST_PORT + "/janus/api/connector/ccblacklist/push";
+    public static String GRACE_TIME_UPDATER_MASSIVE = PROTOCOL + HOST_PORT + "/janus/api/connector/parking/wrapped/multi/updateStatus";;
 	
 	/* THIRD PARTY */
 	public static String TP_LOGIN = PROTOCOL + HOST_PORT + "/janus-integration/api/ext/login";
