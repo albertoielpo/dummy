@@ -101,14 +101,13 @@ public class OperationsRestSender {
 		operation.put("managementSystemRejectionCode", "rejcode");
 		operation.put("additionalInformation", "additional information");
 		
-		operation.put("paymentOperationType", "CARD_VALIDATION");
-		//operation.put("paymentOperationType", "ISF_SETTLEMENT");
-		operation.put("paymentType", "CASH");
+		operation.put("paymentOperationType", "SUCCESSFUL_PAYMENT");
+		operation.put("paymentType", "CREDIT_CARD");
 		operation.put("rechargedValue", 13d);
 		operation.put("sessionId",3L);
 		operation.put("toPay", 10.0);
 		operation.put("payed", 9.0);
-		operation.put("amount", 8.0);
+		operation.put("amount", 1.0);
 		operation.put("userCategoryIdentifier", 10L);
 		operation.put("transactionId", "transaction id");
 		operation.put("noneParkingProductCount", 23);
@@ -131,27 +130,35 @@ public class OperationsRestSender {
 //		card.put("type","ANONYMOUS");
 //		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
 //		card.put("identifier", "anony-000-" + identifier);
+//		
+//		card.put("type","EXTERNAL_SYSTEM");
+//		card.put("mediaType", "BARCODE");
+//		card.put("identifier", "barcode-00017");
+//		card.put("externalSystemName", "external system name");
 		
-		card.put("type","EXTERNAL_SYSTEM");
-		card.put("mediaType", "BARCODE");
-		card.put("identifier", "barcode-00017");
-		card.put("externalSystemName", "external system name");
-			
+//		card.put("type","TRANSIENT");
+//		card.put("mediaType", "BARCODE");	// MediaTypeIdentifier.LICENSE_PLATE;
+//		card.put("identifier", "000111222333");
+		
+		card.put("type","SEASONAL");
+		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
+		card.put("identifier", "69_identifier");
+		
 		operation.put("card", card);
 		
-		Map<String,Object> isfInvoice = new HashMap<String,Object>();
-		isfInvoice.put("isfNumber", "isfNumber");
-		isfInvoice.put("licensePlate", "yy123qq");
-		isfInvoice.put("issueDate", 123456789L);
-		isfInvoice.put("issueDateGmt", Short.valueOf("120"));
-		isfInvoice.put("isfAmount", new BigDecimal("25.35"));
-		
-		Map<String,String> formData = new HashMap<String,String>();
-		formData.put("FIELD_1", "val1");
-		formData.put("FIELD_2", "val2");
-		isfInvoice.put("formData", formData);
-		
-		operation.put("isfInvoice", isfInvoice);
+//		Map<String,Object> isfInvoice = new HashMap<String,Object>();
+//		isfInvoice.put("isfNumber", "isfNumber");
+//		isfInvoice.put("licensePlate", "yy123qq");
+//		isfInvoice.put("issueDate", 123456789L);
+//		isfInvoice.put("issueDateGmt", Short.valueOf("120"));
+//		isfInvoice.put("isfAmount", new BigDecimal("25.35"));
+//		
+//		Map<String,String> formData = new HashMap<String,String>();
+//		formData.put("FIELD_1", "val1");
+//		formData.put("FIELD_2", "val2");
+//		isfInvoice.put("formData", formData);
+//		
+//		operation.put("isfInvoice", isfInvoice);
 		
 		return operation;
 	}
@@ -210,10 +217,10 @@ public class OperationsRestSender {
 
 		
 		Map<String, Object> card = new HashMap<String, Object>();
-		
-		card.put("type", "PREBOOKING");
-		card.put("mediaType", "BARCODE");
-		card.put("identifier", "881234560000000000125");
+//		
+//		card.put("type", "PREBOOKING");
+//		card.put("mediaType", "BARCODE");
+//		card.put("identifier", "881234560000013862750");
 		
 //		card.put("type","EXTERNAL_SYSTEM");
 //		card.put("mediaType", "BARCODE");
@@ -225,8 +232,8 @@ public class OperationsRestSender {
 //		card.put("identifier", "external-ticket-2");
 //		
 //		card.put("type","TRANSIENT");
-//		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
-//		card.put("identifier", "AA44455");
+//		card.put("mediaType", "BARCODE");	// MediaTypeIdentifier.LICENSE_PLATE;
+//		card.put("identifier", "000111222333");
 //		
 //		card.put("type","ANONYMOUS");
 //		card.put("mediaType", "BARCODE");
@@ -237,9 +244,9 @@ public class OperationsRestSender {
 //		card.put("identifier", "third-party-ticket-1");
 //		card.put("thirdPartyId", 1L);
 		
-//		card.put("type","SEASONAL");
-//		card.put("mediaType", "LICENSE_PLATE");
-//		card.put("identifier", "7912_identifier");
+		card.put("type","SEASONAL");
+		card.put("mediaType", "LICENSE_PLATE");
+		card.put("identifier", "7912_identifier");
 		
 		operation.put("card", card);
 		
@@ -296,20 +303,20 @@ public class OperationsRestSender {
 		operation.put("isExternal", false);
 		operation.put("eventTimestamp", Calendar.getInstance().getTime().getTime());
 		operation.put("eventManagementSystemGmt", Short.valueOf("120"));
-		operation.put("result","VALID");
+		operation.put("result","POOL_GROUP_IS_FULL");
 		
 		/* validation fields */
 		operation.put("validationOperationType", "VOUCHER_VALIDATION");
 		Map<String, Object> card = new HashMap<String, Object>();
-//		
-//		card.put("type","TRANSIENT");
-//		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
-//		card.put("identifier", "transient-000-" + identifier);
 		
-		card.put("type","EXTERNAL_SYSTEM");
-		card.put("mediaType", "BARCODE");
-		card.put("identifier", "barcode-00002");
-		card.put("externalSystemName", "external system name");
+		card.put("type","TRANSIENT");
+		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
+		card.put("identifier", "transient-000-" + identifier);
+//		
+//		card.put("type","EXTERNAL_SYSTEM");
+//		card.put("mediaType", "BARCODE");
+//		card.put("identifier", "barcode-00002");
+//		card.put("externalSystemName", "external system name");
 		
 		operation.put("card", card);
 		

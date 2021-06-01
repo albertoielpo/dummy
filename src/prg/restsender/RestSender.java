@@ -27,6 +27,7 @@ public class RestSender {
 	public static String CASHIER_PAYMENT_GET_SURCHARGE_URL = PROTOCOL + HOST_PORT + "/janus/api/cashier/payment/get/surcharge";
 	public static String TRACKING_HISTORY_SEASONAL_GET_ALL_EVENTS_URL = PROTOCOL + HOST_PORT + "/janus/api/card/tracking/history/seasonal/getAllEvents";
 	public static String SCHEDULING_ACTIONS_CREATE = PROTOCOL + HOST_PORT + "/janus/api/scheduling/actions/create";
+	public static String LPR_ALARM_FILTER = PROTOCOL + HOST_PORT + "/janus/api/alarm/lpr/filter";
 	public static String CACHE_EVICT_ALL = PROTOCOL + HOST_PORT + "/janus/api/cache/evict/all";
 	public static String PUSH_SEASONALCARD_MANAGEMENTSYSTEM_STATUS = PROTOCOL + HOST_PORT + "/janus/api/connector/card/seasonal/managementsystems/status/push";
 	public static String PUSH_SEASONALCARD_MANAGEMENTSYSTEM_STATUS_MULTI = PROTOCOL + HOST_PORT + "/janus/api/connector/card/seasonal/managementsystems/status/multi/push";
@@ -46,17 +47,20 @@ public class RestSender {
 	public static String CONTENT_TYPE = "Content-Type";
 	public static String APPLICATION_JSON_UTF8 = "application/json; charset=utf8";
 	
+	public static String ACCEPT = "Accept";
+	public static String APPLICATION_JSON = "application/json";
+	
 	/* Header for Janus UI */
 	public static String JANUS_UI_AUTHENTICATION = "Janus-Authorization";
 	/* Header for Janus Admin UI */
 	public static String JANUS_ADMIN_UI_AUTHENTICATION = "Janus-Admin-Authorization";
 	public static String ADMIN_UI_AUTHENTICATION_TOKEN = "e0b0f482-19b3-4801-840e-37b3025ffaa5";
-	public static String UI_AUTHENTICATION_TOKEN = "6abbbd67-496b-3109-aad0-1bd7d4566879"; 
+	public static String UI_AUTHENTICATION_TOKEN = "a5c38026-1da5-439c-a299-ac3dd54545ef"; 
 	
 	/* Header for Janus Connector */
 	public static String JANUS_MS_AUTHENTICATION = "Janus-MS-Authentication";
 	//MS_AUTHENTICATION_TOKEN = select * from janus.management_system where active = true
-	public static String MS_AUTHENTICATION_TOKEN = "7503c818-e780-4cef-ad1e-96c23eb5e0bd";
+	public static String MS_AUTHENTICATION_TOKEN = "c3d0897d-687d-4e62-b479-8fbf4c43c061";
 	
     /* Header for Third party */
     public static String JANUS_THIRD_PARTY_AUTHENTICATION = "Janus-TP-Authorization";
@@ -156,8 +160,9 @@ public class RestSender {
 		this.printResponseResult(HttpRequestUtils.post(url)
 				.header(CONTENT_TYPE, APPLICATION_JSON_UTF8)
 				.header(JANUS_UI_AUTHENTICATION, UI_AUTHENTICATION_TOKEN)
+				.header(ACCEPT, APPLICATION_JSON)
 				.send(json)
-				.code());
+				.body());
 	}
 	
 	/**
