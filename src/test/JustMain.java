@@ -1,5 +1,8 @@
 package test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Alberto Ielpo
  */
@@ -13,9 +16,8 @@ public class JustMain {
 	 */
 	public static void main(String... args) throws Exception {
 		
-		String[] a = new String[1];
-		System.out.println(a[0]);
-		
+		Long a = Long.MAX_VALUE;
+		System.out.println(a);
 	}
 
 }

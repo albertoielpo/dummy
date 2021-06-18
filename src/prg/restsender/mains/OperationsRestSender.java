@@ -32,17 +32,249 @@ public class OperationsRestSender {
 		var op = getJoinOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER));
 		//var op = getValidationOperation(TextDb.nextSequence(TextDb.SEQ_OPERATION_IDENTIFIER));
 		operations.put("operations", Arrays.asList(op));
+		
+		if(false) {
+		/* Here to use JSON */
+		operations.put("operations", 
+			Arrays.asList(
+				getOperationFromJSON("{\r\n"
+						+ "    \"operationType\": \"PAYMENT\",\r\n"
+						+ "    \"identifier\": 6007548517063471,\r\n"
+						+ "    \"timestamp\": 1623442294000,\r\n"
+						+ "    \"managementSystemGmt\": -300,\r\n"
+						+ "    \"additionalInformation\": null,\r\n"
+						+ "    \"sessionId\": 656522106111511,\r\n"
+						+ "    \"isExternal\": false,\r\n"
+						+ "    \"eventTimestamp\": null,\r\n"
+						+ "    \"eventManagementSystemGmt\": null,\r\n"
+						+ "    \"result\": \"VALID\",\r\n"
+						+ "    \"card\": {\r\n"
+						+ "      \"type\": \"TRANSIENT\",\r\n"
+						+ "      \"identifier\": \"0\",\r\n"
+						+ "      \"mediaType\": \"BARCODE\"\r\n"
+						+ "    },\r\n"
+						+ "    \"creditNoteIdentifier\": null,\r\n"
+						+ "    \"paymentOperationType\": \"SINGLESTAY_PAYMENT_COMPLETED\",\r\n"
+						+ "    \"paymentType\": \"CREDIT_CARD\",\r\n"
+						+ "    \"creditCardData\": {\r\n"
+						+ "      \"retCode\": 0,\r\n"
+						+ "      \"presenceIdentifier\": null,\r\n"
+						+ "      \"cardBrand\": \"VI\",\r\n"
+						+ "      \"cardToken\": null,\r\n"
+						+ "      \"maskedPan\": \"XXXXXXXXXXXX8366\",\r\n"
+						+ "      \"expiryTimestamp\": null,\r\n"
+						+ "      \"reference\": \"18040C\",\r\n"
+						+ "      \"userReference\": \"A49-26318\",\r\n"
+						+ "      \"userReferenceOriginalPayment\": null,\r\n"
+						+ "      \"serviceCode\": null,\r\n"
+						+ "      \"batchNumber\": null,\r\n"
+						+ "      \"rejectionCode\": \"CHARGED\",\r\n"
+						+ "      \"displayCardIdentifier\": null,\r\n"
+						+ "      \"responseTimestamp\": null,\r\n"
+						+ "      \"responseTimestampGmt\": null,\r\n"
+						+ "      \"requestTimestamp\": null,\r\n"
+						+ "      \"requestTimestampGmt\": null,\r\n"
+						+ "      \"transactionToken\": null\r\n"
+						+ "    },\r\n"
+						+ "    \"facilityCode\": null,\r\n"
+						+ "    \"entityId\": \"1.1.2.1.3.5.5.7.6.1\",\r\n"
+						+ "    \"amount\": 7,\r\n"
+						+ "    \"toPay\": 7,\r\n"
+						+ "    \"payed\": 7,\r\n"
+						+ "    \"managementSystemRejectionCode\": \"0 - no rejection\",\r\n"
+						+ "    \"cashierId\": null,\r\n"
+						+ "    \"shiftId\": 0,\r\n"
+						+ "    \"transactionId\": null,\r\n"
+						+ "    \"protocolNumber\": null,\r\n"
+						+ "    \"vatAmount\": 0,\r\n"
+						+ "    \"balance\": null,\r\n"
+						+ "    \"paidToTimeTimestamp\": null,\r\n"
+						+ "    \"paidToTimeTimestampGmt\": null,\r\n"
+						+ "    \"userCategoryIdentifier\": null,\r\n"
+						+ "    \"accountIdentifier\": null,\r\n"
+						+ "    \"dpCardData\": null,\r\n"
+						+ "    \"hotelCardData\": null,\r\n"
+						+ "    \"rechargedValue\": null,\r\n"
+						+ "    \"userId\": null,\r\n"
+						+ "    \"ticketGroupId\": 1,\r\n"
+						+ "    \"thirdPartyId\": null,\r\n"
+						+ "    \"periodFrom\": null,\r\n"
+						+ "    \"periodFromGmt\": null,\r\n"
+						+ "    \"periodTo\": null,\r\n"
+						+ "    \"periodToGmt\": null,\r\n"
+						+ "    \"payerName\": null,\r\n"
+						+ "    \"batchNumber\": null,\r\n"
+						+ "    \"productProfileType\": null,\r\n"
+						+ "    \"weeklyDistributionIdentifier\": null,\r\n"
+						+ "    \"billingProfileIdentifier\": null,\r\n"
+						+ "    \"invoiceNumber\": null,\r\n"
+						+ "    \"paymentId\": null,\r\n"
+						+ "    \"notes\": null,\r\n"
+						+ "    \"surcharge\": null,\r\n"
+						+ "    \"fiscalID\": null,\r\n"
+						+ "    \"uniqueSN\": null,\r\n"
+						+ "    \"paymentStartTime\": null,\r\n"
+						+ "    \"paymentStartTimeGMT\": null,\r\n"
+						+ "    \"offlineCleared\": true,\r\n"
+						+ "    \"noneParkingProductCount\": null,\r\n"
+						+ "    \"noneParkingProductName\": null,\r\n"
+						+ "    \"isfInvoice\": null,\r\n"
+						+ "    \"plate\": null,\r\n"
+						+ "    \"plateReadConfidence\": null,\r\n"
+						+ "    \"plateCountryCode\": null,\r\n"
+						+ "    \"external\": false\r\n"
+						+ "  }"),
+				getOperationFromJSON("{\r\n"
+						+ "    \"operationType\": \"EXIT\",\r\n"
+						+ "    \"identifier\": 6007549017063471,\r\n"
+						+ "    \"timestamp\": 1623442298000,\r\n"
+						+ "    \"managementSystemGmt\": -300,\r\n"
+						+ "    \"additionalInformation\": null,\r\n"
+						+ "    \"sessionId\": 656522106111511,\r\n"
+						+ "    \"isExternal\": false,\r\n"
+						+ "    \"eventTimestamp\": null,\r\n"
+						+ "    \"eventManagementSystemGmt\": null,\r\n"
+						+ "    \"result\": \"VALID\",\r\n"
+						+ "    \"card\": {\r\n"
+						+ "      \"type\": \"TRANSIENT\",\r\n"
+						+ "      \"identifier\": \"0\",\r\n"
+						+ "      \"mediaType\": \"BARCODE\"\r\n"
+						+ "    },\r\n"
+						+ "    \"creditNoteIdentifier\": null,\r\n"
+						+ "    \"joinType\": \"SUCCESSFUL_EXIT\",\r\n"
+						+ "    \"creditCardData\": null,\r\n"
+						+ "    \"facilityCode\": null,\r\n"
+						+ "    \"entityId\": \"1.1.2.1.3.5.5.7.6.1\",\r\n"
+						+ "    \"plate\": \"<no LPN>\",\r\n"
+						+ "    \"managementSystemRejectionCode\": \"0 - no rejection\",\r\n"
+						+ "    \"presenceEntityId\": null,\r\n"
+						+ "    \"userCategoryIdentifier\": null,\r\n"
+						+ "    \"dpCardData\": null,\r\n"
+						+ "    \"hotelCardData\": null,\r\n"
+						+ "    \"plateReadConfidence\": null,\r\n"
+						+ "    \"plateCountryCode\": null,\r\n"
+						+ "    \"joinAmount\": null,\r\n"
+						+ "    \"ticketGroupId\": null,\r\n"
+						+ "    \"plateLprClarification\": \"OK\",\r\n"
+						+ "    \"plateLprStatusCode\": \"OK\",\r\n"
+						+ "    \"fiscalID\": null,\r\n"
+						+ "    \"uniqueSN\": null,\r\n"
+						+ "    \"external\": false\r\n"
+						+ "  }"),
+				getOperationFromJSON("{\r\n"
+						+ "    \"operationType\": \"PAYMENT\",\r\n"
+						+ "    \"identifier\": 6007549317063471,\r\n"
+						+ "    \"timestamp\": 1623442299000,\r\n"
+						+ "    \"managementSystemGmt\": -300,\r\n"
+						+ "    \"additionalInformation\": null,\r\n"
+						+ "    \"sessionId\": 656522106111511,\r\n"
+						+ "    \"isExternal\": false,\r\n"
+						+ "    \"eventTimestamp\": null,\r\n"
+						+ "    \"eventManagementSystemGmt\": null,\r\n"
+						+ "    \"result\": \"VALID\",\r\n"
+						+ "    \"card\": {\r\n"
+						+ "      \"type\": \"TRANSIENT\",\r\n"
+						+ "      \"identifier\": \"0\",\r\n"
+						+ "      \"mediaType\": \"BARCODE\"\r\n"
+						+ "    },\r\n"
+						+ "    \"creditNoteIdentifier\": null,\r\n"
+						+ "    \"paymentOperationType\": \"RECEIPT_ISSUED\",\r\n"
+						+ "    \"paymentType\": \"CREDIT_CARD\",\r\n"
+						+ "    \"creditCardData\": null,\r\n"
+						+ "    \"facilityCode\": null,\r\n"
+						+ "    \"entityId\": \"1.1.2.1.3.5.5.7.6.1\",\r\n"
+						+ "    \"amount\": 7,\r\n"
+						+ "    \"toPay\": null,\r\n"
+						+ "    \"payed\": null,\r\n"
+						+ "    \"managementSystemRejectionCode\": \"0\",\r\n"
+						+ "    \"cashierId\": null,\r\n"
+						+ "    \"shiftId\": null,\r\n"
+						+ "    \"transactionId\": \"A0492100032582\",\r\n"
+						+ "    \"protocolNumber\": null,\r\n"
+						+ "    \"vatAmount\": 0,\r\n"
+						+ "    \"balance\": null,\r\n"
+						+ "    \"paidToTimeTimestamp\": null,\r\n"
+						+ "    \"paidToTimeTimestampGmt\": null,\r\n"
+						+ "    \"userCategoryIdentifier\": null,\r\n"
+						+ "    \"accountIdentifier\": null,\r\n"
+						+ "    \"dpCardData\": null,\r\n"
+						+ "    \"hotelCardData\": null,\r\n"
+						+ "    \"rechargedValue\": null,\r\n"
+						+ "    \"userId\": null,\r\n"
+						+ "    \"ticketGroupId\": null,\r\n"
+						+ "    \"thirdPartyId\": null,\r\n"
+						+ "    \"periodFrom\": null,\r\n"
+						+ "    \"periodFromGmt\": null,\r\n"
+						+ "    \"periodTo\": null,\r\n"
+						+ "    \"periodToGmt\": null,\r\n"
+						+ "    \"payerName\": null,\r\n"
+						+ "    \"batchNumber\": null,\r\n"
+						+ "    \"productProfileType\": null,\r\n"
+						+ "    \"weeklyDistributionIdentifier\": null,\r\n"
+						+ "    \"billingProfileIdentifier\": null,\r\n"
+						+ "    \"invoiceNumber\": null,\r\n"
+						+ "    \"paymentId\": null,\r\n"
+						+ "    \"notes\": null,\r\n"
+						+ "    \"surcharge\": null,\r\n"
+						+ "    \"fiscalID\": null,\r\n"
+						+ "    \"uniqueSN\": null,\r\n"
+						+ "    \"paymentStartTime\": null,\r\n"
+						+ "    \"paymentStartTimeGMT\": null,\r\n"
+						+ "    \"offlineCleared\": null,\r\n"
+						+ "    \"noneParkingProductCount\": null,\r\n"
+						+ "    \"noneParkingProductName\": null,\r\n"
+						+ "    \"isfInvoice\": null,\r\n"
+						+ "    \"plate\": null,\r\n"
+						+ "    \"plateReadConfidence\": null,\r\n"
+						+ "    \"plateCountryCode\": null,\r\n"
+						+ "    \"external\": false\r\n"
+						+ "  }"),
+				getOperationFromJSON("{\r\n"
+						+ "    \"operationType\": \"ENTRANCE\",\r\n"
+						+ "    \"identifier\": 6004876017063472,\r\n"
+						+ "    \"timestamp\": 1623442320000,\r\n"
+						+ "    \"managementSystemGmt\": -300,\r\n"
+						+ "    \"additionalInformation\": null,\r\n"
+						+ "    \"sessionId\": 323552106111512,\r\n"
+						+ "    \"isExternal\": false,\r\n"
+						+ "    \"eventTimestamp\": null,\r\n"
+						+ "    \"eventManagementSystemGmt\": null,\r\n"
+						+ "    \"result\": \"VALID\",\r\n"
+						+ "    \"card\": {\r\n"
+						+ "      \"type\": \"TRANSIENT\",\r\n"
+						+ "      \"identifier\": \"450034022\",\r\n"
+						+ "      \"mediaType\": \"BARCODE\"\r\n"
+						+ "    },\r\n"
+						+ "    \"creditNoteIdentifier\": null,\r\n"
+						+ "    \"joinType\": \"SUCCESSFUL_ENTRY\",\r\n"
+						+ "    \"creditCardData\": null,\r\n"
+						+ "    \"facilityCode\": null,\r\n"
+						+ "    \"entityId\": \"1.1.2.1.3.5.5.4.6.1\",\r\n"
+						+ "    \"plate\": \"752VMG\",\r\n"
+						+ "    \"managementSystemRejectionCode\": \"0 - no rejection\",\r\n"
+						+ "    \"presenceEntityId\": \"1.1.2.1.3.5\",\r\n"
+						+ "    \"userCategoryIdentifier\": null,\r\n"
+						+ "    \"dpCardData\": null,\r\n"
+						+ "    \"hotelCardData\": null,\r\n"
+						+ "    \"plateReadConfidence\": null,\r\n"
+						+ "    \"plateCountryCode\": null,\r\n"
+						+ "    \"joinAmount\": null,\r\n"
+						+ "    \"ticketGroupId\": null,\r\n"
+						+ "    \"plateLprClarification\": \"OK\",\r\n"
+						+ "    \"plateLprStatusCode\": \"OK\",\r\n"
+						+ "    \"fiscalID\": null,\r\n"
+						+ "    \"uniqueSN\": null,\r\n"
+						+ "    \"external\": false\r\n"
+						+ "  }")
+				
+		));
+		}
 		restSender.postForJanusConnector(RestSender.OPERATION_PUSH_URL, operations);
 		//restSender.postForJanusConnector(RestSender.OPERATION_PUSH_PASSTHROUGHT_ETL_URL, operations);
 		System.out.println("End OperationsRestSender " + new Date());
 	}
 	
-	/* Here to use JSON */
-	//	operations.put("operations", 
-	//		Arrays.asList(
-	//			getOperationFromJSON("{\"operationType\":\"EXIT\",\"identifier\":500000000000,\"timestamp\":1569857456000,\"managementSystemGmt\":120,\"additionalInformation\":null,\"sessionId\":null,\"isExternal\":false,\"eventTimestamp\":null,\"eventManagementSystemGmt\":null,\"result\":\"VALID\",\"card\":{\"type\":\"SEASONAL\",\"identifier\":\"05400014102404\",\"mediaType\":\"PAR_QUBE_PROXIMITY\"},\"joinType\":\"CARD_VALIDATION\",\"creditCardData\":null,\"facilityCode\":\"1\",\"entityId\":\"1.1.2.0.66053\",\"plate\":\"NOTREAD\",\"managementSystemRejectionCode\":null,\"presenceEntityId\":\"1.1.2\",\"userCategoryIdentifier\":7,\"dpCardData\":null,\"hotelCardData\":null,\"plateReadConfidence\":null,\"plateCountryCode\":null,\"joinAmount\":null,\"ticketGroupId\":null,\"plateLprClarification\":\"UNDEFINED\",\"plateLprStatusCode\":\"ERROR\",\"external\":false}"), 
-	//			getOperationFromJSON("{\"operationType\":\"EXIT\",\"identifier\":500000000009,\"timestamp\":1569857456001,\"managementSystemGmt\":120,\"additionalInformation\":null,\"sessionId\":null,\"isExternal\":false,\"eventTimestamp\":null,\"eventManagementSystemGmt\":null,\"result\":\"MOVING_BACK\",\"card\":{\"type\":\"SEASONAL\",\"identifier\":\"05400014102404\",\"mediaType\":\"PAR_QUBE_PROXIMITY\"},\"joinType\":\"UNSUCCESSFUL_EXIT\",\"creditCardData\":null,\"facilityCode\":\"1\",\"entityId\":\"1.1.2.0.66053\",\"plate\":\"NOTREAD\",\"managementSystemRejectionCode\":null,\"presenceEntityId\":\"1.1.2\",\"userCategoryIdentifier\":7,\"dpCardData\":null,\"hotelCardData\":null,\"plateReadConfidence\":null,\"plateCountryCode\":null,\"joinAmount\":null,\"ticketGroupId\":null,\"plateLprClarification\":\"UNDEFINED\",\"plateLprStatusCode\":\"ERROR\",\"external\":false}")
-	//	));
+
 	
 	/**
 	 * bulk
@@ -201,17 +433,17 @@ public class OperationsRestSender {
 	private static Map<String, Object> getJoinOperation(long identifier){
 		Map<String, Object> operation = new HashMap<String, Object>(); 
 		
-		operation.put("operationType", "ENTRANCE");	//ENTRANCE EXIT
+		operation.put("operationType", "EXIT");	//ENTRANCE EXIT
 		operation.put("identifier", identifier);
-		operation.put("entityId", "3");	//3 //1.1.2.0.66053
+		operation.put("entityId", "1.1.2.1.3.1");	//3 //1.1.2.0.66053
 		operation.put("facilityCode", "123");
 		operation.put("managementSystemGmt", Short.valueOf("60"));
 		operation.put("result", "VALID");// = ValidationResult.VALID;
 		operation.put("timestamp", Calendar.getInstance().getTime().getTime());
 		operation.put("managementSystemRejectionCode", "rejcode");
 		operation.put("additionalInformation", "additional information");
-		operation.put("joinType", "SUCCESSFUL_ENTRY");	// SUCCESSFUL_ENTRY;	//SUCCESSFUL_EXIT
-		operation.put("presenceEntityId", "3");
+		operation.put("joinType", "SUCCESSFUL_EXIT");	// SUCCESSFUL_ENTRY;	//SUCCESSFUL_EXIT
+		operation.put("presenceEntityId", null);
 		//operation.put("plate", "AA123BC");
 		//operation.put("joinAmount", new BigDecimal(3));
 
@@ -231,9 +463,9 @@ public class OperationsRestSender {
 //		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
 //		card.put("identifier", "external-ticket-2");
 //		
-//		card.put("type","TRANSIENT");
-//		card.put("mediaType", "BARCODE");	// MediaTypeIdentifier.LICENSE_PLATE;
-//		card.put("identifier", "000111222333");
+		card.put("type","TRANSIENT");
+		card.put("mediaType", "LICENSE_PLATE");	// MediaTypeIdentifier.LICENSE_PLATE;
+		card.put("identifier", "AA123BB");
 //		
 //		card.put("type","ANONYMOUS");
 //		card.put("mediaType", "BARCODE");
@@ -244,9 +476,9 @@ public class OperationsRestSender {
 //		card.put("identifier", "third-party-ticket-1");
 //		card.put("thirdPartyId", 1L);
 		
-		card.put("type","SEASONAL");
-		card.put("mediaType", "LICENSE_PLATE");
-		card.put("identifier", "7912_identifier");
+//		card.put("type","SEASONAL");
+//		card.put("mediaType", "LICENSE_PLATE");
+//		card.put("identifier", "7912_identifier");
 		
 		operation.put("card", card);
 		

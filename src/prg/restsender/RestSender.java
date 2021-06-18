@@ -28,6 +28,7 @@ public class RestSender {
 	public static String TRACKING_HISTORY_SEASONAL_GET_ALL_EVENTS_URL = PROTOCOL + HOST_PORT + "/janus/api/card/tracking/history/seasonal/getAllEvents";
 	public static String SCHEDULING_ACTIONS_CREATE = PROTOCOL + HOST_PORT + "/janus/api/scheduling/actions/create";
 	public static String LPR_ALARM_FILTER = PROTOCOL + HOST_PORT + "/janus/api/alarm/lpr/filter";
+	public static String EVENT_PARKING_START = PROTOCOL + HOST_PORT + "/janus/api/eventparking/event/start";
 	public static String CACHE_EVICT_ALL = PROTOCOL + HOST_PORT + "/janus/api/cache/evict/all";
 	public static String PUSH_SEASONALCARD_MANAGEMENTSYSTEM_STATUS = PROTOCOL + HOST_PORT + "/janus/api/connector/card/seasonal/managementsystems/status/push";
 	public static String PUSH_SEASONALCARD_MANAGEMENTSYSTEM_STATUS_MULTI = PROTOCOL + HOST_PORT + "/janus/api/connector/card/seasonal/managementsystems/status/multi/push";
@@ -49,6 +50,7 @@ public class RestSender {
 	
 	public static String ACCEPT = "Accept";
 	public static String APPLICATION_JSON = "application/json";
+	public static String APPLICATION_XML = "application/xml";
 	
 	/* Header for Janus UI */
 	public static String JANUS_UI_AUTHENTICATION = "Janus-Authorization";
@@ -60,7 +62,7 @@ public class RestSender {
 	/* Header for Janus Connector */
 	public static String JANUS_MS_AUTHENTICATION = "Janus-MS-Authentication";
 	//MS_AUTHENTICATION_TOKEN = select * from janus.management_system where active = true
-	public static String MS_AUTHENTICATION_TOKEN = "c3d0897d-687d-4e62-b479-8fbf4c43c061";
+	public static String MS_AUTHENTICATION_TOKEN = "1cdbad67-a803-44da-8f69-09ab9f8fe628";
 	
     /* Header for Third party */
     public static String JANUS_THIRD_PARTY_AUTHENTICATION = "Janus-TP-Authorization";
@@ -142,6 +144,13 @@ public class RestSender {
 			.code());
 	}
 	
+	public void putForJanusUi(String url, Object...args) {
+		this.printResponseResult(HttpRequestUtils.put(url, true, args)
+			.header(CONTENT_TYPE, APPLICATION_JSON_UTF8)
+			.header(JANUS_UI_AUTHENTICATION, UI_AUTHENTICATION_TOKEN)
+			.code());
+	}
+	
 	/**
 	 * 
 	 * @param url
@@ -161,6 +170,7 @@ public class RestSender {
 				.header(CONTENT_TYPE, APPLICATION_JSON_UTF8)
 				.header(JANUS_UI_AUTHENTICATION, UI_AUTHENTICATION_TOKEN)
 				.header(ACCEPT, APPLICATION_JSON)
+				//.header(ACCEPT, APPLICATION_XML)
 				.send(json)
 				.body());
 	}
