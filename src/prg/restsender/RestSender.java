@@ -29,6 +29,7 @@ public class RestSender {
 	public static String SCHEDULING_ACTIONS_CREATE = PROTOCOL + HOST_PORT + "/janus/api/scheduling/actions/create";
 	public static String LPR_ALARM_FILTER = PROTOCOL + HOST_PORT + "/janus/api/alarm/lpr/filter";
 	public static String EVENT_PARKING_START = PROTOCOL + HOST_PORT + "/janus/api/eventparking/event/start";
+	public static String PARKSOL_ZONE = PROTOCOL + HOST_PORT + "/janus/api/baymonitoringconfiguration/parksol/zone";
 	public static String CACHE_EVICT_ALL = PROTOCOL + HOST_PORT + "/janus/api/cache/evict/all";
 	public static String PUSH_SEASONALCARD_MANAGEMENTSYSTEM_STATUS = PROTOCOL + HOST_PORT + "/janus/api/connector/card/seasonal/managementsystems/status/push";
 	public static String PUSH_SEASONALCARD_MANAGEMENTSYSTEM_STATUS_MULTI = PROTOCOL + HOST_PORT + "/janus/api/connector/card/seasonal/managementsystems/status/multi/push";
@@ -57,7 +58,7 @@ public class RestSender {
 	/* Header for Janus Admin UI */
 	public static String JANUS_ADMIN_UI_AUTHENTICATION = "Janus-Admin-Authorization";
 	public static String ADMIN_UI_AUTHENTICATION_TOKEN = "e0b0f482-19b3-4801-840e-37b3025ffaa5";
-	public static String UI_AUTHENTICATION_TOKEN = "a5c38026-1da5-439c-a299-ac3dd54545ef"; 
+	public static String UI_AUTHENTICATION_TOKEN = "346411db-7288-4d7a-b171-c6546da6ea4f"; 
 	
 	/* Header for Janus Connector */
 	public static String JANUS_MS_AUTHENTICATION = "Janus-MS-Authentication";

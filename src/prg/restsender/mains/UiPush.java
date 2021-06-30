@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import prg.restsender.RestSender;
 
+@SuppressWarnings("unused")
 public class UiPush {
 
 	private static void lprAlarmFilter() {
@@ -29,15 +30,19 @@ public class UiPush {
 			"duration", 10,
 			"flatFee", 20,
 			"displayDescription", "test");
-	}    
+	}
+	
+	private static void getParksolZones() {
+		new RestSender().getForJanusUi(RestSender.PARKSOL_ZONE, "bayMonitoringId",5L);
+	}
 
-	
-	
 	public static void main(String[] args) throws InterruptedException {
 		//UiPush.lprAlarmFilter();
-		for(int ii=0; ii<1; ii++) {
-			UiPush.eventStart();
-			Thread.sleep(500);
-		}
+//		for(int ii=0; ii<1; ii++) {
+//			UiPush.eventStart();
+//			Thread.sleep(500);
+//		}
+		
+		UiPush.getParksolZones();
 	}
 }
