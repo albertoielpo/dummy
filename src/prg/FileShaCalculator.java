@@ -54,7 +54,7 @@ public class FileShaCalculator {
 		}
 
 		output.append("=======================================" + FileUtils.CRLF);
-		output.append("DUPLICATE CONTENT FILES" + "\n");
+		output.append("DUPLICATE CONTENT FILES" + FileUtils.CRLF);
 		output.append("=======================================" + FileUtils.CRLF);
 		StringBuffer deleteBranchScripts = new StringBuffer();
 		for(var a : shaFiles.values()) {
@@ -70,22 +70,22 @@ public class FileShaCalculator {
 				}
 				/* true if atLeastOneBranchScript and atLeastOneMasterScript so I can delete it the branch one */
 				if(atLeastOneBranchScript && atLeastOneMasterScript) {
-					deleteBranchScripts.append(a + "\n");
+					deleteBranchScripts.append(a + FileUtils.CRLF);
 				}
-				output.append(a + "\n");
+				output.append(a + FileUtils.CRLF);
 			}
 		}
 		
-		output.append("=======================================" + "\n");
-		output.append("DELETE BRANCH SCRIPTS" + "\n");
-		output.append("=======================================" + "\n");
+		output.append("=======================================" + FileUtils.CRLF);
+		output.append("DELETE BRANCH SCRIPTS" + FileUtils.CRLF);
+		output.append("=======================================" + FileUtils.CRLF);
 		if(deleteBranchScripts.length() == 0) {
-			output.append("Nothing to do...." + "\n");
+			output.append("Nothing to do...." + FileUtils.CRLF);
 		} else {
 			output.append(deleteBranchScripts);			
 		}
 		
-		output.append("=======================================" + "\n");		
+		output.append("=======================================" + FileUtils.CRLF);		
 		FileUtils.writeFile(destinationFile, output.toString());
 		System.out.println("end: " +new Date());
 	}
