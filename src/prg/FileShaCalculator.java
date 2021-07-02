@@ -21,8 +21,8 @@ public class FileShaCalculator {
 	 * @throws Exception
 	 */
 	public static void main(String... args) throws Exception {
-		String sourceDir = "C:\\dev\\git\\janus-dev-d\\janus\\janus-dbmigration\\src\\main\\resources\\db\\migration_sqlserver";
-		String destinationFile = "C:\\logs\\out.log";
+		String sourceDir = "C:\\dev\\git\\janus-dev-a\\janus\\janus-dbmigration\\src\\main\\resources\\db\\migration_sqlserver";
+		String destinationFile = "C:\\logs\\out.sqlserver.log";
 		
 		if(args != null && args.length > 1) {
 			sourceDir = args[0];
@@ -56,11 +56,35 @@ public class FileShaCalculator {
 		output.append("=======================================" + "\n");
 		output.append("DUPLICATE CONTENT FILES" + "\n");
 		output.append("=======================================" + "\n");
+		StringBuffer deleteBranchScripts = new StringBuffer();
 		for(var a : shaFiles.values()) {
 			if(a.size() > 1) {
+				boolean atLeastOneBranchScript = false;
+				boolean atLeastOneMasterScript = false;
+				for(String b : a) {
+					String c = b.substring(0, b.indexOf("__"));
+					String[] d = c.split("_");
+					atLeastOneBranchScript = atLeastOneBranchScript || (d.length > 3);
+					atLeastOneMasterScript = atLeastOneMasterScript || (d.length < 4);
+										
+				}
+				/* true if atLeastOneBranchScript and atLeastOneMasterScript so I can delete it the branch one */
+				if(atLeastOneBranchScript && atLeastOneMasterScript) {
+					deleteBranchScripts.append(a + "\n");
+				}
 				output.append(a + "\n");
 			}
 		}
+		
+		output.append("=======================================" + "\n");
+		output.append("DELETE BRANCH SCRIPTS" + "\n");
+		output.append("=======================================" + "\n");
+		if(deleteBranchScripts.length() == 0) {
+			output.append("Nothing to do...." + "\n");
+		} else {
+			output.append(deleteBranchScripts);			
+		}
+		
 		output.append("=======================================" + "\n");		
 		FileUtils.writeFile(destinationFile, output.toString());
 		System.out.println("end: " +new Date());
