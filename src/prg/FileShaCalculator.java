@@ -38,24 +38,24 @@ public class FileShaCalculator {
 		Map<String, List<String>> shaFiles = new HashMap<String, List<String>>();
 		File f = new File(sourceDir);
 		
-		output.append("=======================================" + "\n");
-		output.append("FILES LIST" + "\n");
-		output.append("=======================================" + "\n");
+		output.append("=======================================" + FileUtils.CRLF);
+		output.append("FILES LIST" + FileUtils.CRLF);
+		output.append("=======================================" + FileUtils.CRLF);
 		for (File file : f.listFiles()) {
 			if (file.isDirectory())
 				continue;
 			String content = FileUtils.fileToString(file.getAbsolutePath());
 			String sha = Utils.sha1(content);
-			output.append(file.getName() + " " + sha + "\n");
+			output.append(file.getName() + " " + sha + FileUtils.CRLF);
 			if (shaFiles.get(sha) == null) {
 				shaFiles.put(sha, new ArrayList<String>());
 			}
 			shaFiles.get(sha).add(file.getName());
 		}
 
-		output.append("=======================================" + "\n");
+		output.append("=======================================" + FileUtils.CRLF);
 		output.append("DUPLICATE CONTENT FILES" + "\n");
-		output.append("=======================================" + "\n");
+		output.append("=======================================" + FileUtils.CRLF);
 		StringBuffer deleteBranchScripts = new StringBuffer();
 		for(var a : shaFiles.values()) {
 			if(a.size() > 1) {
